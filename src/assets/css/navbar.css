@@ -1,0 +1,76 @@
+/* NavBar.css */
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+
+.brand-logo {
+  width: 122px;
+  height: 41px;
+  object-fit: contain; 
+ 
+}
+/* navbar.css */
+
+.navbar-container {
+  width: 100%;
+  /* display: flex; */
+  /* justify-content: center; */
+  background-color: white;
+  border-bottom: 1px solid #e5e7eb; /* Tailwind's border-gray-200 */
+}
+
+.navbar-content {
+  width: 100%;
+  max-width: 1880px;
+  height: 66px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 0;
+}
+
+.navbar-content > div {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.brand-logo {
+  width: 122px;
+  height: 41px;
+}
+
+.menu-links {
+  display: flex;
+  gap: 34px;
+  font-weight: 500;
+  font-size: 0.875rem; /* 14px */
+  color: #1f2937; /* Tailwind's gray-800 */
+}
+
+.menu-links a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.bell-icon-container {
+  background-color: #f2f5f9;
+  padding: 8px;
+  border-radius: 12px;
+}
+
+.circle-icon-container {
+  background-color: #0d9488; /* Tailwind's teal-600 */
+  color: white;
+  padding: 8px;
+  border-radius: 9999px;
+}
+
