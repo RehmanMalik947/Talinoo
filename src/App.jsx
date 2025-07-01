@@ -4,6 +4,7 @@ import './App.css'
 import Home from './components/Auth/Home'
 import Login from './components/Auth/Login'
 import NavBar from './components/Auth/common/NavBar'
+import Dashboard from './components/Admin/Dashboard'
 function App() {
 
   const router=createBrowserRouter([
@@ -15,10 +16,10 @@ function App() {
       path:'/login',
       element:<Login/>
     },
-    // {
-    //   path:'/dashborad',
-    //   element:<Dashboard/>
-    // }
+    {
+      path:'/dashboard',
+      element:<Dashboard/>
+    },
     {
       path:'/NavBar',
       element:<NavBar/>
