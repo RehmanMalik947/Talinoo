@@ -1,6 +1,7 @@
 import React from "react";
 import NavBar from "../Auth/common/NavBar";
 import "../../assets/css/dashboard.css";
+import { GoAlert } from "react-icons/go";
 function Dashboard() {
   return (
     <>
@@ -67,31 +68,32 @@ function Dashboard() {
 
             {/* Alert content */}
             <h2 className="card-title">System Alerts</h2>
-            
-              <div className="card-content">
-                <div className="alert-container">
-                  <div className="alert">
-                    <div className="alert-icon"></div>
-                    <div className="alert-content">
-                      <div className="alert-title">
-                        Payment processing delay
-                      </div>
-                      <div className="alert-date">2023-1-1</div>
-                    </div>
+            <div className="card-content">
+              <div className="alert-container">
+                <div className="alert">
+                  <div className="alert-icon">
+                    <GoAlert />
                   </div>
-                  <div className="alert">
-                    <div className="alert-icon"></div>
-                    <div className="alert-content">
-                      <div className="alert-title">
-                        New Talent application pending review
-                      </div>
-                      <div className="alert-date">2023-2-2</div>
+
+                  <div className="alert-content">
+                    <div className="alert-title">Payment processing delay</div>
+                    <div className="alert-date">2023-1-1</div>
+                  </div>
+                </div>
+                <div className="alert">
+                  <div className="alert-icon">
+                    <GoAlert />
+                  </div>
+                  <div className="alert-content">
+                    <div className="alert-title">
+                      New Talent application pending review
                     </div>
+                    <div className="alert-date">2023-2-2</div>
                   </div>
                 </div>
               </div>
             </div>
-          
+          </div>
         </main>
       </div>
     </>

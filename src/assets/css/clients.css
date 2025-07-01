@@ -1,0 +1,26 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.dashboard-container{
+  min-height: 100vh;
+
+}
+
+.main-content{
+  max-width: 920px;
+  align-items: center;
+  align-content: center;
+  margin: 0 auto;
+  margin-top: 2rem;
+  background-color: antiquewhite;
+}
+
+.clients-title{
+  font: bold;
+  font-weight: 700;
+  font-size: 35px;
+  margin-bottom: 1.5rem;
+}
