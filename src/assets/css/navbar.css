@@ -24,7 +24,7 @@ html, body {
   width: 100%;
   /* display: flex; */
   /* justify-content: center; */
-  background-color: white;
+  background-color: #F7FAFC;
   border-bottom: 1px solid #e5e7eb; /* Tailwind's border-gray-200 */
 }
 

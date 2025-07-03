@@ -1,26 +1,163 @@
-*{
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-.dashboard-container{
+.clients-container {
+  background-color:#F7FAFC;
   min-height: 100vh;
-
 }
 
-.main-content{
+.dashboard-container {
+  min-height: 100vh;
+}
+
+.main-content {
   max-width: 920px;
   align-items: center;
   align-content: center;
   margin: 0 auto;
-  margin-top: 2rem;
-  background-color: antiquewhite;
+  margin-top: 1.5rem;
+  padding: 1rem;
 }
 
-.clients-title{
-  font: bold;
+.clients-title {
   font-weight: 700;
   font-size: 35px;
   margin-bottom: 1.5rem;
+}
+
+.control-section {
+  display: flex;
+  justify-content: flex-start;
+  align-items: start;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.search-box {
+  width: 100%;
+  background-color: #e8edf5;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  padding: 0 1rem;
+  border-radius: 8px;
+}
+
+.search-icon {
+  font-size: 2rem;
+  color: #333;
+  margin-right: 0.5rem;
+}
+
+.search-input {
+  background-color: #e8edf5;
+  border: none;
+  outline: none;
+  font-size: 1.1rem;
+  width: 100%;
+  padding: 0.75rem 0;
+}
+
+.search-input::placeholder {
+  color: #333;
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+.filter {
+  display: flex;
+  gap: 1rem;
+}
+
+.filter-select {
+  padding: 0.5rem;
+  background-color: #e8edf5;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+  position: relative;
+}
+
+.filter-select option {
+  background-color: #fff;
+  color: #333;
+  font-size: 1rem;
+  padding: 10px;
+}
+
+.table-container {
+  background-color:#F7FAFC;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  border: 1px solid rgb(0, 0, 0, 0.1);
+}
+
+.clients-table {
+  width: 100%;
+}
+
+.clients-table th {
+  text-align: left;
+  padding-left: 1rem;
+  padding-block: 1rem;
+  border-bottom: 1px solid black;
+  font-weight: 600;
+}
+
+.clients-table td {
+  padding: 1rem;
+  border-bottom: 1px solid #f3f4f6;
+  color: #1f2937;
+}
+
+.clients-table tbody tr:hover {
+  background-color: #f9fafb;
+}
+
+.clients-table tbody tr:last-child td {
+  border-bottom: none;
+}
+.action-button {
+  display: flex;
+  gap: 0.5rem;
+}
+.status-cell {
+  padding: 12px; /* adjust as needed */
+}
+.status-badge.active {
+  background-color: #efedf6;
+
+  display: flex;
+  justify-content: center;
+  border-radius: 8px;
+  padding-block: 0.3rem;
+  padding-inline: 1.5rem;
+  margin-inline: 1rem;
+}
+
+.status-badge.inactive {
+  background-color: #f8ede8;
+  display: flex;
+  justify-content: center;
+  border-radius: 8px;
+  padding-block: 0.3rem;
+  padding-inline: 1.5rem;
+  margin-inline: 1rem;
+}
+
+.client-name {
+  font-weight: 500;
+}
+
+.client-email {
+  color: #6d028e;
+}
+
+.client-date {
+  color: #6d028e;
 }
