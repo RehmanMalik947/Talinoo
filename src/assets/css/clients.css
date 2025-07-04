@@ -5,7 +5,7 @@
 }
 
 .clients-container {
-  background-color:#F7FAFC;
+  background-color: #f7fafc;
   min-height: 100vh;
 }
 
@@ -15,11 +15,11 @@
 
 .main-content {
   max-width: 920px;
-  align-items: center;
-  align-content: center;
   margin: 0 auto;
   margin-top: 1.5rem;
   padding: 1rem;
+  align-items: center;
+  align-content: center;
 }
 
 .clients-title {
@@ -30,19 +30,18 @@
 
 .control-section {
   display: flex;
-  justify-content: flex-start;
-  align-items: start;
   flex-direction: column;
   gap: 1.5rem;
   margin-bottom: 1.5rem;
+  justify-content: flex-start;
+  align-items: start;
 }
 
 .search-box {
   width: 100%;
-  background-color: #e8edf5;
-  margin: 0;
   display: flex;
   align-items: center;
+  background-color: #e8edf5;
   padding: 0 1rem;
   border-radius: 8px;
 }
@@ -54,12 +53,12 @@
 }
 
 .search-input {
+  width: 100%;
+  padding: 0.75rem 0;
   background-color: #e8edf5;
   border: none;
   outline: none;
   font-size: 1.1rem;
-  width: 100%;
-  padding: 0.75rem 0;
 }
 
 .search-input::placeholder {
@@ -80,7 +79,6 @@
   font-size: 1rem;
   cursor: pointer;
   transition: border-color 0.2s ease;
-  position: relative;
 }
 
 .filter-select option {
@@ -91,27 +89,29 @@
 }
 
 .table-container {
-  background-color:#F7FAFC;
+  background-color: #f7fafc;
+  border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 0.75rem;
   overflow: hidden;
-  border: 1px solid rgb(0, 0, 0, 0.1);
 }
 
 .clients-table {
   width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
 }
+
 
 .clients-table th {
   text-align: left;
-  padding-left: 1rem;
-  padding-block: 1rem;
-  border-bottom: 1px solid black;
+  padding: 1rem;
   font-weight: 600;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .clients-table td {
   padding: 1rem;
-  border-bottom: 1px solid #f3f4f6;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   color: #1f2937;
 }
 
@@ -122,21 +122,22 @@
 .clients-table tbody tr:last-child td {
   border-bottom: none;
 }
+
 .action-button {
   display: flex;
   gap: 0.5rem;
 }
+
 .status-cell {
-  padding: 12px; /* adjust as needed */
+  padding: 12px;
 }
+
 .status-badge.active {
   background-color: #efedf6;
-
   display: flex;
   justify-content: center;
   border-radius: 8px;
-  padding-block: 0.3rem;
-  padding-inline: 1.5rem;
+  padding: 0.3rem 1.5rem;
   margin-inline: 1rem;
 }
 
@@ -145,16 +146,17 @@
   display: flex;
   justify-content: center;
   border-radius: 8px;
-  padding-block: 0.3rem;
-  padding-inline: 1.5rem;
+  padding: 0.3rem 1.5rem;
   margin-inline: 1rem;
 }
 
+/* Client Info Styling */
 .client-name {
-  font-weight: 500;
+  font-size: 0.9rem !important;
+  font-weight: 500 !important; /* Normal font weight */
 }
-
 .client-email {
+  font-size: 1rem;
   color: #6d028e;
 }
 
@@ -162,6 +164,7 @@
   color: #6d028e;
 }
 
+/* Pagination Styling */
 .pagination-container {
   display: flex;
   justify-content: center;
@@ -181,23 +184,19 @@
   color: #6b7280;
   cursor: pointer;
   border-radius: 50%;
-  font-size: 14px;
-  transition: all 0.2s;
-  color: rgb(0, 0, 0);
-  font-weight: 700;
   font-size: large;
-  
+  font-weight: 700;
+  transition: all 0.2s;
+}
 
+.pagination-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .pagination-btn:hover:not(:disabled) {
   border-color: #d1d5db;
   background: #f9fafb;
-}
-
-.pagination-btn:disabled {
-  cursor: not-allowed;
-  opacity: 0.5;
 }
 
 .pagination-numbers {
@@ -212,24 +211,20 @@
   justify-content: center;
   width: 32px;
   height: 32px;
-  transform: scaleY(1);
-  line-height: 5rem;
+  padding: 1.3rem;
   background: white;
   color: #6b7280;
   cursor: pointer;
   border-radius: 50%;
   font-size: 17px;
   transition: all 0.2s;
-  padding: 1.3rem;
 }
 
 .pagination-number:hover {
- 
   background: #f9fafb;
 }
 
 .pagination-number.active {
-  background-color: #e8edf5;
   background-color: #e8edf5;
   color: rgb(0, 0, 0);
   font-weight: 700;

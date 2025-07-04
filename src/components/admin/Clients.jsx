@@ -11,19 +11,12 @@ function Clients() {
   const [statusFilter, setStatusFilter] = useState("All");
   const [sortDate, setSortDate] = useState("desc");
   const [currentPage, setCurrentPage] = useState(1);
-  const handleSearch = (e) => {
-    setSearchTerm(e.target.value);
-  };
 
-  const handleStatusFilter = (e) => {
-    setStatusFilter(e.target.value);
-  };
+  const handleSearch = (e) => setSearchTerm(e.target.value);
+  const handleStatusFilter = (e) => setStatusFilter(e.target.value);
+  const handleSortDate = (e) => setSortDate(e.target.value);
 
-  const handleSortDate = (e) => {
-    setSortDate(e.target.value);
-  };
-
-  const [clients] = useState([
+const [clients] = useState([
     {
       id: 1,
       name: "Acme Corp",
@@ -235,178 +228,125 @@ function Clients() {
       date: "2023-04-14",
     },
   ]);
-
   const filteredClients = clients
-    .filter(
-      (client) =>
-        client.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        client.email.toLowerCase().includes(searchTerm.toLowerCase())
+    .filter((client) =>
+      client.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      client.email.toLowerCase().includes(searchTerm.toLowerCase())
     )
-    .filter(
-      (client) => statusFilter === "All" || client.status === statusFilter
-    )
-    .sort((a, b) => {
-      if (sortDate === "desc") {
-        return new Date(b.date) - new Date(a.date);
-      }
-      return new Date(a.date) - new Date(b.date);
-    });
+    .filter((client) => statusFilter === "All" || client.status === statusFilter)
+    .sort((a, b) => sortDate === "desc"
+      ? new Date(b.date) - new Date(a.date)
+      : new Date(a.date) - new Date(b.date)
+    );
 
   const itemsPerPage = 10;
   const totalPages = Math.ceil(filteredClients.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const paginatedClients = filteredClients.slice(
-    startIndex,
-    startIndex + itemsPerPage
-  );
+  const paginatedClients = filteredClients.slice(startIndex, startIndex + itemsPerPage);
 
-  const handleDelete = () => {
-    console.log("data deleted");
-  };
-
-  const handleView = () => {
-    console.log("data viewd");
-  };
+  const handleDelete = (id) => console.log("Deleted", id);
+  const handleView = (id) => console.log("Viewed", id);
 
   return (
-    <>
-      <div className="clients-container">
-        <NavBar />
-        <div className="main-content">
-          <div className="clients-title">Clients</div>
+    <div className="clients-container">
+      <NavBar />
+      <div className="main-content">
+        <div className="clients-title">Clients</div>
 
-          <div className="control-section">
-            <div className="search-box">
-              <CiSearch className="search-icon" />
-              <input
-                type="text"
-                placeholder="Search clients"
-                value={searchTerm}
-                onChange={handleSearch}
-                className="search-input"
-              />
-            </div>
-
-            <div className="filter">
-              <select
-                value={statusFilter}
-                onChange={handleStatusFilter}
-                className="filter-select"
-              >
-                <option value="All">Status</option>
-                <option value="Active">Active</option>
-                <option value="Inactive">Inactive</option>
-              </select>
-
-              <select
-                value={sortDate}
-                onChange={handleSortDate}
-                className="filter-select"
-              >
-                <option value="All">Date </option>
-                <option value="asc">Asc</option>
-                <option value="desc">Desc</option>
-              </select>
-            </div>
+        <div className="control-section">
+          <div className="search-box">
+            <CiSearch className="search-icon" />
+            <input
+              type="text"
+              placeholder="Search clients"
+              value={searchTerm}
+              onChange={handleSearch}
+              className="search-input"
+            />
           </div>
-          <div className="table-container">
-            <table className="clients-table">
-              <thead>
-                <tr>
-                  <th>Client</th>
-                  <th>Email</th>
-                  <th>Status</th>
-                  <th>Date</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {paginatedClients.map((client) => (
-                  <tr key={client.id}>
-                    <td className="client-name">{client.name}</td>
-                    <td className="client-email">{client.email}</td>
-                    <td className="status-cell">
-                      <div
-                        className={`status-badge ${client.status.toLowerCase()}`}
-                      >
-                        {client.status}
-                      </div>
-                    </td>
 
-                    <td>
-                      <span className="client-date">{client.date}</span>
-                    </td>
-                    <td className="action-button">
-                      <button
-                        className="delete-button"
-                        onClick={() => handleDelete(client.id)}
-                      >
-                        <img src={deleteIcon} alt="Delete" />
-                      </button>
-                      <button
-                        className="view-button "
-                        onClick={() => handleView(client.id)}
-                      >
-                        <img src={viewIcon} alt="View" />
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          <div className="pagination-container">
-            <button
-              className="pagination-btn prev-btn"
-              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-              disabled={currentPage === 1}
-            >
-              &#60;
-            </button>
+          <div className="filter">
+            <select value={statusFilter} onChange={handleStatusFilter} className="filter-select">
+              <option value="All">Status</option>
+              <option value="Active">Active</option>
+              <option value="Inactive">Inactive</option>
+            </select>
 
-            <div className="pagination-numbers">
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-                (page) => (
-                  <button
-                    key={page}
-                    className={`pagination-number ${
-                      currentPage === page ? "active" : ""
-                    }`}
-                    onClick={() => setCurrentPage(page)}
-                  >
-                    {page}
-                  </button>
-                )
-              )}
-
-              {totalPages > 5 && (
-                <>
-                  <span className="pagination-dots">...</span>
-                  <button
-                    className={`pagination-number ${
-                      currentPage === totalPages ? "active" : ""
-                    }`}
-                    onClick={() => setCurrentPage(totalPages)}
-                  >
-                    {totalPages}
-                  </button>
-                </>
-              )}
-            </div>
-
-            <button
-              className="pagination-btn next-btn"
-              onClick={() =>
-                setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-              }
-              disabled={currentPage === totalPages}>
-              &#62;
-            </button>
+            <select value={sortDate} onChange={handleSortDate} className="filter-select">
+              <option value="All">Date</option>
+              <option value="asc">Asc</option>
+              <option value="desc">Desc</option>
+            </select>
           </div>
         </div>
+
+        <div className="table-container">
+          <table className="clients-table">
+            <thead>
+              <tr>
+                <th>Client</th>
+                <th>Email</th>
+                <th>Status</th>
+                <th>Date</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {paginatedClients.map((client) => (
+                <tr key={client.id}>
+                  <td><span className="client-name">{client.name}</span></td>
+                  <td className="client-email">{client.email}</td>
+                  <td className="status-cell">
+                    <div className={`status-badge ${client.status.toLowerCase()}`}>
+                      {client.status}
+                    </div>
+                  </td>
+                  <td><span className="client-date">{client.date}</span></td>
+                  <td className="action-button">
+                    <button onClick={() => handleDelete(client.id)}>
+                      <img src={deleteIcon} alt="Delete" />
+                    </button>
+                    <button onClick={() => handleView(client.id)}>
+                      <img src={viewIcon} alt="View" />
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <div className="pagination-container">
+          <button
+            className="pagination-btn prev-btn"
+            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+            disabled={currentPage === 1}
+          >
+            &#60;
+          </button>
+
+          <div className="pagination-numbers">
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+              <button
+                key={page}
+                className={`pagination-number ${currentPage === page ? "active" : ""}`}
+                onClick={() => setCurrentPage(page)}
+              >
+                {page}
+              </button>
+            ))}
+          </div>
+
+          <button
+            className="pagination-btn next-btn"
+            onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+            disabled={currentPage === totalPages}
+          >
+            &#62;
+          </button>
+        </div>
       </div>
-    </>
+    </div>
   );
 }
-
 export default Clients;

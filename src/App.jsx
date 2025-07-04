@@ -7,6 +7,7 @@ import NavBar from './components/Auth/common/NavBar'
 import Dashboard from './components/Admin/Dashboard'
 import Clients from './components/admin/Clients'
 import ClientDetails from './components/admin/ClientDetails'
+import Talents from './components/admin/Talents'
 function App() {
 
   const router=createBrowserRouter([
@@ -33,6 +34,10 @@ function App() {
     {
       path:'/clientDetails',
       element:<ClientDetails/>
+    },
+    {
+      path:'/talents',
+      element:<Talents/>
     }
 
   ])

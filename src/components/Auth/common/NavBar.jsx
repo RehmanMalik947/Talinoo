@@ -1,7 +1,7 @@
 import React from 'react';
 import '../../../assets/css/navbar.css';
 import { FaBell, FaEthereum } from 'react-icons/fa';
-
+import {Link} from 'react-router-dom';
 
 
 function NavBar() {
@@ -17,12 +17,25 @@ function NavBar() {
         {/* Menu + Icons */}
         <div className="flex items-center space-x-6">
           <div className="menu-links">
-            <a href="#">Dashboard</a>
-            <a href="#">Clients</a>
-            <a href="#">Talents</a>
-            <a href="#">Tasks</a>
-            <a href="#">Payments</a>
-            <a href="#">Plans</a>
+            <Link to="/dashboard" className="menu-link">
+              Dashboard
+            </Link>
+            <Link to="/clients" className="menu-link">
+              Clients
+            </Link>
+            <Link to="/talents" className="menu-link">
+              Talents
+            </Link>
+            {/* <Link to="/tasks" className="menu-link">
+              Tasks
+            </Link>
+            <link to="/payments" className='menu-link'>
+              Payments
+            </link>
+            <Link to="/plans" className="menu-link">
+              Plans
+            </Link> */}
+            
           </div>
 
           <div className="bell-icon-container">
