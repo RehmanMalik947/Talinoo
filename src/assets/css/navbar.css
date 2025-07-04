@@ -1,4 +1,3 @@
-/* NavBar.css */
 /* Reset */
 * {
   margin: 0;
@@ -11,23 +10,23 @@ html, body {
   padding: 0;
 }
 
-
+/* Brand Logo */
 .brand-logo {
   width: 122px;
   height: 41px;
-  object-fit: contain; 
- 
+  object-fit: contain;
 }
-/* navbar.css */
 
+/* Navbar container */
 .navbar-container {
   width: 100%;
-  /* display: flex; */
-  /* justify-content: center; */
-  background-color: #F7FAFC;
-  border-bottom: 1px solid #e5e7eb; /* Tailwind's border-gray-200 */
+  background-color: #f7fafc;
+  border-bottom: 1px solid #e5e7eb;
+  z-index: 10;
+  position: relative;
 }
 
+/* Navbar content */
 .navbar-content {
   width: 100%;
   max-width: 1880px;
@@ -35,41 +34,113 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 0;
+  padding: 0 20px;
+  flex-wrap: wrap; /* Optional: allow wrap on tiny screens */
 }
 
+/* Left and right content inside navbar */
 .navbar-content > div {
-  padding-left: 20px;
-  padding-right: 20px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
 }
 
-.brand-logo {
-  width: 122px;
-  height: 41px;
-}
-
+/* Menu links */
 .menu-links {
   display: flex;
   gap: 34px;
   font-weight: 500;
-  font-size: 0.875rem; /* 14px */
-  color: #1f2937; /* Tailwind's gray-800 */
+  font-size: 0.875rem;
+  color: #1f2937;
 }
 
 .menu-links a {
   text-decoration: none;
   color: inherit;
+  transition: color 0.3s ease;
 }
 
+.menu-links a:hover {
+  color: #0d9488;
+}
+
+/* Notification icon */
 .bell-icon-container {
   background-color: #f2f5f9;
   padding: 8px;
   border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
+/* Profile circle */
 .circle-icon-container {
-  background-color: #0d9488; /* Tailwind's teal-600 */
+  background-color: #0d9488;
   color: white;
   padding: 8px;
   border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  font-size: 0.875rem;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+/* === RESPONSIVE NAV === */
+@media (max-width: 768px) {
+  .navbar-content {
+    padding: 10px 16px;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+
+  .navbar-content > div {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 16px;
+    width: auto;
+  }
+
+  .menu-links {
+    flex-direction: row;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .menu-links a {
+    font-size: 0.9rem;
+    padding: 4px 8px;
+    border: none;
+  }
+
+  .brand-logo {
+    width: 100px;
+    height: auto;
+  }
+
+  .bell-icon-container,
+  .circle-icon-container {
+    margin-top: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar-content {
+    padding: 8px 12px;
+  }
+
+  .menu-links a {
+    font-size: 0.85rem;
+  }
+
+  .circle-icon-container {
+    width: 34px;
+    height: 34px;
+    font-size: 0.75rem;
+  }
 }

@@ -5,7 +5,8 @@ import Home from './components/Auth/Home'
 import Login from './components/Auth/Login'
 import NavBar from './components/Auth/common/NavBar'
 import Dashboard from './components/Admin/Dashboard'
-import Clients from './components/admin/clients'
+import Clients from './components/admin/Clients'
+import ClientDetails from './components/admin/ClientDetails'
 function App() {
 
   const router=createBrowserRouter([
@@ -28,6 +29,10 @@ function App() {
     {
       path:'/clients',
       element:<Clients/>
+    },
+    {
+      path:'/clientDetails',
+      element:<ClientDetails/>
     }
 
   ])

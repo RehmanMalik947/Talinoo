@@ -24,218 +24,217 @@ function Clients() {
   };
 
   const [clients] = useState([
-  {
-    id: 1,
-    name: "Acme Corp",
-    email: "contact@acmecorp.com",
-    status: "Active",
-    date: "2023-01-15",
-  },
-  {
-    id: 2,
-    name: "Global Innovations",
-    email: "info@globalinnovations.com",
-    status: "Inactive",
-    date: "2023-02-20",
-  },
-  {
-    id: 3,
-    name: "Tech Solutions Inc.",
-    email: "support@techsolutions.com",
-    status: "Active",
-    date: "2023-03-10",
-  },
-  {
-    id: 4,
-    name: "Creative Minds LLC",
-    email: "hello@creativeminds.com",
-    status: "Active",
-    date: "2023-04-05",
-  },
-  {
-    id: 5,
-    name: "Dynamic Systems",
-    email: "admin@dynamicsystems.com",
-    status: "Inactive",
-    date: "2023-05-12",
-  },
-  {
-    id: 6,
-    name: "Innovative Designs",
-    email: "team@innovativedesigns.com",
-    status: "Active",
-    date: "2023-06-18",
-  },
-  {
-    id: 7,
-    name: "Strategic Ventures",
-    email: "contact@strategicventures.com",
-    status: "Inactive",
-    date: "2023-07-22",
-  },
-  {
-    id: 8,
-    name: "Future Tech Group",
-    email: "info@futuretechgroup.com",
-    status: "Active",
-    date: "2023-08-30",
-  },
-  {
-    id: 9,
-    name: "Elite Solutions",
-    email: "support@elitesolutions.com",
-    status: "Active",
-    date: "2023-09-15",
-  },
-  {
-    id: 10,
-    name: "Pinnacle Enterprises",
-    email: "hello@pinnacleenterprises.com",
-    status: "Inactive",
-    date: "2023-10-01",
-  },
-  {
-    id: 11,
-    name: "Cloud Matrix",
-    email: "support@cloudmatrix.com",
-    status: "Active",
-    date: "2023-03-12",
-  },
-  {
-    id: 12,
-    name: "Byte Logic",
-    email: "info@bytelogic.com",
-    status: "Inactive",
-    date: "2023-02-09",
-  },
-  {
-    id: 13,
-    name: "Quantum Leap",
-    email: "team@quantumleap.com",
-    status: "Active",
-    date: "2023-05-25",
-  },
-  {
-    id: 14,
-    name: "NexaTech",
-    email: "hello@nexatech.com",
-    status: "Inactive",
-    date: "2023-04-17",
-  },
-  {
-    id: 15,
-    name: "DataCore Solutions",
-    email: "info@datacoresolutions.com",
-    status: "Active",
-    date: "2023-01-30",
-  },
-  {
-    id: 16,
-    name: "AlphaGrid",
-    email: "contact@alphagrid.com",
-    status: "Active",
-    date: "2023-03-14",
-  },
-  {
-    id: 17,
-    name: "Blue Ocean Ltd",
-    email: "info@blueocean.com",
-    status: "Inactive",
-    date: "2023-04-10",
-  },
-  {
-    id: 18,
-    name: "VisionSoft",
-    email: "team@visionsoft.com",
-    status: "Active",
-    date: "2023-06-05",
-  },
-  {
-    id: 19,
-    name: "RedPoint Technologies",
-    email: "contact@redpointtech.com",
-    status: "Inactive",
-    date: "2023-05-09",
-  },
-  {
-    id: 20,
-    name: "SmartEdge",
-    email: "support@smartedge.com",
-    status: "Active",
-    date: "2023-07-01",
-  },
-  {
-    id: 21,
-    name: "NextEra Solutions",
-    email: "info@nexterasolutions.com",
-    status: "Inactive",
-    date: "2023-08-15",
-  },
-  {
-    id: 22,
-    name: "CoreFusion",
-    email: "hello@corefusion.com",
-    status: "Active",
-    date: "2023-09-18",
-  },
-  {
-    id: 23,
-    name: "ZenithWorks",
-    email: "team@zenithworks.com",
-    status: "Active",
-    date: "2023-10-11",
-  },
-  {
-    id: 24,
-    name: "SkyNet Labs",
-    email: "support@skynetlabs.com",
-    status: "Inactive",
-    date: "2023-11-05",
-  },
-  {
-    id: 25,
-    name: "UltraNode",
-    email: "contact@ultranode.com",
-    status: "Active",
-    date: "2023-12-01",
-  },
-  {
-    id: 26,
-    name: "Infinity Corp",
-    email: "team@infinitycorp.com",
-    status: "Inactive",
-    date: "2023-11-12",
-  },
-  {
-    id: 27,
-    name: "ApexLogic",
-    email: "info@apexlogic.com",
-    status: "Active",
-    date: "2023-09-30",
-  },
-  {
-    id: 28,
-    name: "NetSphere",
-    email: "hello@netsphere.com",
-    status: "Active",
-    date: "2023-06-20",
-  },
-  {
-    id: 29,
-    name: "Bright Solutions",
-    email: "support@brightsolutions.com",
-    status: "Inactive",
-    date: "2023-05-27",
-  },
-  {
-    id: 30,
-    name: "CodeCraft Ltd",
-    email: "contact@codecraft.com",
-    status: "Active",
-    date: "2023-04-14",
-  },
-]);
-
+    {
+      id: 1,
+      name: "Acme Corp",
+      email: "contact@acmecorp.com",
+      status: "Active",
+      date: "2023-01-15",
+    },
+    {
+      id: 2,
+      name: "Global Innovations",
+      email: "info@globalinnovations.com",
+      status: "Inactive",
+      date: "2023-02-20",
+    },
+    {
+      id: 3,
+      name: "Tech Solutions Inc.",
+      email: "support@techsolutions.com",
+      status: "Active",
+      date: "2023-03-10",
+    },
+    {
+      id: 4,
+      name: "Creative Minds LLC",
+      email: "hello@creativeminds.com",
+      status: "Active",
+      date: "2023-04-05",
+    },
+    {
+      id: 5,
+      name: "Dynamic Systems",
+      email: "admin@dynamicsystems.com",
+      status: "Inactive",
+      date: "2023-05-12",
+    },
+    {
+      id: 6,
+      name: "Innovative Designs",
+      email: "team@innovativedesigns.com",
+      status: "Active",
+      date: "2023-06-18",
+    },
+    {
+      id: 7,
+      name: "Strategic Ventures",
+      email: "contact@strategicventures.com",
+      status: "Inactive",
+      date: "2023-07-22",
+    },
+    {
+      id: 8,
+      name: "Future Tech Group",
+      email: "info@futuretechgroup.com",
+      status: "Active",
+      date: "2023-08-30",
+    },
+    {
+      id: 9,
+      name: "Elite Solutions",
+      email: "support@elitesolutions.com",
+      status: "Active",
+      date: "2023-09-15",
+    },
+    {
+      id: 10,
+      name: "Pinnacle Enterprises",
+      email: "hello@pinnacleenterprises.com",
+      status: "Inactive",
+      date: "2023-10-01",
+    },
+    {
+      id: 11,
+      name: "Cloud Matrix",
+      email: "support@cloudmatrix.com",
+      status: "Active",
+      date: "2023-03-12",
+    },
+    {
+      id: 12,
+      name: "Byte Logic",
+      email: "info@bytelogic.com",
+      status: "Inactive",
+      date: "2023-02-09",
+    },
+    {
+      id: 13,
+      name: "Quantum Leap",
+      email: "team@quantumleap.com",
+      status: "Active",
+      date: "2023-05-25",
+    },
+    {
+      id: 14,
+      name: "NexaTech",
+      email: "hello@nexatech.com",
+      status: "Inactive",
+      date: "2023-04-17",
+    },
+    {
+      id: 15,
+      name: "DataCore Solutions",
+      email: "info@datacoresolutions.com",
+      status: "Active",
+      date: "2023-01-30",
+    },
+    {
+      id: 16,
+      name: "AlphaGrid",
+      email: "contact@alphagrid.com",
+      status: "Active",
+      date: "2023-03-14",
+    },
+    {
+      id: 17,
+      name: "Blue Ocean Ltd",
+      email: "info@blueocean.com",
+      status: "Inactive",
+      date: "2023-04-10",
+    },
+    {
+      id: 18,
+      name: "VisionSoft",
+      email: "team@visionsoft.com",
+      status: "Active",
+      date: "2023-06-05",
+    },
+    {
+      id: 19,
+      name: "RedPoint Technologies",
+      email: "contact@redpointtech.com",
+      status: "Inactive",
+      date: "2023-05-09",
+    },
+    {
+      id: 20,
+      name: "SmartEdge",
+      email: "support@smartedge.com",
+      status: "Active",
+      date: "2023-07-01",
+    },
+    {
+      id: 21,
+      name: "NextEra Solutions",
+      email: "info@nexterasolutions.com",
+      status: "Inactive",
+      date: "2023-08-15",
+    },
+    {
+      id: 22,
+      name: "CoreFusion",
+      email: "hello@corefusion.com",
+      status: "Active",
+      date: "2023-09-18",
+    },
+    {
+      id: 23,
+      name: "ZenithWorks",
+      email: "team@zenithworks.com",
+      status: "Active",
+      date: "2023-10-11",
+    },
+    {
+      id: 24,
+      name: "SkyNet Labs",
+      email: "support@skynetlabs.com",
+      status: "Inactive",
+      date: "2023-11-05",
+    },
+    {
+      id: 25,
+      name: "UltraNode",
+      email: "contact@ultranode.com",
+      status: "Active",
+      date: "2023-12-01",
+    },
+    {
+      id: 26,
+      name: "Infinity Corp",
+      email: "team@infinitycorp.com",
+      status: "Inactive",
+      date: "2023-11-12",
+    },
+    {
+      id: 27,
+      name: "ApexLogic",
+      email: "info@apexlogic.com",
+      status: "Active",
+      date: "2023-09-30",
+    },
+    {
+      id: 28,
+      name: "NetSphere",
+      email: "hello@netsphere.com",
+      status: "Active",
+      date: "2023-06-20",
+    },
+    {
+      id: 29,
+      name: "Bright Solutions",
+      email: "support@brightsolutions.com",
+      status: "Inactive",
+      date: "2023-05-27",
+    },
+    {
+      id: 30,
+      name: "CodeCraft Ltd",
+      email: "contact@codecraft.com",
+      status: "Active",
+      date: "2023-04-14",
+    },
+  ]);
 
   const filteredClients = clients
     .filter(
@@ -261,13 +260,13 @@ function Clients() {
     startIndex + itemsPerPage
   );
 
-  const handleDelete=()=>{
-    console.log("data deleted")
-  }
+  const handleDelete = () => {
+    console.log("data deleted");
+  };
 
-  const handleView=()=>{
-    console.log("data viewd")
-  }
+  const handleView = () => {
+    console.log("data viewd");
+  };
 
   return (
     <>
@@ -328,7 +327,8 @@ function Clients() {
                     <td className="client-email">{client.email}</td>
                     <td className="status-cell">
                       <div
-                        className={`status-badge ${client.status.toLowerCase()}`}>
+                        className={`status-badge ${client.status.toLowerCase()}`}
+                      >
                         {client.status}
                       </div>
                     </td>
@@ -337,10 +337,16 @@ function Clients() {
                       <span className="client-date">{client.date}</span>
                     </td>
                     <td className="action-button">
-                      <button className="delete-button" onClick={()=>handleDelete(client.id)}>
+                      <button
+                        className="delete-button"
+                        onClick={() => handleDelete(client.id)}
+                      >
                         <img src={deleteIcon} alt="Delete" />
                       </button>
-                      <button className="view-button " onClick={()=>handleView(client.id)}>
+                      <button
+                        className="view-button "
+                        onClick={() => handleView(client.id)}
+                      >
                         <img src={viewIcon} alt="View" />
                       </button>
                     </td>
@@ -348,6 +354,54 @@ function Clients() {
                 ))}
               </tbody>
             </table>
+          </div>
+          <div className="pagination-container">
+            <button
+              className="pagination-btn prev-btn"
+              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+              disabled={currentPage === 1}
+            >
+              &#60;
+            </button>
+
+            <div className="pagination-numbers">
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                (page) => (
+                  <button
+                    key={page}
+                    className={`pagination-number ${
+                      currentPage === page ? "active" : ""
+                    }`}
+                    onClick={() => setCurrentPage(page)}
+                  >
+                    {page}
+                  </button>
+                )
+              )}
+
+              {totalPages > 5 && (
+                <>
+                  <span className="pagination-dots">...</span>
+                  <button
+                    className={`pagination-number ${
+                      currentPage === totalPages ? "active" : ""
+                    }`}
+                    onClick={() => setCurrentPage(totalPages)}
+                  >
+                    {totalPages}
+                  </button>
+                </>
+              )}
+            </div>
+
+            <button
+              className="pagination-btn next-btn"
+              onClick={() =>
+                setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+              }
+              disabled={currentPage === totalPages}>
+              &#62;
+            </button>
           </div>
         </div>
       </div>
