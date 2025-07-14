@@ -1,38 +1,39 @@
-/* Reset */
+/** Reset **/
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-html, body {
-  font-family: 'Segoe UI', sans-serif;
+html,
+body {
+  font-family: "Segoe UI", sans-serif;
   background-color: #f9fafb;
 }
 
-/* Container */
-.client-details-container {
+/** Container **/
+.talent-profile-container {
   min-height: 100vh;
   background-color: #f9fafb;
   color: #1f2937;
 }
 
-/* Main Content */
-.main-content {
+/** Main Content **/
+.talent-profile-content {
   max-width: 960px;
   margin: 2rem auto;
   padding: 1rem;
 }
 
-/* Breadcrumb */
-.breadcrumb Talent{
+/** Breadcrumb **/
+.breadcrumb {
   font-size: 0.875rem;
-  color: #6D028E;
   margin-bottom: 2rem;
 }
 
-/* Header */
-.client-header {
+/** Header **/
+.talent-header {
+  margin-top: 1rem;
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
@@ -40,13 +41,13 @@ html, body {
   margin-bottom: 2rem;
 }
 
-.client-info {
+.talent-profile-info {
   display: flex;
   gap: 1.5rem;
   align-items: center;
 }
 
-.client-avatar {
+.profile-avatar {
   width: 100px;
   height: 100px;
   border-radius: 50%;
@@ -54,24 +55,48 @@ html, body {
   border: 3px solid #e5e7eb;
 }
 
-.client-avatar img {
+.profile-avatar img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-.client-name {
-  font-size: 1.25rem;
+.talent-details {
+  gap: 0;
+}
+
+.talent-name {
+  color: #000;
+  font-size: 1.5rem;
   font-weight: 700;
 }
 
-.client-meta,
-.client-location {
-  font-size: 0.875rem;
-  color: #6b7280;
+.skills {
+  display: flex;
+  gap: 0.5rem;
 }
 
-/* Report Button */
+.skill {
+  background-color: #e8edf5;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  width: 100px;
+  line-height: 1.8rem;
+}
+
+.talent-title,
+.talent-joinedDate {
+  font-size: 1rem;
+  color: #6d028e;
+  margin: 0;
+  font-weight: 400;
+}
+
+/** Report Button **/
+
 .report-button {
   background-color: #fcefe9;
   color: #1f2937;
@@ -87,11 +112,43 @@ html, body {
   transition: background-color 0.3s ease;
 }
 
+/* pORTFOLIO SECTION */
+
+.portfolio-title {
+  padding-top: 2rem;
+}
+.portfolio-section {
+  margin-top: 2rem;
+  display: flex;
+  align-items: center;
+}
+
+.arrow {
+  font-size: 2rem;
+  margin: 1rem;
+}
+.Slider img {
+  max-height: 1000px;
+  width: 400px;
+  height: px;
+  object-fit: cover;
+  border-radius: 12px;
+  display: block;
+  margin: 0 auto;
+  padding: 1rem;
+  border-radius: 10%;
+}
+
+.Slider {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
 .report-button:hover {
   background-color: #fae2dc;
 }
 
-/* Tabs */
+/** Tabs **/
 .tab-navigation {
   border-bottom: 2px solid #e5e7eb;
   margin-bottom: 2rem;
@@ -113,22 +170,22 @@ html, body {
 }
 
 .tab-button.active {
-  color: #6D028E;
-  border-bottom-color: #6D028E;
+  color: #6d028e;
+  border-bottom-color: #6d028e;
 }
 
-/* About Section */
+/** About Section **/
 .about-section {
   margin-bottom: 2rem;
 }
 
-.client-about {
+.profile-about {
   font-size: 1.25rem;
   font-weight: 600;
   margin-bottom: 1rem;
 }
 
-/* Reviews Section */
+/** Reviews Section **/
 .reviews-section {
   margin-top: 2rem;
 }
@@ -139,7 +196,7 @@ html, body {
   margin-bottom: 1.5rem;
 }
 
-/* Rating Summary */
+/** Rating Summary **/
 .rating-summary {
   display: flex;
   flex-wrap: wrap;
@@ -164,7 +221,7 @@ html, body {
   color: #6b7280;
 }
 
-/* Stars */
+/** Stars **/
 .stars-container {
   display: flex;
   gap: 0.25rem;
@@ -176,10 +233,10 @@ html, body {
 }
 
 .star.filled {
-  color: #6D028E;
+  color: #d4dbe3;
 }
 
-/* Rating Breakdown */
+/** Rating Breakdown **/
 .rating-breakdown {
   flex: 1;
   max-width: 340px;
@@ -210,30 +267,27 @@ html, body {
 
 .rating-fill {
   height: 100%;
-  background-color: #6D028E;
+  background-color: #d4dbe3;
   transition: width 0.3s ease;
 }
 
 .rating-percentage {
   font-size: 0.875rem;
-  color: #6b7280;
+  color: #6d028e;
   width: 30px;
   text-align: right;
 }
 
-/* Reviews List */
+/** Reviews List **/
 .reviews-list {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
   width: 100%;
 }
 
 .review-item {
   background-color: white;
-  padding: 1.5rem;
   border-radius: 0.75rem;
-  border: 1px solid #e5e7eb;
 }
 
 .review-header {
@@ -264,7 +318,7 @@ html, body {
 
 .review-date {
   font-size: 0.75rem;
-  color: #6b7280;
+  color: #6d028e;
 }
 
 .review-rating {
@@ -289,9 +343,9 @@ html, body {
 .dislike-button {
   background: none;
   border: none;
-  color: #6b7280;
+  color: #6d028e;
   cursor: pointer;
-  font-size: 0.875rem;
+  font-size: 1.2rem;
   display: flex;
   align-items: center;
   gap: 0.25rem;
@@ -306,56 +360,26 @@ html, body {
   color: #dc2626;
 }
 
-/* Pagination */
-.pagination-container {
+.verification {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 8px;
-  margin-top: 24px;
-  padding: 20px 0;
+  gap: 0.5rem;
+  margin-top: 1.5rem ;
 }
 
-.pagination-btn {
-  width: 32px;
-  height: 32px;
-  background: white;
-  color: #6b7280;
-  cursor: pointer;
-  border-radius: 50%;
-  font-weight: 700;
-  transition: background 0.2s;
-}
-
-.pagination-btn:hover {
-  background: #f3f4f6;
-}
-
-.pagination-number {
-  width: 32px;
-  height: 32px;
-  background: white;
-  color: #6b7280;
-  border: none;
-  cursor: pointer;
-  border-radius: 50%;
-  font-size: 0.875rem;
-}
-
-.pagination-number.active {
+.block,
+.verify {
   background-color: #e8edf5;
-  color: #000;
-  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  width: 100px;
+  line-height: 1.8rem;
 }
 
-.pagination-dots {
-  font-size: 14px;
-  color: #6b7280;
-}
-
-/* Responsive */
+/** Responsive **/
 @media (max-width: 768px) {
-  .client-header {
+  .profile-header {
     flex-direction: column;
     align-items: flex-start;
     gap: 1rem;
@@ -373,7 +397,7 @@ html, body {
     gap: 0.5rem;
   }
 
-  .main-content {
+  .talent-profile-content {
     padding: 1rem;
   }
 
@@ -382,8 +406,7 @@ html, body {
   }
 }
 
-
-/* Booking History Section */
+/** Booking History Section **/
 .booking-history {
   background: white;
   width: 100%;
@@ -428,7 +451,7 @@ html, body {
 }
 
 .booking-table .link {
-  color: #6D028E;
+  color: #6d028e;
   font-weight: 500;
   cursor: pointer;
   transition: color 0.2s;
@@ -438,7 +461,7 @@ html, body {
   color: #4b026d;
 }
 
-/* Responsive */
+/** Responsive **/
 @media (max-width: 768px) {
   .booking-table th,
   .booking-table td {

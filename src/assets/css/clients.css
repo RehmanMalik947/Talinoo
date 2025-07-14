@@ -67,26 +67,46 @@
   font-weight: 400;
 }
 
+.select-wrapper {
+  position: relative;
+  width: 110px; /* enough for longest word + icon */
+  flex-shrink: 0;
+}
+
 .filter {
   display: flex;
-  gap: 1rem;
+  gap: 0.5rem;
+  
 }
 
 .filter-select {
-  padding: 0.5rem;
   background-color: #e8edf5;
-  border-radius: 0.5rem;
-  font-size: 1rem;
+  border-radius: 12px;
+  font-size: 0.9rem;
   cursor: pointer;
-  transition: border-color 0.2s ease;
+  appearance: none;
+  width: 100%;
+  height: 32px;
+  padding-left: 16px;
+  padding-right: 36px; /* enough room for icon */
+  border: none;
+  line-height: 32px;
+  box-sizing: border-box;
 }
 
-.filter-select option {
-  background-color: #fff;
-  color: #333;
-  font-size: 1rem;
-  padding: 10px;
+.dropdown-icon {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  pointer-events: none;
+  font-size: 1.1rem;
+  color: #555;
 }
+
+
+
+
 
 .table-container {
   background-color: #f7fafc;
@@ -125,7 +145,6 @@
 
 .action-button {
   display: flex;
-  gap: 0.5rem;
 }
 
 .status-cell {
