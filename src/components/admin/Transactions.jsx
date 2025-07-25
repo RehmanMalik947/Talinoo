@@ -26,7 +26,9 @@ function Transactions() {
       <div className="main-content">
         <nav className="breadcrumb">
           <a href="#">Payments</a> / <a href="#">Transactions</a> /{" "}
-         <span className="transaction-id" style={{color:'black'}}>{transaction.id}</span> 
+          <span className="transaction-id" style={{ color: "black" }}>
+            {transaction.id}
+          </span>
         </nav>
 
         <h1 className="clients-title">Transaction Details</h1>
@@ -73,12 +75,13 @@ function Transactions() {
               ))}
             </ul>
           </Section>
-
           {/* Actions */}
-          <div className="actions">
-            <button className="refund-btn">Initiate Refund</button>
-            <button className="dispute-btn">Start Dispute Resolution</button>
-          </div>
+          <Section title="Actions">
+            <div className="actions">
+              <button className="refund-btn">Initiate Refund</button>
+              <button className="dispute-btn">Start Dispute Resolution</button>
+            </div>
+          </Section>
         </div>
       </div>
     </div>

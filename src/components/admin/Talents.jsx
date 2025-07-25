@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import NavBar from "../Auth/common/NavBar";
-import "../../assets/css/talents.css";
+import "../../../src/assets/css/talents.css"
 import { CiSearch } from "react-icons/ci";
 
-const Talent = () => {
+const Talents = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
   const [currentPage, setCurrentPage] = useState(1);
@@ -267,10 +267,10 @@ const Talent = () => {
   const paginatedTalents = filteredTalents.slice(startIndex, startIndex + itemsPerPage);
 
   return (
-    <div className="talent-container">
+    <div className="talents-container">
       <NavBar />
       <div className="main-content">
-        <div className="talent-title">Talents</div>
+        <div className="talents-title">Talents</div>
 
         <div className="control-section">
           <div className="search-box">
@@ -293,7 +293,7 @@ const Talent = () => {
         </div>
 
         <div className="table-container">
-          <table className="talent-table">
+          <table className="talents-table">
             <thead>
               <tr>
                 <th>Talent Title</th>
@@ -308,14 +308,14 @@ const Talent = () => {
               {paginatedTalents.map((talent) => (
                 <tr key={talent.id}>
                   <td>{talent.title}</td>
-                  <td className="talent-client">{talent.client}</td>
-                  <td className="talent-name">{talent.name}</td>
+                  <td className="talents-client">{talent.client}</td>
+                  <td className="talents-name">{talent.name}</td>
                   <td>
                     <div className={`status-badge ${talent.status.toLowerCase()}`}>
                       {talent.status}
                     </div>
                   </td>
-                  <td className="talent-date">{talent.date}</td>
+                  <td className="talents-date">{talent.date}</td>
                   <td className="action-button">
                     <button onClick={() => console.log("View", talent.id)}>
                       View
@@ -359,4 +359,4 @@ const Talent = () => {
   );
 };
 
-export default Talent;
+export default Talents;

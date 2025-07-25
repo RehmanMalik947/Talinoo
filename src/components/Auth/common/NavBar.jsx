@@ -1,21 +1,19 @@
-import React from 'react';
-import '../../../assets/css/navbar.css';
-import { FaBell, FaEthereum } from 'react-icons/fa';
-import {Link} from 'react-router-dom';
-
-
+import React from "react";
+import "../../../assets/css/navbar.css";
+import { Link } from "react-router-dom";
+import { GoBell } from "react-icons/go";
+import technologyIcon from "../../../../public/technologyIcon.svg";
 function NavBar() {
   return (
     <div className="navbar-container">
       <div className="navbar-content">
-        
         {/* Logo */}
         <div>
           <img src="/talinoo 1.svg" alt="Brand Logo" className="brand-logo" />
         </div>
 
         {/* Menu + Icons */}
-        <div className="flex items-center space-x-6">
+        <div className="flex items-center space-x-6 justify-between">
           <div className="menu-links">
             <Link to="/dashboard" className="menu-link">
               Dashboard
@@ -26,24 +24,26 @@ function NavBar() {
             <Link to="/talents" className="menu-link">
               Talents
             </Link>
-            {/* <Link to="/tasks" className="menu-link">
+            <Link to="/payments" className="menu-link">
+              Payments
+            </Link>
+            <Link to="/tasks" className="menu-link">
               Tasks
             </Link>
-            <link to="/payments" className='menu-link'>
-              Payments
-            </link>
+
             <Link to="/plans" className="menu-link">
               Plans
-            </Link> */}
-            
+            </Link>
           </div>
-
           <div className="bell-icon-container">
-            <FaBell />
+            <GoBell />
           </div>
-
-          <div className="circle-icon-container">
-            <FaEthereum />
+          <div>
+            <img
+              src="/technologyIcon.svg"
+              alt="Brand Logo"
+              className="brand-logo"
+            />
           </div>
         </div>
       </div>

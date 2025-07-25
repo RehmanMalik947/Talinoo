@@ -61,7 +61,6 @@
 .status-history-row {
   display: flex;
   align-items: center;
-  display: grid;
   gap: 1rem;
   padding: 6px 0;
   font-size: 15px;
@@ -78,8 +77,6 @@
   border-color: gray;
   
 }
-
-
 
 .actions {
   display: flex;

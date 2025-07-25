@@ -1,4 +1,4 @@
-/* Reset */
+/* ========== RESET ========== */
 * {
   margin: 0;
   padding: 0;
@@ -8,50 +8,53 @@
 html, body {
   margin: 0;
   padding: 0;
+  font-family: Arial, sans-serif;
 }
 
-/* Brand Logo */
+/* ========== NAVBAR CONTAINER ========== */
+.navbar-container {
+  width: 100%;
+  background-color: #f7fafc;
+  border-bottom: 1px solid #e5e7eb;
+  position: relative;
+  z-index: 10;
+}
+
+/* ========== NAVBAR CONTENT ========== */
+.navbar-content {
+  max-width: 1880px;
+  height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  margin: 0 auto;
+  flex-wrap: wrap;
+}
+
+/* ========== BRAND LOGO ========== */
 .brand-logo {
   width: 122px;
   height: 41px;
   object-fit: contain;
 }
 
-/* Navbar container */
-.navbar-container {
-  width: 100%;
-  background-color: #f7fafc;
-  border-bottom: 1px solid #e5e7eb;
-  z-index: 10;
-  position: relative;
-}
-
-/* Navbar content */
-.navbar-content {
-  width: 100%;
-  max-width: 1880px;
-  height: 66px;
+/* ========== NAV LINKS + ICONS ========== */
+.navbar-right {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 0 20px;
-  flex-wrap: wrap; /* Optional: allow wrap on tiny screens */
+  gap: 24px;
+  flex-wrap: wrap;
 }
 
-/* Left and right content inside navbar */
-.navbar-content > div {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
-
-/* Menu links */
+/* ========== MENU LINKS ========== */
 .menu-links {
   display: flex;
   gap: 34px;
   font-weight: 500;
   font-size: 0.875rem;
   color: #1f2937;
+  flex-wrap: wrap;
 }
 
 .menu-links a {
@@ -64,7 +67,7 @@ html, body {
   color: #0d9488;
 }
 
-/* Notification icon */
+/* ========== BELL ICON ========== */
 .bell-icon-container {
   background-color: #f2f5f9;
   padding: 8px;
@@ -74,7 +77,7 @@ html, body {
   justify-content: center;
 }
 
-/* Profile circle */
+/* ========== PROFILE CIRCLE ========== */
 .circle-icon-container {
   background-color: #0d9488;
   color: white;
@@ -90,32 +93,32 @@ html, body {
   text-transform: uppercase;
 }
 
-/* === RESPONSIVE NAV === */
+/* ========== RESPONSIVENESS ========== */
+
+/* Tablet (768px and below) */
 @media (max-width: 768px) {
   .navbar-content {
-    padding: 10px 16px;
-    flex-wrap: wrap;
+    padding: 12px 16px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .navbar-right {
+    flex-direction: row;
+    gap: 16px;
+    width: 100%;
     justify-content: space-between;
   }
 
-  .navbar-content > div {
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 16px;
-    width: auto;
-  }
-
   .menu-links {
-    flex-direction: row;
     gap: 16px;
     flex-wrap: wrap;
   }
 
   .menu-links a {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     padding: 4px 8px;
-    border: none;
   }
 
   .brand-logo {
@@ -123,24 +126,30 @@ html, body {
     height: auto;
   }
 
-  .bell-icon-container,
   .circle-icon-container {
-    margin-top: 0;
+    width: 36px;
+    height: 36px;
+    font-size: 0.75rem;
   }
 }
 
+/* Mobile (480px and below) */
 @media (max-width: 480px) {
   .navbar-content {
-    padding: 8px 12px;
+    padding: 10px 12px;
+  }
+
+  .menu-links {
+    justify-content: center;
   }
 
   .menu-links a {
-    font-size: 0.85rem;
+    font-size: 0.8rem;
   }
 
   .circle-icon-container {
-    width: 34px;
-    height: 34px;
-    font-size: 0.75rem;
+    width: 32px;
+    height: 32px;
+    font-size: 0.7rem;
   }
 }
