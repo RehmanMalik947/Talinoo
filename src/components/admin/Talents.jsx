@@ -13,7 +13,7 @@ const Talents = () => {
   const [talents, setTalents] = useState([]);
   const [loading, setLoading] = useState(false); // ✅ added missing state
 const navigate=useNavigate();
-  const handleView=(talent_id,profile_photo)=>navigate(`/talentdetails?id=${talent_id}`,{state:{profile:profile_photo}})
+  const handleView=(talent_id,profile_photo)=>navigate(`/talentprofile?id=${talent_id}`,{state:{profile:profile_photo}})
 
   // 🔹 Fetch talents API
   useEffect(() => {

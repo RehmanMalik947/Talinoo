@@ -4,17 +4,18 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import NavBar from "../Auth/common/NavBar";
 import "../../assets/css/talentProfile.css";
-import talentProfile from "../../../public/TalentProfile.svg";
 import Reviewer1 from "../../../public/Reviewer1.svg";
 import Reviewer2 from "../../../public/Reviewer2.svg";
 import PortfolioImage from "../../../public/PortfolioImage.svg";
 import { BiLike, BiDislike, BiSlideshow } from "react-icons/bi";
 import { HiOutlineArrowSmLeft } from "react-icons/hi";
 import { HiOutlineArrowSmRight } from "react-icons/hi";
-
+import { useLocation } from "react-router-dom";
+const location=useLocation()
 function TalentProfile() {
   const [activeTab, setActiveTab] = useState("overview");
-
+ const avatar=location?.state?.profile || ''
+  
   const talentData = {
     id: 1,
     name: "Sohpia Baaji",
@@ -23,7 +24,7 @@ function TalentProfile() {
     status: "Active",
     joinDate: "2002",
     location: "New York, USA",
-    avatar: talentProfile,
+    avatar,
     about:
       "She is a very good lady and very punctual about her work. She is respectful and highly collaborative.",
     rating: 4.8,

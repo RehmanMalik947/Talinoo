@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 import NavBar from "../Auth/common/NavBar"; // Assuming you have a NavBar component
 import "../../assets/css/talentDetails.css"; // We'll create this CSS file
 import ApiService from "../../services/ApiService";
-import { useLocation } from "react-router-dom";
+
 
 function TalentDetails() {
-  const location = useLocation();
+
   const queryParams = new URLSearchParams(location.search);
   const userId = queryParams.get("id"); // Get id from URL
   const [loading, setLoading] = useState(false);
@@ -26,7 +26,7 @@ function TalentDetails() {
     fetchdetailsUser();
   }, []);
 
-  const avatar = location.state.profile;
+ 
 
   const talentData = {
     name: "Emily Carter",
@@ -114,7 +114,7 @@ function TalentDetails() {
         <div className="talent-info-section">
           <h2>Talent Details</h2>
           <div className="detail-card">
-            <img src={avatar} alt="Talent Avatar" className="detail-avatar" />
+            <img src={"avatar"} alt="Talent Avatar" className="detail-avatar" />
             <div className="detail-text">
               <h3 className="detail-name">{talentData.name}</h3>
               <p className="detail-role">{talentData.role}</p>
