@@ -18,18 +18,18 @@ function App() {
   const router=createBrowserRouter([
     {
       path:'/',
-      element:<Home/>
-    },
-    {
-      path:'/login',
-      element:<Login/>
+      element:<Dashboard/>
     },
     {
       path:'/dashboard',
       element:<Dashboard/>
     },
     {
-      path:'/NavBar',
+      path:'/login',
+      element:<Login/>
+    },
+    {
+      path:'/feed',
       element:<NavBar/>
     },
     {

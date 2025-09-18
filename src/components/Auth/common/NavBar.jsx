@@ -24,6 +24,9 @@ function NavBar() {
             <Link to="/talents" className="menu-link">
               Talents
             </Link>
+            <Link to="/feed" className="menu-link">
+              Feed
+            </Link>
             <Link to="/payments" className="menu-link">
               Payments
             </Link>
