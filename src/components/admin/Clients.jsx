@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import NavBar from "../Auth/common/NavBar";
 import "../../assets/css/clients.css";
 import { CiSearch } from "react-icons/ci";
@@ -6,250 +6,63 @@ import { CiSearch } from "react-icons/ci";
 import deleteIcon from "../../../public/delete.svg";
 import viewIcon from "../../../public/view.svg";
 import { useNavigate } from "react-router";
+import ApiService from "../../services/ApiService"; // Make sure your ApiService is correctly imported
 
 function Clients() {
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
   const [sortDate, setSortDate] = useState("desc");
   const [currentPage, setCurrentPage] = useState(1);
+  const [clients, setClients] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  const handleSearch = (e) => setSearchTerm(e.target.value);
-  const handleStatusFilter = (e) => setStatusFilter(e.target.value);
-  const handleSortDate = (e) => setSortDate(e.target.value);
+  const navigate = useNavigate();
 
-const [clients] = useState([
-    {
-      id: 1,
-      name: "Acme Corp",
-      email: "contact@acmecorp.com",
-      status: "Active",
-      date: "2023-01-15",
-    },
-    {
-      id: 2,
-      name: "Global Innovations",
-      email: "info@globalinnovations.com",
-      status: "Inactive",
-      date: "2023-02-20",
-    },
-    {
-      id: 3,
-      name: "Tech Solutions Inc.",
-      email: "support@techsolutions.com",
-      status: "Active",
-      date: "2023-03-10",
-    },
-    {
-      id: 4,
-      name: "Creative Minds LLC",
-      email: "hello@creativeminds.com",
-      status: "Active",
-      date: "2023-04-05",
-    },
-    {
-      id: 5,
-      name: "Dynamic Systems",
-      email: "admin@dynamicsystems.com",
-      status: "Inactive",
-      date: "2023-05-12",
-    },
-    {
-      id: 6,
-      name: "Innovative Designs",
-      email: "team@innovativedesigns.com",
-      status: "Active",
-      date: "2023-06-18",
-    },
-    {
-      id: 7,
-      name: "Strategic Ventures",
-      email: "contact@strategicventures.com",
-      status: "Inactive",
-      date: "2023-07-22",
-    },
-    {
-      id: 8,
-      name: "Future Tech Group",
-      email: "info@futuretechgroup.com",
-      status: "Active",
-      date: "2023-08-30",
-    },
-    {
-      id: 9,
-      name: "Elite Solutions",
-      email: "support@elitesolutions.com",
-      status: "Active",
-      date: "2023-09-15",
-    },
-    {
-      id: 10,
-      name: "Pinnacle Enterprises",
-      email: "hello@pinnacleenterprises.com",
-      status: "Inactive",
-      date: "2023-10-01",
-    },
-    {
-      id: 11,
-      name: "Cloud Matrix",
-      email: "support@cloudmatrix.com",
-      status: "Active",
-      date: "2023-03-12",
-    },
-    {
-      id: 12,
-      name: "Byte Logic",
-      email: "info@bytelogic.com",
-      status: "Inactive",
-      date: "2023-02-09",
-    },
-    {
-      id: 13,
-      name: "Quantum Leap",
-      email: "team@quantumleap.com",
-      status: "Active",
-      date: "2023-05-25",
-    },
-    {
-      id: 14,
-      name: "NexaTech",
-      email: "hello@nexatech.com",
-      status: "Inactive",
-      date: "2023-04-17",
-    },
-    {
-      id: 15,
-      name: "DataCore Solutions",
-      email: "info@datacoresolutions.com",
-      status: "Active",
-      date: "2023-01-30",
-    },
-    {
-      id: 16,
-      name: "AlphaGrid",
-      email: "contact@alphagrid.com",
-      status: "Active",
-      date: "2023-03-14",
-    },
-    {
-      id: 17,
-      name: "Blue Ocean Ltd",
-      email: "info@blueocean.com",
-      status: "Inactive",
-      date: "2023-04-10",
-    },
-    {
-      id: 18,
-      name: "VisionSoft",
-      email: "team@visionsoft.com",
-      status: "Active",
-      date: "2023-06-05",
-    },
-    {
-      id: 19,
-      name: "RedPoint Technologies",
-      email: "contact@redpointtech.com",
-      status: "Inactive",
-      date: "2023-05-09",
-    },
-    {
-      id: 20,
-      name: "SmartEdge",
-      email: "support@smartedge.com",
-      status: "Active",
-      date: "2023-07-01",
-    },
-    {
-      id: 21,
-      name: "NextEra Solutions",
-      email: "info@nexterasolutions.com",
-      status: "Inactive",
-      date: "2023-08-15",
-    },
-    {
-      id: 22,
-      name: "CoreFusion",
-      email: "hello@corefusion.com",
-      status: "Active",
-      date: "2023-09-18",
-    },
-    {
-      id: 23,
-      name: "ZenithWorks",
-      email: "team@zenithworks.com",
-      status: "Active",
-      date: "2023-10-11",
-    },
-    {
-      id: 24,
-      name: "SkyNet Labs",
-      email: "support@skynetlabs.com",
-      status: "Inactive",
-      date: "2023-11-05",
-    },
-    {
-      id: 25,
-      name: "UltraNode",
-      email: "contact@ultranode.com",
-      status: "Active",
-      date: "2023-12-01",
-    },
-    {
-      id: 26,
-      name: "Infinity Corp",
-      email: "team@infinitycorp.com",
-      status: "Inactive",
-      date: "2023-11-12",
-    },
-    {
-      id: 27,
-      name: "ApexLogic",
-      email: "info@apexlogic.com",
-      status: "Active",
-      date: "2023-09-30",
-    },
-    {
-      id: 28,
-      name: "NetSphere",
-      email: "hello@netsphere.com",
-      status: "Active",
-      date: "2023-06-20",
-    },
-    {
-      id: 29,
-      name: "Bright Solutions",
-      email: "support@brightsolutions.com",
-      status: "Inactive",
-      date: "2023-05-27",
-    },
-    {
-      id: 30,
-      name: "CodeCraft Ltd",
-      email: "contact@codecraft.com",
-      status: "Active",
-      date: "2023-04-14",
-    },
-  ]);
+  // Fetch clients from API
+  useEffect(() => {
+    const fetchClients = async () => {
+      try {
+        setLoading(true);
+        const response = await ApiService.post("admin/client"); // Replace with your API endpoint
+        setClients(response?.data?.data || []);
+      } catch (error) {
+        console.error("Error fetching clients:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchClients();
+  }, []);
+
+  // Filter and sort clients safely
   const filteredClients = clients
-    .filter((client) =>
-      client.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      client.email.toLowerCase().includes(searchTerm.toLowerCase())
+    .filter(
+      (client) =>
+        (client?.name || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (client?.email || "").toLowerCase().includes(searchTerm.toLowerCase())
     )
-    .filter((client) => statusFilter === "All" || client.status === statusFilter)
-    .sort((a, b) => sortDate === "desc"
-      ? new Date(b.date) - new Date(a.date)
-      : new Date(a.date) - new Date(b.date)
+    .filter(
+      (client) => statusFilter === "All" || client?.status === statusFilter
+    )
+    .sort((a, b) =>
+      sortDate === "desc"
+        ? new Date(b?.date || 0) - new Date(a?.date || 0)
+        : new Date(a?.date || 0) - new Date(b?.date || 0)
     );
 
   const itemsPerPage = 10;
   const totalPages = Math.ceil(filteredClients.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const paginatedClients = filteredClients.slice(startIndex, startIndex + itemsPerPage);
-  
-  const navigator= useNavigate();
-  const handleView = (client_id) => {navigator(`/clientdetails?id=${client_id}`)};
+  const paginatedClients = filteredClients.slice(
+    startIndex,
+    startIndex + itemsPerPage
+  );
+
+  const handleView = (client_id) => {
+    navigate(`/clientdetails?id=${client_id}`);
+  };
 
   const handleDelete = (id) => console.log("Deleted", id);
- 
 
   return (
     <div className="clients-container">
@@ -264,19 +77,27 @@ const [clients] = useState([
               type="text"
               placeholder="Search clients"
               value={searchTerm}
-              onChange={handleSearch}
+              onChange={(e) => setSearchTerm(e.target.value)}
               className="search-input"
             />
           </div>
 
           <div className="filter">
-            <select value={statusFilter} onChange={handleStatusFilter} className="filter-select">
+            <select
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+              className="filter-select"
+            >
               <option value="All">Status</option>
               <option value="Active">Active</option>
               <option value="Inactive">Inactive</option>
             </select>
 
-            <select value={sortDate} onChange={handleSortDate} className="filter-select">
+            <select
+              value={sortDate}
+              onChange={(e) => setSortDate(e.target.value)}
+              className="filter-select"
+            >
               <option value="All">Date</option>
               <option value="asc">Asc</option>
               <option value="desc">Desc</option>
@@ -295,28 +116,57 @@ const [clients] = useState([
                 <th>Action</th>
               </tr>
             </thead>
-            <tbody>
-              {paginatedClients.map((client) => (
-                <tr key={client.id}>
-                  <td><span className="client-name">{client.name}</span></td>
-                  <td className="client-email">{client.email}</td>
-                  <td className="status-cell">
-                    <div className={`status-badge ${client.status.toLowerCase()}`}>
-                      {client.status}
-                    </div>
-                  </td>
-                  <td><span className="client-date">{client.date}</span></td>
-                  <td className="action-button">
-                    <button onClick={() => handleDelete(client.id)}>
-                      <img src={deleteIcon} alt="Delete" />
-                    </button>
-                    <button onClick={() => handleView(client.id)}>
-                      <img src={viewIcon} alt="View" />
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
+          <tbody>
+  {paginatedClients.map((client) => (
+    <tr key={client?.id || Math.random()}>
+      <td>{client?.username || "N/A"}</td>
+      <td>{client?.email || "N/A"}</td>
+      <td>
+        <div
+          className={`status-badge ${
+            client?.is_verified === true || client?.is_verified === "Active"
+              ? "active"
+              : "inactive"
+          }`}
+        >
+          {client?.is_verified != null
+            ? client?.is_verified === true
+              ? "Active"
+              : client?.is_verified === false
+              ? "Inactive"
+              : client?.is_verified
+            : "Unknown"}
+        </div>
+      </td>
+      <td>{client?.userInfo?.created_at || "N/A"}</td>
+      <td className="action-button">
+        <button onClick={() => handleDelete(client?.id)}>
+          <img src={deleteIcon} alt="Delete" />
+        </button>
+        <button onClick={() => handleView(client?.id)}>
+          <img src={viewIcon} alt="View" />
+        </button>
+      </td>
+    </tr>
+  ))}
+
+  {paginatedClients.length === 0 && !loading && (
+    <tr>
+      <td colSpan="5" style={{ textAlign: "center" }}>
+        No clients found
+      </td>
+    </tr>
+  )}
+
+  {loading && (
+    <tr>
+      <td colSpan="5" style={{ textAlign: "center" }}>
+        Loading...
+      </td>
+    </tr>
+  )}
+</tbody>
+
           </table>
         </div>
 
@@ -333,7 +183,9 @@ const [clients] = useState([
             {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
               <button
                 key={page}
-                className={`pagination-number ${currentPage === page ? "active" : ""}`}
+                className={`pagination-number ${
+                  currentPage === page ? "active" : ""
+                }`}
                 onClick={() => setCurrentPage(page)}
               >
                 {page}
@@ -343,7 +195,9 @@ const [clients] = useState([
 
           <button
             className="pagination-btn next-btn"
-            onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+            onClick={() =>
+              setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+            }
             disabled={currentPage === totalPages}
           >
             &#62;
@@ -353,4 +207,5 @@ const [clients] = useState([
     </div>
   );
 }
+
 export default Clients;
