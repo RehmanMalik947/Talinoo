@@ -1,12 +1,33 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import NavBar from "../Auth/common/NavBar"; // Assuming you have a NavBar component
 import "../../assets/css/talentDetails.css"; // We'll create this CSS file
+import ApiService from "../../services/ApiService";
 import { useLocation } from "react-router-dom";
 
 function TalentDetails() {
-  const location=useLocation();
-  const avatar=location.state.profile;
-  
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const userId = queryParams.get("id"); // Get id from URL
+  const [loading, setLoading] = useState(false);
+  const [detailsUser, setdetailsUser] = useState(null);
+
+  useEffect(() => {
+    const fetchdetailsUser = async () => {
+      try {
+        setLoading(true);
+        const response = await ApiService.post("admin/detailsUser", { id: userId, role: "client" }); // Replace with your API endpoint
+        setdetailsUser(response?.data?.data || null);
+      } catch (error) {
+        console.error("Error fetching detailsUser:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchdetailsUser();
+  }, []);
+
+  const avatar = location.state.profile;
+
   const talentData = {
     name: "Emily Carter",
     avatar: "/Reviewer2.svg", // Placeholder, replace with actual path if different
@@ -69,12 +90,12 @@ function TalentDetails() {
         {/* Requirements */}
         <div className="requirements-section">
           <h2>Requirements</h2>
-          
 
-            {jobDetails.requirements.map((req, index) => (
-                <li key={index}>{req}</li>
-            ))}
-          
+
+          {jobDetails.requirements.map((req, index) => (
+            <li key={index}>{req}</li>
+          ))}
+
         </div>
 
         {/* Client Details */}
