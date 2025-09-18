@@ -5,6 +5,7 @@ import { CiSearch } from "react-icons/ci";
 
 import deleteIcon from "../../../public/delete.svg";
 import viewIcon from "../../../public/view.svg";
+import { useNavigate } from "react-router";
 
 function Clients() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -243,9 +244,12 @@ const [clients] = useState([
   const totalPages = Math.ceil(filteredClients.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const paginatedClients = filteredClients.slice(startIndex, startIndex + itemsPerPage);
+  
+  const navigator= useNavigate();
+  const handleView = (client_id) => {navigator(`/clientdetails?id=${client_id}`)};
 
   const handleDelete = (id) => console.log("Deleted", id);
-  const handleView = (id) => console.log("Viewed", id);
+ 
 
   return (
     <div className="clients-container">
