@@ -58,8 +58,8 @@ function Clients() {
     startIndex + itemsPerPage
   );
 
-  const handleView = (client_id) => {
-    navigate(`/clientdetails?id=${client_id}`);
+  const handleView = (client_id,profile_photo) => {
+    navigate(`/clientdetails?id=${client_id}`,{state:{profile_photo}});
   };
 
   const handleDelete = (id) => console.log("Deleted", id);
@@ -143,7 +143,7 @@ function Clients() {
         <button onClick={() => handleDelete(client?.id)}>
           <img src={deleteIcon} alt="Delete" />
         </button>
-        <button onClick={() => handleView(client?.id)}>
+        <button onClick={() => handleView(client?.id,client?.userInfo?.profile_photo)}>
           <img src={viewIcon} alt="View" />
         </button>
       </td>

@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 import NavBar from "../Auth/common/NavBar";
 import "../../assets/css/clientDetails.css";
-import clientImage from "../../../public/clientImage.svg";
 import Reviewer1 from "../../../public/Reviewer1.svg";
 import Reviewer2 from "../../../public/Reviewer2.svg";
 import { BiLike, BiDislike } from "react-icons/bi";
+import { useLocation } from "react-router-dom";
 
 function ClientDetails() {
   const [activeTab, setActiveTab] = useState("overview");
-
+let location=useLocation()
+const avatar=location.state.profile_photo
   const clientData = {
     id: 1,
     name: "Sohpia Baaji",
@@ -16,7 +17,7 @@ function ClientDetails() {
     status: "Active",
     joinDate: "2002",
     location: "New York, USA",
-    avatar: clientImage,
+    avatar,
     about:
       "She is a very good lady and very punctual about her work. She is respectful and highly collaborative.",
     rating: 4.8,
