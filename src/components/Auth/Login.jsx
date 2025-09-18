@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import "../../assets/css/login.css";
 import ApiService from "../../services/ApiService";
+import Swal from "sweetalert2";
+
 
 function Login() {
   const [username, setEmail] = useState("");
@@ -9,31 +11,57 @@ function Login() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const handleLogin = async () => {
-    setLoading(true);
-    setError("");
+const handleLogin = async () => {
+  setLoading(true);
+  setError("");
 
-    try {
-      const response = await ApiService.login({
-        username,
-        password,
-        remember: rememberMe,
+  try {
+    const response = await ApiService.login({
+      username,
+      password,
+      remember: rememberMe,
+    });
+
+    console.log("Full Response:", response);
+
+    if (response.data && response.data.user && response.data.user.role === "admin") {
+      // ✅ SweetAlert Success
+      Swal.fire({
+        title: "Login Successful 🎉",
+        text: `Welcome Admin, ${response.data.user.username}!`,
+        icon: "success",
+        confirmButtonColor: "#3085d6",
+      }).then(() => {
+        // Save session
+        localStorage.setItem("authToken", response.data.token);
+        localStorage.setItem("user", JSON.stringify(response.data.user));
+
+        // Redirect after success
+        window.location.href = "/dashboard";
       });
-      console.log(response);
-if (response.user && response.user.type === "admin") {
-      alert("Welcome Admin!");
+    } else {
+      Swal.fire({
+        title: "Unauthorized 🚫",
+        text: "You are not authorized to access the admin panel.",
+        icon: "warning",
+        confirmButtonColor: "#d33",
+      });
     }
-      console.log("Login success:", response);
+  } catch (err) {
+    console.error("Login failed:", err);
+    Swal.fire({
+      title: "Login Failed ❌",
+      text: "Invalid credentials. Please try again.",
+      icon: "error",
+      confirmButtonColor: "#d33",
+    });
+  } finally {
+    setLoading(false);
+  }
+};
 
-      // Example: redirect to dashboard after login
-      window.location.href = "/dashboard";
-    } catch (err) {
-      console.error("Login failed:", err);
-      setError("Invalid credentials. Please try again.");
-    } finally {
-      setLoading(false);
-    }
-  };
+
+
 
   return (
     <>
