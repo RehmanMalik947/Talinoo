@@ -103,7 +103,7 @@ const navigate=useNavigate();
                     </td>
                     {/* <td className="talents-date">{talent.date}</td> */}
                     <td className="action-button">
-                      <button onClick={() => handleView(talent.id,talent.profile_photo)}>
+                      <button onClick={() => handleView(talent?.user?.id,talent.profile_photo)}>
                         View
                       </button>
                     </td>
