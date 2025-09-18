@@ -1,6 +1,5 @@
 // src/services/ApiService.js
 import axios from "axios";
-import Cookies from "js-cookie";
 
 const API_URL = import.meta.env.VITE_API_BASE_URL || "https://api.eversols.com/api/";
 
@@ -13,9 +12,9 @@ class ApiService {
       },
     });
 
-    // Auto attach token if exists
+    // ✅ Auto attach token from localStorage
     this.api.interceptors.request.use((config) => {
-      const token = Cookies.get("token");
+      const token = localStorage.getItem("authToken");
       if (token) {
         config.headers["Authorization"] = `Bearer ${token}`;
       }
@@ -23,12 +22,16 @@ class ApiService {
     });
   }
 
-  // Example login
-  login(data) {
-    return this.api.post("admin/login", data);
+  // ✅ Example login
+  async login(data) {
+    const response = await this.api.post("admin/login", data);
+    if (response?.data?.token) {
+      localStorage.setItem("authToken", response.data.token);
+      localStorage.setItem("user", JSON.stringify(response.data.user));
+    }
+    return response;
   }
 
-  // Example get request
   get(path, params = {}) {
     return this.api.get(path, { params });
   }
