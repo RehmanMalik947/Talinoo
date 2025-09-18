@@ -3,6 +3,7 @@ import NavBar from "../Auth/common/NavBar";
 import "../../../src/assets/css/talents.css"
 import { CiSearch } from "react-icons/ci";
 import ApiService from "../../services/ApiService";
+import { useNavigate } from "react-router-dom";
 
 const Talents = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -11,6 +12,8 @@ const Talents = () => {
 
   const [talents, setTalents] = useState([]);
   const [loading, setLoading] = useState(false); // ✅ added missing state
+const navigate=useNavigate();
+  const handleView=(talent_id,profile_photo)=>navigate(`/talentdetails?id=${talent_id}`,{state:{profile:profile_photo}})
 
   // 🔹 Fetch talents API
   useEffect(() => {
@@ -100,7 +103,7 @@ const Talents = () => {
                     </td>
                     {/* <td className="talents-date">{talent.date}</td> */}
                     <td className="action-button">
-                      <button onClick={() => console.log("View", talent.id)}>
+                      <button onClick={() => handleView(talent.id,talent.profile_photo)}>
                         View
                       </button>
                     </td>

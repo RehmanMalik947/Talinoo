@@ -1,8 +1,12 @@
 import React from "react";
 import NavBar from "../Auth/common/NavBar"; // Assuming you have a NavBar component
 import "../../assets/css/talentDetails.css"; // We'll create this CSS file
+import { useLocation } from "react-router-dom";
 
 function TalentDetails() {
+  const location=useLocation();
+  const avatar=location.state.profile;
+  
   const talentData = {
     name: "Emily Carter",
     avatar: "/Reviewer2.svg", // Placeholder, replace with actual path if different
@@ -77,7 +81,7 @@ function TalentDetails() {
         <div className="client-info-section">
           <h2>Client Details</h2>
           <div className="detail-card">
-            <img src="/clientImage.svg" alt="Client Avatar" className="detail-avatar" /> {/* Placeholder for client image */}
+            <img src={avatar} alt="Client Avatar" className="detail-avatar" /> {/* Placeholder for client image */}
             <div className="detail-text">
               <h3 className="detail-name">{clientDetails.name}</h3>
               <p className="detail-role">{clientDetails.type}</p>
@@ -89,7 +93,7 @@ function TalentDetails() {
         <div className="talent-info-section">
           <h2>Talent Details</h2>
           <div className="detail-card">
-            <img src={talentData.avatar} alt="Talent Avatar" className="detail-avatar" />
+            <img src={avatar} alt="Talent Avatar" className="detail-avatar" />
             <div className="detail-text">
               <h3 className="detail-name">{talentData.name}</h3>
               <p className="detail-role">{talentData.role}</p>
