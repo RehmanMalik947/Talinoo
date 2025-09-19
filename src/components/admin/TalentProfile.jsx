@@ -11,6 +11,7 @@ import { BiLike, BiDislike, BiSlideshow } from "react-icons/bi";
 import { HiOutlineArrowSmLeft } from "react-icons/hi";
 import { HiOutlineArrowSmRight } from "react-icons/hi";
 import { useLocation } from "react-router-dom";
+import { formatHumanDate } from "../../helpers/Helper";
 import ApiService from "../../services/ApiService";
 
 function TalentProfile() {
@@ -36,12 +37,15 @@ function TalentProfile() {
     };
     fetchdetailsUser();
   }, [userId]);
+const talentTitle = detailsUser?.userInfo?.skills?.length > 0
+  ? detailsUser.userInfo.skills.map(s => s.name).join("/")
+  : "No skills";
 
   const talentData = {
     id: detailsUser?.id,
     name: detailsUser?.username,
     email: detailsUser?.email,
-    talentTitle: "Chef/Cook",
+    talentTitle,
     status: detailsUser?.is_verified == true ? "Active" : "Inactive",
     joinDate: detailsUser?.userInfo?.created_at,
     location: detailsUser?.country,
@@ -169,13 +173,17 @@ function TalentProfile() {
               <img
                 src={talentData.avatar}
                 alt="talent-avatar"
-                className="avatar"
+                className="empinfo-img"
               />
             </div>
             <div className="talent-details">
-              <p className="talent-name">{talentData.name}</p>
+              <p className="talent-name">
+                {talentData?.name
+                  ? talentData.name.charAt(0).toUpperCase() + talentData.name.slice(1)
+                  : ""}
+              </p>
               <p className="talent-title">{talentData.talentTitle}</p>
-              <p className="talent-joinedDate">Joined {talentData.joinDate}</p>
+              <p className="talent-joinedDate">Joined {formatHumanDate(talentData.joinDate)}</p>
             </div>
           </div>
           <button className="report-button" onClick={handleReportUser}>
@@ -188,18 +196,25 @@ function TalentProfile() {
           {activeTab === "overview" && (
             <div className="overview-content">
               {/* About */}
-              <div className="about-section">
+              {/* <div className="about-section">
                 <h2 className="talent-about">About</h2>
                 <p>{talentData.about}</p>
-              </div>
+              </div> */}
 
               {/* SKills */}
               <div className="skills-section">
                 <h2 className="talent-skills">Skills</h2>
                 <div className="skills">
-                  <p className="skill">Cook</p>
-                  <p className="skill">Baking</p>
-                  <p className="skill">Chef Life</p>
+
+                  {detailsUser?.userInfo?.skills?.length > 0 ? (
+                    detailsUser?.userInfo?.skills?.map((skill, index) => (
+                      <p key={index} className="skill">
+                        {skill.name}
+                      </p>
+                    ))
+                  ) : (
+                    <p className="skill">No skills</p>
+                  )}
                 </div>
               </div>
 
@@ -211,15 +226,29 @@ function TalentProfile() {
                 </div>
                 <div className="Slider">
                   <Slider {...settings}>
-                    <div>
-                      <img src={PortfolioImage} />
-                    </div>
-                    <div>
-                      <img src={PortfolioImage} />
-                    </div>
-                    <div>
-                      <img src={PortfolioImage} />
-                    </div>
+                    {detailsUser?.mediaItems?.length > 0 ? (
+                      detailsUser.mediaItems.map((media, index) => {
+                        const fileUrl = media.fileUrl;
+                        const extension = fileUrl?.split(".").pop()?.toLowerCase();
+
+                        const isVideo = ["mp4", "mov", "webm", "ogg"].includes(extension);
+
+                        return (
+                          <div>
+                            {isVideo ? (
+                              <video src={fileUrl} className="empinfo-img" />
+                            ) : (
+                              <img src={fileUrl} alt={`media-${index}`} className="empinfo-img" />
+                            )}
+                          </div>
+                        );
+
+                      })
+                    ) : (
+                      <div>
+                        <img src={PortfolioImage} />
+                      </div>
+                    )}
                   </Slider>
                 </div>
                 <div className="arrow">
