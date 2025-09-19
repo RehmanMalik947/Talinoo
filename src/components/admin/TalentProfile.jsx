@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -11,11 +11,32 @@ import { BiLike, BiDislike, BiSlideshow } from "react-icons/bi";
 import { HiOutlineArrowSmLeft } from "react-icons/hi";
 import { HiOutlineArrowSmRight } from "react-icons/hi";
 import { useLocation } from "react-router-dom";
-const location=useLocation()
+import ApiService from "../../services/ApiService";
+// const location=useLocation()
 function TalentProfile() {
   const [activeTab, setActiveTab] = useState("overview");
  const avatar=location?.state?.profile || ''
   
+ const queryParams = new URLSearchParams(location.search);
+ const userId = queryParams.get("id"); // Get id from URL
+ const [loading, setLoading] = useState(false);
+ const [detailsUser, setdetailsUser] = useState(null);
+
+ useEffect(() => {
+   const fetchdetailsUser = async () => {
+    alert(1);
+     try {
+       setLoading(true);
+       const response = await ApiService.post("admin/detailsUser", { id: userId, role: "client" }); // Replace with your API endpoint
+       setdetailsUser(response?.data?.data || null);
+     } catch (error) {
+       console.error("Error fetching detailsUser:", error);
+     } finally {
+       setLoading(false);
+     }
+   };
+   fetchdetailsUser();
+ }, []);
   const talentData = {
     id: 1,
     name: "Sohpia Baaji",
