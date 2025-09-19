@@ -14,19 +14,21 @@ import { useLocation } from "react-router-dom";
 import ApiService from "../../services/ApiService";
 
 function TalentProfile() {
-  const location = useLocation()
+  const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const userId = queryParams.get("id"); // Get id from URL
   const [activeTab, setActiveTab] = useState("overview");
   const [loading, setLoading] = useState(false);
   const [detailsUser, setdetailsUser] = useState(null);
 
-  const avatar = location?.state?.profile || ''
+  const avatar = location?.state?.profile || "";
   useEffect(() => {
     const fetchdetailsUser = async () => {
       try {
         setLoading(true);
-        const response = await ApiService.post("admin/detailsUser", { id: userId }); // Replace with your API endpoint
+        const response = await ApiService.post("admin/detailsUser", {
+          id: userId,
+        }); // Replace with your API endpoint
         setdetailsUser(response?.data?.data || null);
       } catch (error) {
         console.error("Error fetching detailsUser:", error);
@@ -46,8 +48,7 @@ function TalentProfile() {
     joinDate: detailsUser?.userInfo?.created_at,
     location: detailsUser?.country,
     avatar,
-    about:
-      "She is a very good lady and very punctual about her work. She is respectful and highly collaborative.",
+    about: detailsUser?.userInfo?.about || "",
     rating: 4.8,
     totalReviews: 12,
     ratingBreakdown: {
@@ -123,9 +124,7 @@ function TalentProfile() {
     const rounded = Math.round(rating);
     for (let i = 0; i < 5; i++) {
       stars.push(
-        <span key={i} className={`star ${i < rounded ? "filled" : ""}`}>
-          ★
-        </span>
+        <span key={i} className={`star ${i < rounded ? "filled" : ""}`}></span>
       );
     }
     return <div className="stars-container">{stars}</div>;
@@ -197,9 +196,11 @@ function TalentProfile() {
               <div className="skills-section">
                 <h2 className="talent-skills">Skills</h2>
                 <div className="skills">
-                  <p className="skill">Cook</p>
-                  <p className="skill">Baking</p>
-                  <p className="skill">Chef Life</p>
+                  {(detailsUser?.userInfo?.skills || []).map((skill, index) => (
+                    <p className="skill" key={skill.id || index}>
+                      {skill.name}
+                    </p>
+                  ))}
                 </div>
               </div>
 
@@ -291,8 +292,6 @@ function TalentProfile() {
                     </div>
                   ))}
                 </div>
-
-
               </div>
             </div>
           )}
