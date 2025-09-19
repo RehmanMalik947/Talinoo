@@ -1,25 +1,48 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import NavBar from "../Auth/common/NavBar";
 import "../../assets/css/clientDetails.css";
 import Reviewer1 from "../../../public/Reviewer1.svg";
 import Reviewer2 from "../../../public/Reviewer2.svg";
 import { BiLike, BiDislike } from "react-icons/bi";
 import { useLocation } from "react-router-dom";
+import ApiService from "../../services/ApiService";
 
 function ClientDetails() {
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const userId = queryParams.get("id");
+  console.log(userId); // Get id from URL
   const [activeTab, setActiveTab] = useState("overview");
-let location=useLocation()
-const avatar=location.state.profile_photo
+  const [loading, setLoading] = useState(false);
+  const [detailsUser, setdetailsUser] = useState(null);
+
+  const avatar = location?.state?.profile_photo || "";
+  useEffect(() => {
+    const fetchdetailsUser = async () => {
+      try {
+        setLoading(true);
+        const response = await ApiService.post("admin/detailsUser", {
+          id: userId,
+        }); // Replace with your API endpoint
+        setdetailsUser(response?.data?.data || null);
+      } catch (error) {
+        console.error("Error fetching detailsUser:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchdetailsUser();
+  }, [userId]);
+
   const clientData = {
-    id: 1,
-    name: "Sohpia Baaji",
-    email: "sohpiaBaaji@example.com",
-    status: "Active",
-    joinDate: "2002",
-    location: "New York, USA",
+    id: detailsUser?.id,
+    name: detailsUser?.username,
+    email: detailsUser?.email,
+    status: detailsUser?.is_verified == true ? "Active" : "Inactive",
+    joinDate: detailsUser?.userInfo?.created_at,
+    location: detailsUser?.country,
     avatar,
-    about:
-      "She is a very good lady and very punctual about her work. She is respectful and highly collaborative.",
+    about: detailsUser?.userInfo?.about || "",
     rating: 4.8,
     totalReviews: 12,
     ratingBreakdown: {
@@ -125,7 +148,11 @@ const avatar=location.state.profile_photo
         <div className="client-header">
           <div className="client-info">
             <div className="client-avatar">
-              <img src={clientData.avatar} alt="client-avatar" className="avatar" />
+              <img
+                src={clientData.avatar}
+                alt="client-avatar"
+                className="avatar"
+              />
             </div>
             <div className="client-details">
               <h2 className="client-name">{clientData.name}</h2>
@@ -196,13 +223,17 @@ const avatar=location.state.profile_photo
                             className="reviewer-avatar"
                           />
                           <div>
-                            <h4 className="reviewer-name">{review.reviewerName}</h4>
+                            <h4 className="reviewer-name">
+                              {review.reviewerName}
+                            </h4>
                             <span className="review-date">{review.date}</span>
                           </div>
                         </div>
                       </div>
 
-                      <div className="review-rating">{renderStars(review.rating)}</div>
+                      <div className="review-rating">
+                        {renderStars(review.rating)}
+                      </div>
 
                       <p className="review-comment">{review.comment}</p>
 
@@ -238,7 +269,7 @@ const avatar=location.state.profile_photo
         </div>
 
         {/* Booking History Section */}
-          <h2 className="section-heading">Booking History</h2>
+        <h2 className="section-heading">Booking History</h2>
         <div className="booking-history">
           <table className="booking-table">
             <thead>

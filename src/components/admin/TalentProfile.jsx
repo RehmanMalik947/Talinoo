@@ -15,19 +15,21 @@ import { formatHumanDate } from "../../helpers/Helper";
 import ApiService from "../../services/ApiService";
 
 function TalentProfile() {
-  const location = useLocation()
+  const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const userId = queryParams.get("id"); // Get id from URL
   const [activeTab, setActiveTab] = useState("overview");
   const [loading, setLoading] = useState(false);
   const [detailsUser, setdetailsUser] = useState(null);
 
-  const avatar = location?.state?.profile || ''
+  const avatar = location?.state?.profile || "";
   useEffect(() => {
     const fetchdetailsUser = async () => {
       try {
         setLoading(true);
-        const response = await ApiService.post("admin/detailsUser", { id: userId }); // Replace with your API endpoint
+        const response = await ApiService.post("admin/detailsUser", {
+          id: userId,
+        }); // Replace with your API endpoint
         setdetailsUser(response?.data?.data || null);
       } catch (error) {
         console.error("Error fetching detailsUser:", error);
@@ -37,9 +39,10 @@ function TalentProfile() {
     };
     fetchdetailsUser();
   }, [userId]);
-const talentTitle = detailsUser?.userInfo?.skills?.length > 0
-  ? detailsUser.userInfo.skills.map(s => s.name).join("/")
-  : "No skills";
+  const talentTitle =
+    detailsUser?.userInfo?.skills?.length > 0
+      ? detailsUser.userInfo.skills.map((s) => s.name).join("/")
+      : "No skills";
 
   const talentData = {
     id: detailsUser?.id,
@@ -50,8 +53,7 @@ const talentTitle = detailsUser?.userInfo?.skills?.length > 0
     joinDate: detailsUser?.userInfo?.created_at,
     location: detailsUser?.country,
     avatar,
-    about:
-      "She is a very good lady and very punctual about her work. She is respectful and highly collaborative.",
+    about: detailsUser?.userInfo?.about || "",
     rating: 4.8,
     totalReviews: 12,
     ratingBreakdown: {
@@ -127,9 +129,7 @@ const talentTitle = detailsUser?.userInfo?.skills?.length > 0
     const rounded = Math.round(rating);
     for (let i = 0; i < 5; i++) {
       stars.push(
-        <span key={i} className={`star ${i < rounded ? "filled" : ""}`}>
-          ★
-        </span>
+        <span key={i} className={`star ${i < rounded ? "filled" : ""}`}></span>
       );
     }
     return <div className="stars-container">{stars}</div>;
@@ -179,11 +179,14 @@ const talentTitle = detailsUser?.userInfo?.skills?.length > 0
             <div className="talent-details">
               <p className="talent-name">
                 {talentData?.name
-                  ? talentData.name.charAt(0).toUpperCase() + talentData.name.slice(1)
+                  ? talentData.name.charAt(0).toUpperCase() +
+                    talentData.name.slice(1)
                   : ""}
               </p>
               <p className="talent-title">{talentData.talentTitle}</p>
-              <p className="talent-joinedDate">Joined {formatHumanDate(talentData.joinDate)}</p>
+              <p className="talent-joinedDate">
+                Joined {formatHumanDate(talentData.joinDate)}
+              </p>
             </div>
           </div>
           <button className="report-button" onClick={handleReportUser}>
@@ -205,7 +208,6 @@ const talentTitle = detailsUser?.userInfo?.skills?.length > 0
               <div className="skills-section">
                 <h2 className="talent-skills">Skills</h2>
                 <div className="skills">
-
                   {detailsUser?.userInfo?.skills?.length > 0 ? (
                     detailsUser?.userInfo?.skills?.map((skill, index) => (
                       <p key={index} className="skill">
@@ -229,20 +231,28 @@ const talentTitle = detailsUser?.userInfo?.skills?.length > 0
                     {detailsUser?.mediaItems?.length > 0 ? (
                       detailsUser.mediaItems.map((media, index) => {
                         const fileUrl = media.fileUrl;
-                        const extension = fileUrl?.split(".").pop()?.toLowerCase();
+                        const extension = fileUrl
+                          ?.split(".")
+                          .pop()
+                          ?.toLowerCase();
 
-                        const isVideo = ["mp4", "mov", "webm", "ogg"].includes(extension);
+                        const isVideo = ["mp4", "mov", "webm", "ogg"].includes(
+                          extension
+                        );
 
                         return (
                           <div>
                             {isVideo ? (
                               <video src={fileUrl} className="empinfo-img" />
                             ) : (
-                              <img src={fileUrl} alt={`media-${index}`} className="empinfo-img" />
+                              <img
+                                src={fileUrl}
+                                alt={`media-${index}`}
+                                className="empinfo-img"
+                              />
                             )}
                           </div>
                         );
-
                       })
                     ) : (
                       <div>
@@ -326,8 +336,6 @@ const talentTitle = detailsUser?.userInfo?.skills?.length > 0
                     <p>No reviews available</p>
                   )}
                 </div>
-
-
               </div>
             </div>
           )}
