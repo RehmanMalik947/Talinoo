@@ -354,22 +354,42 @@ const renderStars = (rating) => {
             <thead>
               <tr>
                 <th>Client</th>
-                <th>talent</th>
-                <th>Start Date</th>
-                <th>End Date</th>
+                <th>Talent</th>
+                <th>Slots</th>
                 <th>Earning</th>
+                <th>Status</th>
               </tr>
             </thead>
             <tbody>
-              {detailsUser?.bookings.map((booking, index) => (
-                <tr key={index}>
-                  <td>{booking?.client?.username}</td>
-                  <td className="link">{booking?.talent?.username}</td>
-                  <td className="link">{booking.startDate}</td>
-                  <td className="link">{booking.endDate}</td>
-                  <td className="link">{booking.total_price}</td>
+              {detailsUser?.bookings?.length > 0 ? (
+                detailsUser.bookings.map((booking, index) => (
+                  <tr key={index}>
+                    <td>{booking?.client?.username || "N/A"}</td>
+                    <td className="link">{booking?.talent?.username || "N/A"}</td>
+                    <td>
+                      {booking.slots?.length > 0 ? (
+                        <ul style={{ margin: 0, paddingLeft: "15px" }}>
+                          {booking.slots.map((slot) => (
+                            <li key={slot.id}>
+                              {slot.slot_date} ({slot.slot})
+                            </li>
+                          ))}
+                        </ul>
+                      ) : (
+                        "No Slots"
+                      )}
+                    </td>
+                    <td>{booking.total_price} {booking.currency}</td>
+                    <td>{booking.status}</td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="5" style={{ textAlign: "center" }}>
+                    No Bookings Found
+                  </td>
                 </tr>
-              ))}
+              )}
             </tbody>
           </table>
         </div>
