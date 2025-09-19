@@ -6,6 +6,7 @@ import Reviewer2 from "../../../public/Reviewer2.svg";
 import { BiLike, BiDislike } from "react-icons/bi";
 import { useLocation } from "react-router-dom";
 import ApiService from "../../services/ApiService";
+import { formatHumanDate } from "../../helpers/Helper";
 
 function ClientDetails() {
   const location = useLocation();
@@ -39,9 +40,11 @@ function ClientDetails() {
     name: detailsUser?.username,
     email: detailsUser?.email,
     status: detailsUser?.is_verified == true ? "Active" : "Inactive",
-    joinDate: detailsUser?.userInfo?.dataValues?.created_at,
+    joinDate:
+      formatHumanDate(detailsUser?.userInfo?.dataValues?.created_at, "year") ||
+      "N/A",
     location: detailsUser?.country,
-    avatar,
+    avatar: detailsUser?.userInfo?.profile_photo,
     about: detailsUser?.userInfo?.dataValues?.about || "",
     rating: detailsUser?.rating || 0,
     totalReviews: detailsUser?.totalReviews || 0,
@@ -282,15 +285,35 @@ function ClientDetails() {
               </tr>
             </thead>
             <tbody>
-              {bookingHistory.map((booking, index) => (
-                <tr key={index}>
-                  <td>{booking.title}</td>
-                  <td className="link">{booking.client}</td>
-                  <td className="link">{booking.startDate}</td>
-                  <td className="link">{booking.endDate}</td>
-                  <td className="link">{booking.spending}</td>
+              {detailsUser?.bookings?.length > 0 ? (
+                detailsUser.bookings.map((booking, index) => (
+                  <tr key={index}>
+                    <td>{booking?.talent?.talent || "N/A"}</td>
+                    <td className="link">
+                      {booking?.client?.username || "N/A"}
+                    </td>
+                    <td>
+                      {booking.slots?.length > 0 ? (
+                        <ul style={{ margin: 0, paddingLeft: "15px" }}>
+                          <li>{formatHumanDate(booking.created_at, "date")}</li>
+                        </ul>
+                      ) : (
+                        "No Slots"
+                      )}
+                    </td>
+                    <td>{booking.status}</td>
+                    <td>
+                      {booking.total_price} {booking.currency}
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="5" style={{ textAlign: "center" }}>
+                    No Bookings Found
+                  </td>
                 </tr>
-              ))}
+              )}
             </tbody>
           </table>
         </div>

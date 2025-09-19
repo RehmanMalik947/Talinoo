@@ -50,7 +50,7 @@ function TalentProfile() {
     email: detailsUser?.email,
     talentTitle,
     status: detailsUser?.is_verified == true ? "Active" : "Inactive",
-    joinDate: detailsUser?.userInfo?.created_at,
+    joinDate: detailsUser?.userInfo?.dataValues?.created_at,
     location: detailsUser?.country,
     avatar,
     about: detailsUser?.userInfo?.about || "",
@@ -124,22 +124,18 @@ function TalentProfile() {
     },
   ];
 
-const renderStars = (rating) => {
-  const stars = [];
-  const rounded = Math.round(rating);
+  const renderStars = (rating) => {
+    const stars = [];
+    const rounded = Math.round(rating);
 
-  for (let i = 0; i < 5; i++) {
-    stars.push(
-      <span key={i} className={`star ${i < rounded ? "filled" : ""}`}>
-        
-      </span>
-    );
-  }
+    for (let i = 0; i < 5; i++) {
+      stars.push(
+        <span key={i} className={`star ${i < rounded ? "filled" : ""}`}></span>
+      );
+    }
 
-  return <div className="stars-container">{stars}</div>;
-};
-
-
+    return <div className="stars-container">{stars}</div>;
+  };
 
   const renderRatingBar = (starCount, percentage) => {
     return (
@@ -191,7 +187,7 @@ const renderStars = (rating) => {
               </p>
               <p className="talent-title">{talentData.talentTitle}</p>
               <p className="talent-joinedDate">
-                Joined {formatHumanDate(talentData.joinDate)}
+                Joined {formatHumanDate(talentData.joinDate, "year")}
               </p>
             </div>
           </div>
@@ -288,7 +284,10 @@ const renderStars = (rating) => {
                   <div className="rating-breakdown">
                     {[5, 4, 3, 2, 1].map((star) => (
                       <div key={star}>
-                        {renderRatingBar(star, detailsUser?.ratingBreakdown[star] || 0)}
+                        {renderRatingBar(
+                          star,
+                          detailsUser?.ratingBreakdown[star] || 0
+                        )}
                       </div>
                     ))}
                   </div>
@@ -302,7 +301,10 @@ const renderStars = (rating) => {
                         <div className="review-header">
                           <div className="reviewer-info">
                             <img
-                              src={review.reviewer?.profile_photo || "/default-avatar.png"}
+                              src={
+                                review.reviewer?.profile_photo ||
+                                "/default-avatar.png"
+                              }
                               alt={review.reviewer?.username}
                               className="reviewer-avatar"
                             />
@@ -325,7 +327,9 @@ const renderStars = (rating) => {
 
                         <div className="review-actions">
                           <button
-                            className={`like-button ${review.userLiked ? "active" : ""}`}
+                            className={`like-button ${
+                              review.userLiked ? "active" : ""
+                            }`}
                           >
                             <BiLike /> {review.likesCount}
                           </button>
@@ -365,7 +369,9 @@ const renderStars = (rating) => {
                 detailsUser.bookings.map((booking, index) => (
                   <tr key={index}>
                     <td>{booking?.client?.username || "N/A"}</td>
-                    <td className="link">{booking?.talent?.username || "N/A"}</td>
+                    <td className="link">
+                      {booking?.talent?.username || "N/A"}
+                    </td>
                     <td>
                       {booking.slots?.length > 0 ? (
                         <ul style={{ margin: 0, paddingLeft: "15px" }}>
@@ -379,7 +385,9 @@ const renderStars = (rating) => {
                         "No Slots"
                       )}
                     </td>
-                    <td>{booking.total_price} {booking.currency}</td>
+                    <td>
+                      {booking.total_price} {booking.currency}
+                    </td>
                     <td>{booking.status}</td>
                   </tr>
                 ))

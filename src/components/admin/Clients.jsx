@@ -7,6 +7,7 @@ import deleteIcon from "../../../public/delete.svg";
 import viewIcon from "../../../public/view.svg";
 import { useNavigate } from "react-router";
 import ApiService from "../../services/ApiService"; // Make sure your ApiService is correctly imported
+import { formatHumanDate } from "../../helpers/Helper";
 
 function Clients() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -139,7 +140,10 @@ function Clients() {
                         : "Unknown"}
                     </div>
                   </td>
-                  <td>{client?.userInfo?.created_at || "N/A"}</td>
+                  <td>
+                    {formatHumanDate(client?.userInfo?.created_at, "date") ||
+                      "N/A"}
+                  </td>
                   <td className="action-button">
                     <button onClick={() => handleDelete(client?.id)}>
                       <img src={deleteIcon} alt="Delete" />
