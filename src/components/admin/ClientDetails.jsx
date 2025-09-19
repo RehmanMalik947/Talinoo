@@ -39,18 +39,18 @@ function ClientDetails() {
     name: detailsUser?.username,
     email: detailsUser?.email,
     status: detailsUser?.is_verified == true ? "Active" : "Inactive",
-    joinDate: detailsUser?.userInfo?.created_at,
+    joinDate: detailsUser?.userInfo?.dataValues?.created_at,
     location: detailsUser?.country,
     avatar,
-    about: detailsUser?.userInfo?.about || "",
-    rating: 4.8,
-    totalReviews: 12,
-    ratingBreakdown: {
-      5: 75,
-      4: 15,
-      3: 5,
-      2: 3,
-      1: 2,
+    about: detailsUser?.userInfo?.dataValues?.about || "",
+    rating: detailsUser?.rating || 0,
+    totalReviews: detailsUser?.totalReviews || 0,
+    ratingBreakdown: detailsUser?.ratingBreakdown || {
+      1: 0,
+      2: 0,
+      3: 0,
+      4: 0,
+      5: 0,
     },
   };
 
@@ -106,13 +106,13 @@ function ClientDetails() {
   const renderStars = (rating) => {
     const stars = [];
     const rounded = Math.round(rating);
+
     for (let i = 0; i < 5; i++) {
       stars.push(
-        <span key={i} className={`star ${i < rounded ? "filled" : ""}`}>
-          ★
-        </span>
+        <span key={i} className={`star ${i < rounded ? "filled" : ""}`}></span>
       );
     }
+
     return <div className="stars-container">{stars}</div>;
   };
 
