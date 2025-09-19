@@ -262,20 +262,17 @@ const talentTitle = detailsUser?.userInfo?.skills?.length > 0
                 {/* Rating Summary */}
                 <div className="rating-summary">
                   <div className="rating-score">
-                    <span className="score">{talentData.rating}</span>
-                    {renderStars(talentData.rating)}
+                    <span className="score">{detailsUser?.rating}</span>
+                    {renderStars(detailsUser?.rating)}
                     <span className="total-reviews">
-                      {talentData.totalReviews} reviews
+                      {detailsUser?.totalReviews} reviews
                     </span>
                   </div>
 
                   <div className="rating-breakdown">
                     {[5, 4, 3, 2, 1].map((star) => (
                       <div key={star}>
-                        {renderRatingBar(
-                          star,
-                          talentData.ratingBreakdown[star] || 0
-                        )}
+                        {renderRatingBar(star, detailsUser?.ratingBreakdown[star] || 0)}
                       </div>
                     ))}
                   </div>
@@ -283,42 +280,51 @@ const talentTitle = detailsUser?.userInfo?.skills?.length > 0
 
                 {/* Individual Reviews */}
                 <div className="reviews-list">
-                  {reviews.map((review) => (
-                    <div key={review.id} className="review-item">
-                      <div className="review-header">
-                        <div className="reviewer-info">
-                          <img
-                            src={review.reviewerAvatar}
-                            alt={review.reviewerName}
-                            className="reviewer-avatar"
-                          />
-                          <div>
-                            <h4 className="reviewer-name">
-                              {review.reviewerName}
-                            </h4>
-                            <span className="review-date">{review.date}</span>
+                  {detailsUser?.reviews?.length > 0 ? (
+                    detailsUser.reviews.map((review) => (
+                      <div key={review.id} className="review-item">
+                        <div className="review-header">
+                          <div className="reviewer-info">
+                            <img
+                              src={review.reviewer?.profile_photo || "/default-avatar.png"}
+                              alt={review.reviewer?.username}
+                              className="reviewer-avatar"
+                            />
+                            <div>
+                              <h4 className="reviewer-name">
+                                {review.reviewer?.username}
+                              </h4>
+                              <span className="review-date">
+                                {review.createdAtFormatted}
+                              </span>
+                            </div>
                           </div>
                         </div>
-                      </div>
 
-                      <div className="review-rating">
-                        {renderStars(review.rating)}
-                      </div>
+                        <div className="review-rating">
+                          {renderStars(review.rating)}
+                        </div>
 
-                      <p className="review-comment">{review.comment}</p>
+                        <p className="review-comment">{review.comment}</p>
 
-                      <div className="review-actions">
-                        <button className="like-button">
-                          <BiLike /> {review.likes}
-                        </button>
-                        {review.dislikes > 0 && (
-                          <button className="dislike-button">
-                            <BiDislike /> {review.dislikes}
+                        <div className="review-actions">
+                          <button
+                            className={`like-button ${review.userLiked ? "active" : ""}`}
+                          >
+                            <BiLike /> {review.likesCount}
                           </button>
-                        )}
+                          {/* if you’re also tracking dislikes */}
+                          {review.dislikes > 0 && (
+                            <button className="dislike-button">
+                              <BiDislike /> {review.dislikes}
+                            </button>
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    ))
+                  ) : (
+                    <p>No reviews available</p>
+                  )}
                 </div>
 
 

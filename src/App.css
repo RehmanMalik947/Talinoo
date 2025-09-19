@@ -5,3 +5,16 @@
   object-position: center;  /* Centers the image */
   border-radius: 4px;       /* Optional: Adds rounded corners */
 }
+.stars-container {
+  display: flex;
+  gap: 2px;
+}
+
+.star {
+  font-size: 20px;
+  color: #ccc; /* gray empty star */
+}
+
+.star.filled {
+  color: #f5c518; /* yellow filled star */
+}
