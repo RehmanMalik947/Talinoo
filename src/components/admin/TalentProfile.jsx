@@ -39,9 +39,10 @@ function TalentProfile() {
     };
     fetchdetailsUser();
   }, [userId]);
-const talentTitle = detailsUser?.userInfo?.skills?.length > 0
-  ? detailsUser.userInfo.skills.map(s => s.name).join("/")
-  : "No skills";
+  const talentTitle =
+    detailsUser?.userInfo?.skills?.length > 0
+      ? detailsUser.userInfo.skills.map((s) => s.name).join("/")
+      : "No skills";
 
   const talentData = {
     id: detailsUser?.id,
@@ -178,11 +179,14 @@ const talentTitle = detailsUser?.userInfo?.skills?.length > 0
             <div className="talent-details">
               <p className="talent-name">
                 {talentData?.name
-                  ? talentData.name.charAt(0).toUpperCase() + talentData.name.slice(1)
+                  ? talentData.name.charAt(0).toUpperCase() +
+                    talentData.name.slice(1)
                   : ""}
               </p>
               <p className="talent-title">{talentData.talentTitle}</p>
-              <p className="talent-joinedDate">Joined {formatHumanDate(talentData.joinDate)}</p>
+              <p className="talent-joinedDate">
+                Joined {formatHumanDate(talentData.joinDate)}
+              </p>
             </div>
           </div>
           <button className="report-button" onClick={handleReportUser}>
@@ -204,14 +208,6 @@ const talentTitle = detailsUser?.userInfo?.skills?.length > 0
               <div className="skills-section">
                 <h2 className="talent-skills">Skills</h2>
                 <div className="skills">
-<<<<<<< HEAD
-                  {(detailsUser?.userInfo?.skills || []).map((skill, index) => (
-                    <p className="skill" key={skill.id || index}>
-                      {skill.name}
-                    </p>
-                  ))}
-=======
-
                   {detailsUser?.userInfo?.skills?.length > 0 ? (
                     detailsUser?.userInfo?.skills?.map((skill, index) => (
                       <p key={index} className="skill">
@@ -221,7 +217,6 @@ const talentTitle = detailsUser?.userInfo?.skills?.length > 0
                   ) : (
                     <p className="skill">No skills</p>
                   )}
->>>>>>> e3d2b79b731d28b7c39fd6224e227582f95c3132
                 </div>
               </div>
 
@@ -236,20 +231,28 @@ const talentTitle = detailsUser?.userInfo?.skills?.length > 0
                     {detailsUser?.mediaItems?.length > 0 ? (
                       detailsUser.mediaItems.map((media, index) => {
                         const fileUrl = media.fileUrl;
-                        const extension = fileUrl?.split(".").pop()?.toLowerCase();
+                        const extension = fileUrl
+                          ?.split(".")
+                          .pop()
+                          ?.toLowerCase();
 
-                        const isVideo = ["mp4", "mov", "webm", "ogg"].includes(extension);
+                        const isVideo = ["mp4", "mov", "webm", "ogg"].includes(
+                          extension
+                        );
 
                         return (
                           <div>
                             {isVideo ? (
                               <video src={fileUrl} className="empinfo-img" />
                             ) : (
-                              <img src={fileUrl} alt={`media-${index}`} className="empinfo-img" />
+                              <img
+                                src={fileUrl}
+                                alt={`media-${index}`}
+                                className="empinfo-img"
+                              />
                             )}
                           </div>
                         );
-
                       })
                     ) : (
                       <div>

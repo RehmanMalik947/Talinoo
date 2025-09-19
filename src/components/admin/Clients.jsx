@@ -58,8 +58,8 @@ function Clients() {
     startIndex + itemsPerPage
   );
 
-  const handleView = (client_id,profile_photo) => {
-    navigate(`/clientdetails?id=${client_id}`,{state:{profile_photo}});
+  const handleView = (client_id, profile_photo) => {
+    navigate(`/clientdetails?id=${client_id}`, { state: { profile_photo } });
   };
 
   const handleDelete = (id) => console.log("Deleted", id);
@@ -116,57 +116,61 @@ function Clients() {
                 <th>Action</th>
               </tr>
             </thead>
-          <tbody>
-  {paginatedClients.map((client) => (
-    <tr key={client?.id || Math.random()}>
-      <td>{client?.username || "N/A"}</td>
-      <td>{client?.email || "N/A"}</td>
-      <td>
-        <div
-          className={`status-badge ${
-            client?.is_verified === true || client?.is_verified === "Active"
-              ? "active"
-              : "inactive"
-          }`}
-        >
-          {client?.is_verified != null
-            ? client?.is_verified === true
-              ? "Active"
-              : client?.is_verified === false
-              ? "Inactive"
-              : client?.is_verified
-            : "Unknown"}
-        </div>
-      </td>
-      <td>{client?.userInfo?.created_at || "N/A"}</td>
-      <td className="action-button">
-        <button onClick={() => handleDelete(client?.id)}>
-          <img src={deleteIcon} alt="Delete" />
-        </button>
-        <button onClick={() => handleView(client?.id,client?.userInfo?.profile_photo)}>
-          <img src={viewIcon} alt="View" />
-        </button>
-      </td>
-    </tr>
-  ))}
+            <tbody>
+              {paginatedClients.map((client) => (
+                <tr key={client?.id || Math.random()}>
+                  <td>{client?.username || "N/A"}</td>
+                  <td>{client?.email || "N/A"}</td>
+                  <td>
+                    <div
+                      className={`status-badge ${
+                        client?.is_verified === true ||
+                        client?.is_verified === "Active"
+                          ? "active"
+                          : "inactive"
+                      }`}
+                    >
+                      {client?.is_verified != null
+                        ? client?.is_verified === true
+                          ? "Active"
+                          : client?.is_verified === false
+                          ? "Inactive"
+                          : client?.is_verified
+                        : "Unknown"}
+                    </div>
+                  </td>
+                  <td>{client?.userInfo?.created_at || "N/A"}</td>
+                  <td className="action-button">
+                    <button onClick={() => handleDelete(client?.id)}>
+                      <img src={deleteIcon} alt="Delete" />
+                    </button>
+                    <button
+                      onClick={() =>
+                        handleView(client?.id, client?.userInfo?.profile_photo)
+                      }
+                    >
+                      <img src={viewIcon} alt="View" />
+                    </button>
+                  </td>
+                </tr>
+              ))}
 
-  {paginatedClients.length === 0 && !loading && (
-    <tr>
-      <td colSpan="5" style={{ textAlign: "center" }}>
-        No clients found
-      </td>
-    </tr>
-  )}
+              {paginatedClients.length === 0 && !loading && (
+                <tr>
+                  <td colSpan="5" style={{ textAlign: "center" }}>
+                    No clients found
+                  </td>
+                </tr>
+              )}
 
-  {loading && (
-    <tr>
-      <td colSpan="5" style={{ textAlign: "center" }}>
-        Loading...
-      </td>
-    </tr>
-  )}
-</tbody>
-
+              {loading && (
+                <tr>
+                  <td colSpan="5" style={{ textAlign: "center" }}>
+                    Loading...
+                  </td>
+                </tr>
+              )}
+            </tbody>
           </table>
         </div>
 
