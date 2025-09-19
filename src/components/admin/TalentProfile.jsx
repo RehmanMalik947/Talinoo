@@ -353,7 +353,7 @@ const renderStars = (rating) => {
           <table className="booking-table">
             <thead>
               <tr>
-                <th>Talent Title</th>
+                <th>Client</th>
                 <th>talent</th>
                 <th>Start Date</th>
                 <th>End Date</th>
@@ -361,13 +361,13 @@ const renderStars = (rating) => {
               </tr>
             </thead>
             <tbody>
-              {talentHistory.map((booking, index) => (
+              {detailsUser?.bookings.map((booking, index) => (
                 <tr key={index}>
-                  <td>{booking.title}</td>
-                  <td className="link">{booking.talent}</td>
+                  <td>{booking?.client?.username}</td>
+                  <td className="link">{booking?.talent?.username}</td>
                   <td className="link">{booking.startDate}</td>
                   <td className="link">{booking.endDate}</td>
-                  <td className="link">{booking.earning}</td>
+                  <td className="link">{booking.total_price}</td>
                 </tr>
               ))}
             </tbody>
