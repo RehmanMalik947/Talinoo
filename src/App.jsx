@@ -16,6 +16,7 @@ import Payments from "./components/admin/Payments";
 import Transactions from "./components/admin/Transactions";
 
 import ProtectedRoute from "./components/Auth/ProtectedRoute";
+import Feed from "./components/admin/Feed";
 
 function App() {
   const router = createBrowserRouter([
@@ -43,7 +44,7 @@ function App() {
       path: "/feed",
       element: (
         <ProtectedRoute>
-          <NavBar />
+          <Feed />
         </ProtectedRoute>
       ),
     },

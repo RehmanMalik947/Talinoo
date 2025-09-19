@@ -216,42 +216,56 @@ function ClientDetails() {
 
                 {/* Individual Reviews */}
                 <div className="reviews-list">
-                  {reviews.map((review) => (
-                    <div key={review.id} className="review-item">
-                      <div className="review-header">
-                        <div className="reviewer-info">
-                          <img
-                            src={review.reviewerAvatar}
-                            alt={review.reviewerName}
-                            className="reviewer-avatar"
-                          />
-                          <div>
-                            <h4 className="reviewer-name">
-                              {review.reviewerName}
-                            </h4>
-                            <span className="review-date">{review.date}</span>
+                  {detailsUser?.reviews?.length > 0 ? (
+                    detailsUser.reviews.map((review) => (
+                      <div key={review.id} className="review-item">
+                        <div className="review-header">
+                          <div className="reviewer-info">
+                            <img
+                              src={
+                                review.reviewer?.profile_photo ||
+                                "/default-avatar.png"
+                              }
+                              alt={review.reviewer?.username}
+                              className="reviewer-avatar"
+                            />
+                            <div>
+                              <h4 className="reviewer-name">
+                                {review.reviewer?.username}
+                              </h4>
+                              <span className="review-date">
+                                {review.createdAtFormatted}
+                              </span>
+                            </div>
                           </div>
                         </div>
-                      </div>
 
-                      <div className="review-rating">
-                        {renderStars(review.rating)}
-                      </div>
+                        <div className="review-rating">
+                          {renderStars(review.rating)}
+                        </div>
 
-                      <p className="review-comment">{review.comment}</p>
+                        <p className="review-comment">{review.comment}</p>
 
-                      <div className="review-actions">
-                        <button className="like-button">
-                          <BiLike /> {review.likes}
-                        </button>
-                        {review.dislikes > 0 && (
-                          <button className="dislike-button">
-                            <BiDislike /> {review.dislikes}
+                        <div className="review-actions">
+                          <button
+                            className={`like-button ${
+                              review.userLiked ? "active" : ""
+                            }`}
+                          >
+                            <BiLike /> {review.likesCount}
                           </button>
-                        )}
+                          {/* if you’re also tracking dislikes */}
+                          {review.dislikes > 0 && (
+                            <button className="dislike-button">
+                              <BiDislike /> {review.dislikes}
+                            </button>
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    ))
+                  ) : (
+                    <p>No reviews available</p>
+                  )}
                 </div>
 
                 {/* Pagination */}
@@ -293,13 +307,9 @@ function ClientDetails() {
                       {booking?.client?.username || "N/A"}
                     </td>
                     <td>
-                      {booking.slots?.length > 0 ? (
-                        <ul style={{ margin: 0, paddingLeft: "15px" }}>
-                          <li>{formatHumanDate(booking.created_at, "date")}</li>
-                        </ul>
-                      ) : (
-                        "No Slots"
-                      )}
+                      <ul style={{ margin: 0, paddingLeft: "15px" }}>
+                        <li>{formatHumanDate(booking.created_at, "date")}</li>
+                      </ul>
                     </td>
                     <td>{booking.status}</td>
                     <td>
