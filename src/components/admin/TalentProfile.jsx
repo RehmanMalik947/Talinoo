@@ -124,16 +124,22 @@ function TalentProfile() {
     },
   ];
 
-  const renderStars = (rating) => {
-    const stars = [];
-    const rounded = Math.round(rating);
-    for (let i = 0; i < 5; i++) {
-      stars.push(
-        <span key={i} className={`star ${i < rounded ? "filled" : ""}`}></span>
-      );
-    }
-    return <div className="stars-container">{stars}</div>;
-  };
+const renderStars = (rating) => {
+  const stars = [];
+  const rounded = Math.round(rating);
+
+  for (let i = 0; i < 5; i++) {
+    stars.push(
+      <span key={i} className={`star ${i < rounded ? "filled" : ""}`}>
+        
+      </span>
+    );
+  }
+
+  return <div className="stars-container">{stars}</div>;
+};
+
+
 
   const renderRatingBar = (starCount, percentage) => {
     return (
