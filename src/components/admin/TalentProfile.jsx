@@ -12,39 +12,39 @@ import { HiOutlineArrowSmLeft } from "react-icons/hi";
 import { HiOutlineArrowSmRight } from "react-icons/hi";
 import { useLocation } from "react-router-dom";
 import ApiService from "../../services/ApiService";
-// const location=useLocation()
-function TalentProfile() {
-  const [activeTab, setActiveTab] = useState("overview");
- const avatar=location?.state?.profile || ''
-  
- const queryParams = new URLSearchParams(location.search);
- const userId = queryParams.get("id"); // Get id from URL
- const [loading, setLoading] = useState(false);
- const [detailsUser, setdetailsUser] = useState(null);
 
- useEffect(() => {
-   const fetchdetailsUser = async () => {
-    alert(1);
-     try {
-       setLoading(true);
-       const response = await ApiService.post("admin/detailsUser", { id: userId, role: "client" }); // Replace with your API endpoint
-       setdetailsUser(response?.data?.data || null);
-     } catch (error) {
-       console.error("Error fetching detailsUser:", error);
-     } finally {
-       setLoading(false);
-     }
-   };
-   fetchdetailsUser();
- }, []);
+function TalentProfile() {
+  const location = useLocation()
+  const queryParams = new URLSearchParams(location.search);
+  const userId = queryParams.get("id"); // Get id from URL
+  const [activeTab, setActiveTab] = useState("overview");
+  const [loading, setLoading] = useState(false);
+  const [detailsUser, setdetailsUser] = useState(null);
+
+  const avatar = location?.state?.profile || ''
+  useEffect(() => {
+    const fetchdetailsUser = async () => {
+      try {
+        setLoading(true);
+        const response = await ApiService.post("admin/detailsUser", { id: userId }); // Replace with your API endpoint
+        setdetailsUser(response?.data?.data || null);
+      } catch (error) {
+        console.error("Error fetching detailsUser:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchdetailsUser();
+  }, [userId]);
+
   const talentData = {
-    id: 1,
-    name: "Sohpia Baaji",
-    email: "sohpiaBaaji@example.com",
+    id: detailsUser?.id,
+    name: detailsUser?.username,
+    email: detailsUser?.email,
     talentTitle: "Chef/Cook",
-    status: "Active",
-    joinDate: "2002",
-    location: "New York, USA",
+    status: detailsUser?.is_verified == true ? "Active" : "Inactive",
+    joinDate: detailsUser?.userInfo?.created_at,
+    location: detailsUser?.country,
     avatar,
     about:
       "She is a very good lady and very punctual about her work. She is respectful and highly collaborative.",
@@ -292,7 +292,7 @@ function TalentProfile() {
                   ))}
                 </div>
 
-                
+
               </div>
             </div>
           )}
