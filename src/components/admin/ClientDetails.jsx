@@ -82,29 +82,6 @@ function ClientDetails() {
     },
   ];
 
-  const bookingHistory = [
-    {
-      title: "Singer",
-      client: "Sophia Carter",
-      startDate: "2022-01-15",
-      endDate: "2023-06-30",
-      spending: "$50,000",
-    },
-    {
-      title: "Chef",
-      client: "Sophia Carter",
-      startDate: "2021-07-01",
-      endDate: "2021-12-31",
-      spending: "$25,000",
-    },
-    {
-      title: "Painter",
-      client: "Sophia Carter",
-      startDate: "2021-01-01",
-      endDate: "2021-06-30",
-      spending: "$15,000",
-    },
-  ];
 
   const renderStars = (rating) => {
     const stars = [];
