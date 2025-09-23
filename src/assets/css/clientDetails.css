@@ -450,3 +450,45 @@ body {
     font-size: 1.25rem;
   }
 }
+.client-status {
+  margin-top: 5px;
+  font-weight: bold;
+}
+
+.status-label {
+  padding: 2px 8px;
+  border-radius: 5px;
+  color: #fff;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+}
+
+.status-label.pending { background-color: #ffc107; }
+.status-label.approved { background-color: #28a745; }
+.status-label.rejected { background-color: #dc3545; }
+.status-label.blocked { background-color: #6c757d; }
+
+/* Keep your button CSS as before */
+.status-btn.active {
+  box-shadow: 0 0 5px 2px rgba(0,0,0,0.2);
+}
+.status-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.status-btn {
+  padding: 5px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  color: #fff;
+}
+
+.status-btn.approve { background-color: #28a745; }
+.status-btn.reject { background-color: #dc3545; }
+.status-btn.blocked { background-color: #6c757d; }
+
+.status-btn.active {
+  box-shadow: 0 0 5px 2px rgba(0,0,0,0.2);
+}

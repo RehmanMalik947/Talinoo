@@ -12,6 +12,7 @@ import { HiOutlineArrowSmLeft } from "react-icons/hi";
 import { HiOutlineArrowSmRight } from "react-icons/hi";
 import { useLocation } from "react-router-dom";
 import { formatHumanDate } from "../../helpers/Helper";
+import Swal from "sweetalert2";
 import ApiService from "../../services/ApiService";
 
 function TalentProfile() {
@@ -155,7 +156,47 @@ function TalentProfile() {
   const handleReportUser = () => {
     console.log("HandleReportUser clicked");
   };
+const handleStatusUpdate = async (newStatus) => {
+  if (!detailsUser?.id) return;
 
+  // Show SweetAlert confirmation
+  const result = await Swal.fire({
+    title: `Are you sure you want to ${newStatus}?`,
+    text: "This action cannot be undone.",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Yes, proceed!",
+  });
+
+  if (result.isConfirmed) {
+    try {
+      const response = await ApiService.post("admin/updateUserStatus", {
+        userId: detailsUser.id,
+        status: newStatus,
+      });
+
+      if (response.data.status) {
+        Swal.fire({
+          icon: "success",
+          title: "Updated!",
+          text: response.data.message,
+        });
+
+        // Update local state immediately
+        setdetailsUser({ ...detailsUser, status: newStatus });
+      }
+    } catch (error) {
+      console.error("Error updating status:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Oops!",
+        text: "Failed to update status",
+      });
+    }
+  }
+};
   return (
     <div className="talent-details-container">
       <NavBar />
@@ -189,11 +230,43 @@ function TalentProfile() {
               <p className="talent-joinedDate">
                 Joined {formatHumanDate(talentData.joinDate, "year")}
               </p>
+              {/* ✅ Current status display */}
+              <p className="client-status">
+                Status: <span className={`status-label ${detailsUser?.status || "pending"}`}>
+                  {detailsUser?.status ? detailsUser.status.toUpperCase() : "PENDING"}
+                </span>
+              </p>
             </div>
           </div>
           <button className="report-button" onClick={handleReportUser}>
             Report Talent
           </button>
+           <div className="status-buttons" style={{ marginTop: "10px" }}>
+            <button
+              className={`status-btn approve ${
+                detailsUser?.status === "approved" ? "active" : ""
+              }`}
+              onClick={() => handleStatusUpdate("approved")}
+            >
+              Approve
+            </button>
+            <button
+              className={`status-btn reject ${
+                detailsUser?.status === "rejected" ? "active" : ""
+              }`}
+              onClick={() => handleStatusUpdate("rejected")}
+            >
+              Reject
+            </button>
+            <button
+              className={`status-btn blocked ${
+                detailsUser?.status === "blocked" ? "active" : ""
+              }`}
+              onClick={() => handleStatusUpdate("blocked")}
+            >
+              Block
+            </button>
+          </div>
         </div>
 
         {/* Content */}

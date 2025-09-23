@@ -4,6 +4,27 @@ import { Link } from "react-router-dom";
 import { GoBell } from "react-icons/go";
 import technologyIcon from "../../../../public/technologyIcon.svg";
 function NavBar() {
+  const handleLogout = () => {
+  // Remove any stored tokens or user data
+  localStorage.clear();        // clears all localStorage data
+  sessionStorage.clear();      // clears all sessionStorage data
+
+  // Optional: clear specific cookies if you use them
+  document.cookie
+    .split(";")
+    .forEach(
+      (c) =>
+        (document.cookie =
+          c.replace(/^ +/, "")
+            .replace(/=.*/, `=;expires=${new Date().toUTCString()};path=/`))
+    );
+
+  console.log("User logged out, all sessions cleared.");
+
+  // Redirect to login page
+  window.location.href = "/login";
+};
+
   return (
     <div className="navbar-container">
       <div className="navbar-content">
@@ -27,27 +48,31 @@ function NavBar() {
             <Link to="/feed" className="menu-link">
               Feed
             </Link>
-            <Link to="/payments" className="menu-link">
+            {/* <Link to="/payments" className="menu-link">
               Payments
-            </Link>
+            </Link> */}
             <Link to="/tasks" className="menu-link">
               Tasks
             </Link>
 
-            <Link to="/plans" className="menu-link">
+            {/* <Link to="/plans" className="menu-link">
               Plans
-            </Link>
+            </Link> */}
           </div>
           <div className="bell-icon-container">
             <GoBell />
           </div>
-          <div>
-            <img
-              src="/technologyIcon.svg"
-              alt="Brand Logo"
-              className="brand-logo"
-            />
+         <div className="brand-dropdown">
+          <img
+            src="/technologyIcon.svg"
+            alt="Brand Logo"
+            className="brand-logo"
+          />
+          <div className="dropdown-content">
+            <button onClick={handleLogout}>Logout</button>
           </div>
+        </div>
+
         </div>
       </div>
     </div>
