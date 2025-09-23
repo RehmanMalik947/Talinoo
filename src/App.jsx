@@ -17,6 +17,7 @@ import Transactions from "./components/admin/Transactions";
 
 import ProtectedRoute from "./components/Auth/ProtectedRoute";
 import Feed from "./components/admin/Feed";
+import Tasks from "./components/admin/Tasks";
 
 function App() {
   const router = createBrowserRouter([
@@ -109,6 +110,14 @@ function App() {
       element: (
         <ProtectedRoute>
           <Transactions />
+        </ProtectedRoute>
+      ),
+    },
+    {
+      path: "/tasks",
+      element: (
+        <ProtectedRoute>
+          <Tasks />
         </ProtectedRoute>
       ),
     },
