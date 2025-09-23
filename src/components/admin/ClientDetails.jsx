@@ -269,7 +269,14 @@ function ClientDetails() {
                 </div>
 
                 {/* Pagination */}
-                <div className="pagination-container">
+                <div
+                  className="pagination-container"
+                  style={
+                    detailsUser?.reviews == []
+                      ? { display: "none" }
+                      : { display: "flex" }
+                  }
+                >
                   <button className="pagination-btn prev-btn">&#60;</button>
                   <div className="pagination-numbers">
                     <button className="pagination-number active">1</button>

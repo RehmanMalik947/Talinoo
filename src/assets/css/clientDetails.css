@@ -5,8 +5,9 @@
   box-sizing: border-box;
 }
 
-html, body {
-  font-family: 'Segoe UI', sans-serif;
+html,
+body {
+  font-family: "Segoe UI", sans-serif;
   background-color: #f9fafb;
 }
 
@@ -25,9 +26,9 @@ html, body {
 }
 
 /* Breadcrumb */
-.breadcrumb Talent{
+.breadcrumb Talent {
   font-size: 0.875rem;
-  color: #6D028E;
+  color: #6d028e;
   margin-bottom: 2rem;
 }
 
@@ -113,8 +114,8 @@ html, body {
 }
 
 .tab-button.active {
-  color: #6D028E;
-  border-bottom-color: #6D028E;
+  color: #6d028e;
+  border-bottom-color: #6d028e;
 }
 
 /* About Section */
@@ -176,7 +177,7 @@ html, body {
 }
 
 .star.filled {
-  color: #6D028E;
+  color: #6d028e;
 }
 
 /* Rating Breakdown */
@@ -210,7 +211,7 @@ html, body {
 
 .rating-fill {
   height: 100%;
-  background-color: #6D028E;
+  background-color: #6d028e;
   transition: width 0.3s ease;
 }
 
@@ -308,7 +309,7 @@ html, body {
 
 /* Pagination */
 .pagination-container {
-  display: flex;
+  /* display: flex; */
   justify-content: center;
   align-items: center;
   gap: 8px;
@@ -382,7 +383,6 @@ html, body {
   }
 }
 
-
 /* Booking History Section */
 .booking-history {
   background: white;
@@ -428,7 +428,7 @@ html, body {
 }
 
 .booking-table .link {
-  color: #6D028E;
+  color: #6d028e;
   font-weight: 500;
   cursor: pointer;
   transition: color 0.2s;

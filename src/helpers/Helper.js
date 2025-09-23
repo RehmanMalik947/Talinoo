@@ -1,4 +1,4 @@
-export const formatHumanDate = (isoDate, mode = "date") => {
+export const formatHumanDate = (isoDate, mode = "human") => {
   if (!isoDate) return "N/A";
 
   const dateObj = new Date(isoDate);
@@ -13,7 +13,7 @@ export const formatHumanDate = (isoDate, mode = "date") => {
     // e.g. 2022-01-15
   }
 
-  // fallback: full human-readable format
+  // ✅ default: full human-readable format
   return dateObj.toLocaleString("en-US", {
     weekday: "short",
     year: "numeric",

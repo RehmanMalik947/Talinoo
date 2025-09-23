@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from "react";
-import NavBar from "../Auth/common/NavBar";
-import "../../assets/css/clients.css";
+import { useEffect, useState } from "react";
 import { CiSearch } from "react-icons/ci";
+import "../../assets/css/clients.css";
+import NavBar from "../Auth/common/NavBar";
 
+import { useNavigate } from "react-router";
 import deleteIcon from "../../../public/delete.svg";
 import viewIcon from "../../../public/view.svg";
-import { useNavigate } from "react-router";
-import ApiService from "../../services/ApiService"; // Make sure your ApiService is correctly imported
 import { formatHumanDate } from "../../helpers/Helper";
+import ApiService from "../../services/ApiService"; // Make sure your ApiService is correctly imported
 
 function Clients() {
   const [searchTerm, setSearchTerm] = useState("");
