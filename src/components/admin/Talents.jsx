@@ -43,7 +43,6 @@ const navigate=useNavigate();
     )
     .filter((t) => statusFilter === "All" || t.status === statusFilter);
 
-
   const itemsPerPage = 10;
   const totalPages = Math.ceil(filteredTalents.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
