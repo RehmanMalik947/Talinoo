@@ -12,7 +12,7 @@ import ApiService from "../../services/ApiService"; // Make sure your ApiService
 function Clients() {
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
-  const [sortDate, setSortDate] = useState("desc");
+  const [sortDate, setSortDate] = useState("Date");
   const [currentPage, setCurrentPage] = useState(1);
   const [clients, setClients] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -43,7 +43,7 @@ function Clients() {
         (client?.email || "").toLowerCase().includes(searchTerm.toLowerCase())
     )
     .filter(
-      (client) => statusFilter === "All" || client?.status === statusFilter
+      (client) => statusFilter === "All" || client?.is_verified === statusFilter
     )
     .sort((a, b) =>
       sortDate === "desc"
@@ -107,7 +107,10 @@ function Clients() {
         </div>
 
         <div className="table-container">
-          <table className="clients-table">
+        {loading ? ( // ✅ optional: show loading state
+            <p>Loading clients...</p>
+          ) :
+          (<table className="clients-table">
             <thead>
               <tr>
                 <th>Client</th>
@@ -175,7 +178,7 @@ function Clients() {
                 </tr>
               )}
             </tbody>
-          </table>
+          </table>)}
         </div>
 
         <div className="pagination-container">
