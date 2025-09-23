@@ -11,6 +11,7 @@ import ClientDetails from "./components/admin/ClientDetails";
 import FeedDetails from "./components/admin/feeddetails";
 import Talents from "./components/admin/Talents";
 import TalentDetails from "./components/admin/TalentDetails";
+import BookingDetails from "./components/admin/bookingdetails";
 import Talent1 from "./components/admin/Talent1";
 import TalentProfile from "./components/admin/TalentProfile";
 import Payments from "./components/admin/Payments";
@@ -71,6 +72,14 @@ function App() {
       element: (
         <ProtectedRoute>
           <FeedDetails />
+        </ProtectedRoute>
+      ),
+    },
+    {
+      path: "/bookingdetails",
+      element: (
+        <ProtectedRoute>
+          <BookingDetails />
         </ProtectedRoute>
       ),
     },

@@ -13,18 +13,16 @@ const Tasks = () => {
   const [tasks, settasks] = useState([]);
   const [loading, setLoading] = useState(false); // ✅ added missing state
   const navigate = useNavigate();
-  const handleView = (talent_id, profile_photo) =>
-    navigate(`/talentprofile?id=${talent_id}`, {
-      state: { profile: profile_photo },
-    });
+  const handleView = (booking_id) =>
+    navigate(`/bookingdetails?id=${booking_id}`);
 
   // 🔹 Fetch tasks API
   useEffect(() => {
     const fetchtasks = async () => {
       try {
         setLoading(true);
-        const response = await ApiService.post("admin/talent"); // ✅ API endpoint
-        settasks(response?.data?.data?.talents || []);
+        const response = await ApiService.post("admin/bookings"); // ✅ API endpoint
+        settasks(response?.data?.data?.booking || []);
       } catch (error) {
         console.error("Error fetching tasks:", error);
       } finally {
@@ -103,10 +101,10 @@ const Tasks = () => {
             <table className="tasks-table">
               <thead>
                 <tr>
-                  <th>Task</th>
-                  <th>Task Type</th>
-                  <th>Client</th>
-                  <th>Created At</th>
+                  <th>Skill</th>
+                  <th>Client Name</th>
+                  <th>Talent Name</th>
+                  <th>Date</th>
                   <th>Status</th>
                   <th style={{ color: "#6d028e" }}>Actions</th>
                 </tr>
@@ -114,10 +112,10 @@ const Tasks = () => {
               <tbody>
                 {paginatedtasks.map((talent) => (
                   <tr key={talent.id}>
-                    <td>{talent.full_name}</td>
-                    <td className="tasks-client">{talent.gender}</td>
-                    <td className="tasks-name">{talent.country}</td>
-                    <td className="tasks-name">{talent?.user?.email}</td>
+                    <td>{talent.skillname}</td>
+                    <td className="tasks-client">{talent.clientName}</td>
+                    <td className="tasks-name">{talent.talentName}</td>
+                    <td className="tasks-name">{talent?.date}</td>
 
                     <td>
                       <div
@@ -132,7 +130,7 @@ const Tasks = () => {
                     <td className="action-button">
                       <button
                         onClick={() =>
-                          handleView(talent?.user?.id, talent.profile_photo)
+                          handleView(talent?.bookingid)
                         }
                       >
                         View
