@@ -1,193 +1,203 @@
-import React, { useEffect, useState } from "react";
-import "../../assets/css/feed.css";
-import ApiService from "../../services/ApiService";
-import { formatHumanDate } from "../../helpers/Helper";
+import { useEffect, useState } from "react";
+import { CiSearch } from "react-icons/ci";
+import "../../assets/css/clients.css";
 import NavBar from "../Auth/common/NavBar";
-const Feed = () => {
+
+import { useNavigate } from "react-router";
+import deleteIcon from "../../../public/delete.svg";
+import viewIcon from "../../../public/view.svg";
+import { formatHumanDate } from "../../helpers/Helper";
+import ApiService from "../../services/ApiService"; // Make sure your ApiService is correctly imported
+
+function Feed() {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [statusFilter, setStatusFilter] = useState("All");
+  const [sortDate, setSortDate] = useState("desc");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [clients, setClients] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [detailsFeed, setdetailsUser] = useState(null);
 
-  useEffect(() => {
-    const fetchdetailsUser = async () => {
-      try {
-        setLoading(true);
-        const response = await ApiService.get("/feed"); // Replace with your API endpoint
-        setdetailsUser(response?.data?.data || null);
-      } catch (error) {
-        console.error("Error fetching detailsUser:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchdetailsUser();
-  }, []);
+  const navigate = useNavigate();
 
-  return loading == true ? (
-    <p>Loading</p>
-  ) : (
-    <div>
+  // Fetch clients from API
+useEffect(() => {
+  const fetchClients = async () => {
+    try {
+      setLoading(true);
+      const response = await ApiService.post("admin/feeds"); 
+      // Make sure we set the array, not the object
+      setClients(response?.data?.data?.feed || []);
+    } catch (error) {
+      console.error("Error fetching clients:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  fetchClients();
+}, []);
+
+
+  // Filter and sort clients safely
+  const filteredClients = clients
+    .filter(
+      (client) =>
+        (client?.name || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (client?.email || "").toLowerCase().includes(searchTerm.toLowerCase())
+    )
+    .filter(
+      (client) => statusFilter === "All" || client?.status === statusFilter
+    )
+    .sort((a, b) =>
+      sortDate === "desc"
+        ? new Date(b?.date || 0) - new Date(a?.date || 0)
+        : new Date(a?.date || 0) - new Date(b?.date || 0)
+    );
+
+  const itemsPerPage = 10;
+  const totalPages = Math.ceil(filteredClients.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const paginatedClients = filteredClients.slice(
+    startIndex,
+    startIndex + itemsPerPage
+  );
+
+  const handleView = (feed_id, feed) => {
+    navigate(`/feeddetails?id=${feed_id}`, { state: { feed } });
+  };
+
+  const handleDelete = (id) => console.log("Deleted", id);
+
+  return (
+    <div className="clients-container">
       <NavBar />
-      <div className="table-container">
-        <table className="feed-table">
-          <thead>
-            <tr>
-              {/* Top-level keys */}
+      <div className="main-content">
+        <div className="clients-title">Feeds</div>
 
-              <th>id</th>
+        <div className="control-section">
+          <div className="search-box">
+            <CiSearch className="search-icon" />
+            <input
+              type="text"
+              placeholder="Search Feeds"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="search-input"
+            />
+          </div>
 
-              <th>userId</th>
+          <div className="filter">
+            <select
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+              className="filter-select"
+            >
+              <option value="All">Status</option>
+              <option value="Active">Active</option>
+              <option value="Inactive">Inactive</option>
+            </select>
 
-              <th>title</th>
+            <select
+              value={sortDate}
+              onChange={(e) => setSortDate(e.target.value)}
+              className="filter-select"
+            >
+              <option value="All">Date</option>
+              <option value="asc">Asc</option>
+              <option value="desc">Desc</option>
+            </select>
+          </div>
+        </div>
 
-              <th>description</th>
+        <div className="table-container">
+          <table className="clients-table">
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Talent</th>
+                <th>Type</th>
+                <th>Jobs</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {paginatedClients.map((client) => (
+                <tr key={client?.id || Math.random()}>
+                  <td>{client?.title || "N/A"}</td>
+                  <td>{client?.talent?.username || "N/A"}</td>
+                  <td>{client?.type || "N/A"}</td>
+                  <td>
+                    {client?.talent?.jobs || "0"}
+                  </td>
+                  <td className="action-button">
+                    <button onClick={() => handleDelete(client?.id)}>
+                      <img src={deleteIcon} alt="Delete" />
+                    </button>
+                    <button
+                      onClick={() =>
+                        handleView(client?.id, client)
+                      }
+                    >
+                      <img src={viewIcon} alt="View" />
+                    </button>
+                  </td>
+                </tr>
+              ))}
 
-              <th>fileUrl</th>
+              {paginatedClients.length === 0 && !loading && (
+                <tr>
+                  <td colSpan="5" style={{ textAlign: "center" }}>
+                    No Feeds found
+                  </td>
+                </tr>
+              )}
 
-              <th>type</th>
+              {loading && (
+                <tr>
+                  <td colSpan="5" style={{ textAlign: "center" }}>
+                    Loading...
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
 
-              <th>visibility</th>
+        <div className="pagination-container">
+          <button
+            className="pagination-btn prev-btn"
+            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+            disabled={currentPage === 1}
+          >
+            &#60;
+          </button>
 
-              <th>likes</th>
+          <div className="pagination-numbers">
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+              <button
+                key={page}
+                className={`pagination-number ${
+                  currentPage === page ? "active" : ""
+                }`}
+                onClick={() => setCurrentPage(page)}
+              >
+                {page}
+              </button>
+            ))}
+          </div>
 
-              <th>shares</th>
-
-              <th>skill_id</th>
-
-              <th>createdAt</th>
-
-              <th>updatedAt</th>
-
-              <th>TalentRate</th>
-
-              <th>likes_count</th>
-
-              <th>is_liked</th>
-
-              {/* Inside talent */}
-
-              <th>username</th>
-
-              <th>full_name</th>
-
-              <th>talent_type</th>
-
-              <th>location</th>
-
-              <th>city</th>
-
-              <th>country</th>
-
-              <th>profile_photo</th>
-
-              <th>video_url</th>
-
-              <th>jobs</th>
-
-              <th>rating</th>
-
-              <th>ratinginnumber</th>
-
-              <th>likes_count</th>
-
-              <th>unlikes_count</th>
-
-              <th>reaction</th>
-
-              <th>is_liked</th>
-
-              <th>is_unliked</th>
-
-              <th>views</th>
-
-              <th>is_wishlisted</th>
-
-              <th>wishlist_count</th>
-
-              <th>availability</th>
-
-              {/* Inside each talentSkills object */}
-
-              <th>id</th>
-
-              <th>name</th>
-
-              <th>rate</th>
-            </tr>
-          </thead>
-          <tbody>
-            {detailsFeed?.feed.length > 0
-              ? detailsFeed?.feed.map((feedItem, index) => (
-                  <tr key={index}>
-                    {/* Top-level */}
-                    <td>{feedItem?.id}</td>
-                    <td>{feedItem?.userId}</td>
-                    <td>{feedItem?.title}</td>
-                    <td>{feedItem?.description}</td>
-                    <td>{feedItem?.fileUrl}</td>
-                    <td>{feedItem?.type}</td>
-                    <td>
-                      {feedItem?.visibility == 1 ? "Visible" : "Not Visible"}
-                    </td>
-                    <td>{feedItem?.likes}</td>
-                    <td>{feedItem?.shares}</td>
-                    <td>{feedItem?.skill_id}</td>
-                    <td>{formatHumanDate(feedItem?.createdAt)}</td>
-                    <td>{formatHumanDate(feedItem?.updatedAt)}</td>
-                    <td>{feedItem?.TalentRate}</td>
-                    <td>{feedItem?.likes_count}</td>
-                    <td>
-                      {feedItem?.is_liked === false ? "notliked" : "liked"}
-                    </td>
-
-                    {/* talent object */}
-
-                    <td>{feedItem?.talent?.username}</td>
-                    <td>{feedItem?.talent?.full_name}</td>
-                    <td>{feedItem?.talent?.talent_type || "N/A"}</td>
-                    <td>{feedItem?.talent?.location}</td>
-                    <td>{feedItem?.talent?.city}</td>
-                    <td>{feedItem?.talent?.country}</td>
-                    <td className="profile_photo">
-                      <img
-                        src={feedItem?.talent?.profile_photo || ""}
-                        alt="profile_photo"
-                      />
-                    </td>
-                    <td>{feedItem?.talent?.video_url || "N/A"}</td>
-                    <td>{feedItem?.talent?.jobs}</td>
-                    <td>{feedItem?.talent?.rating}</td>
-                    <td>{feedItem?.talent?.ratinginnumber}</td>
-                    <td>{feedItem?.talent?.likes_count}</td>
-                    <td>{feedItem?.talent?.unlikes_count}</td>
-                    <td>{feedItem?.talent?.reaction || "N/A"}</td>
-                    <td>{feedItem?.talent?.is_liked == true ? "Yes" : "No"}</td>
-                    <td>
-                      {feedItem?.talent?.is_unliked == true ? "yes" : "No"}
-                    </td>
-                    <td>{feedItem?.talent?.views}</td>
-                    <td>
-                      {feedItem?.talent?.is_wishlisted == true ? "Yes" : "No"}
-                    </td>
-                    <td>{feedItem?.talent?.wishlist_count}</td>
-                    <td>{feedItem?.talent?.availability || "N/A"}</td>
-
-                    {/* talentSkills (array) */}
-
-                    {(feedItem?.talent?.talentSkills).map((item, index) => (
-                      <>
-                        <td>{item?.id || "N/A"}</td>
-                        <td>{item?.name || "N/A"}</td>
-                        <td>{item?.rate || "N/A"}</td>
-                      </>
-                    ))}
-                  </tr>
-                ))
-              : ""}
-          </tbody>
-        </table>
+          <button
+            className="pagination-btn next-btn"
+            onClick={() =>
+              setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+            }
+            disabled={currentPage === totalPages}
+          >
+            &#62;
+          </button>
+        </div>
       </div>
     </div>
   );
-};
+}
 
 export default Feed;

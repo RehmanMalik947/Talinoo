@@ -8,6 +8,7 @@ import NavBar from "./components/Auth/common/NavBar";
 import Dashboard from "./components/Admin/Dashboard";
 import Clients from "./components/admin/Clients";
 import ClientDetails from "./components/admin/ClientDetails";
+import FeedDetails from "./components/admin/feeddetails";
 import Talents from "./components/admin/Talents";
 import TalentDetails from "./components/admin/TalentDetails";
 import Talent1 from "./components/admin/Talent1";
@@ -64,6 +65,15 @@ function App() {
         </ProtectedRoute>
       ),
     },
+    {
+      path: "/feeddetails",
+      element: (
+        <ProtectedRoute>
+          <FeedDetails />
+        </ProtectedRoute>
+      ),
+    },
+    
     {
       path: "/talents",
       element: (
