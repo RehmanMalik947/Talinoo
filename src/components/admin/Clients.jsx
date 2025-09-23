@@ -37,19 +37,36 @@ function Clients() {
 
   // Filter and sort clients safely
   const filteredClients = clients
-    .filter(
-      (client) =>
-        (client?.name || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
-        (client?.email || "").toLowerCase().includes(searchTerm.toLowerCase())
-    )
-    .filter(
-      (client) => statusFilter === "All" || client?.is_verified === statusFilter
-    )
-    .sort((a, b) =>
-      sortDate === "desc"
-        ? new Date(b?.date || 0) - new Date(a?.date || 0)
-        : new Date(a?.date || 0) - new Date(b?.date || 0)
-    );
+    .filter((client) => {
+      const name = client?.name || client?.username || "";
+      const email = client?.email || "";
+      return (
+        name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        email.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    })
+    .filter((client) => {
+      if (statusFilter === "All") return true;
+      
+      // Handle both boolean and string status values
+      const isActive = client?.is_verified === true || client?.is_verified === "Active";
+      
+      if (statusFilter === "Active") return isActive;
+      if (statusFilter === "Inactive") return !isActive;
+      
+      return true;
+    })
+    .sort((a, b) => {
+      // Use the actual date property from your API response
+      const dateA = new Date(a?.userInfo?.created_at || a?.date || 0);
+      const dateB = new Date(b?.userInfo?.created_at || b?.date || 0);
+      
+      if (sortDate === "desc") {
+        return dateB - dateA; // Newest first
+      } else {
+        return dateA - dateB; // Oldest first
+      }
+    });
 
   const itemsPerPage = 10;
   const totalPages = Math.ceil(filteredClients.length / itemsPerPage);
@@ -89,7 +106,7 @@ function Clients() {
               onChange={(e) => setStatusFilter(e.target.value)}
               className="filter-select"
             >
-              <option value="All">Status</option>
+              <option value="All">All</option>
               <option value="Active">Active</option>
               <option value="Inactive">Inactive</option>
             </select>
