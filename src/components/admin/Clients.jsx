@@ -45,17 +45,7 @@ function Clients() {
         email.toLowerCase().includes(searchTerm.toLowerCase())
       );
     })
-    .filter((client) => {
-      if (statusFilter === "All") return true;
-      
-      // Handle both boolean and string status values
-      const isActive = client?.is_verified === true || client?.is_verified === "Active";
-      
-      if (statusFilter === "Active") return isActive;
-      if (statusFilter === "Inactive") return !isActive;
-      
-      return true;
-    })
+    .filter((client) => statusFilter === "All" || client?.status === statusFilter)
     .sort((a, b) => {
       // Use the actual date property from your API response
       const dateA = new Date(a?.userInfo?.created_at || a?.date || 0);
@@ -107,8 +97,11 @@ function Clients() {
               className="filter-select"
             >
               <option value="All">All</option>
-              <option value="Active">Active</option>
-              <option value="Inactive">Inactive</option>
+              <option value="pending">Pending</option>
+              <option value="approved">Approved</option>
+              <option value="rejected">Rejected</option>
+              <option value="blocked">Blocked</option>
+
             </select>
 
             <select
@@ -143,23 +136,15 @@ function Clients() {
                   <td>{client?.username || "N/A"}</td>
                   <td>{client?.email || "N/A"}</td>
                   <td>
-                    <div
-                      className={`status-badge ${
-                        client?.is_verified === true ||
-                        client?.is_verified === "Active"
-                          ? "active"
-                          : "inactive"
-                      }`}
-                    >
-                      {client?.is_verified != null
-                        ? client?.is_verified === true
-                          ? "Active"
-                          : client?.is_verified === false
-                          ? "Inactive"
-                          : client?.is_verified
-                        : "Unknown"}
-                    </div>
-                  </td>
+  <div
+    className={`status-badge ${
+      client.status ? client.status.toLowerCase() : ""
+    }`}
+  >
+    {client.status || "N/A"}
+  </div>
+</td>
+
                   <td>
                     {formatHumanDate(client?.userInfo?.created_at, "date") ||
                       "N/A"}

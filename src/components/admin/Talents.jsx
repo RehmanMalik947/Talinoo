@@ -41,7 +41,7 @@ const navigate=useNavigate();
         .toLowerCase()
         .includes(searchTerm?.toLowerCase())
     )
-    .filter((t) => statusFilter === "All" || t.status === statusFilter);
+    .filter((t) => statusFilter === "All" || t?.user?.status === statusFilter);
 
   const itemsPerPage = 10;
   const totalPages = Math.ceil(filteredTalents.length / itemsPerPage);
@@ -67,9 +67,18 @@ const navigate=useNavigate();
           </div>
 
           <div className="filter">
-            <button value="All" onClick={handleStatusFilter} className="filter-select">All</button>
-            <button value="Active" onClick={handleStatusFilter} className="filter-select" >Active</button>
-            <button value="Inactive" onClick={handleStatusFilter} className="filter-select" >Inactive</button>
+            <select
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+              className="filter-select"
+            >
+              <option value="All">All</option>
+              <option value="pending">Pending</option>
+              <option value="approved">Approved</option>
+              <option value="rejected">Rejected</option>
+              <option value="blocked">Blocked</option>
+
+            </select>
           </div>
         </div>
 
@@ -84,6 +93,7 @@ const navigate=useNavigate();
                   <th>Gender</th>
                   <th>Country</th>
                   <th>Email</th>
+                  <th>Status</th>
                   <th>Posted Date</th>
                   <th style={{color: "#6d028e"}}>Actions</th>
                 </tr>
@@ -95,12 +105,18 @@ const navigate=useNavigate();
                     <td className="talents-client">{talent.gender}</td>
                     <td className="talents-name">{talent.country}</td>
                     <td className="talents-name">{talent?.user?.email}</td>
+                    <td className="talents-name">{talent?.user?.status}</td>
                     
                     <td>
-                      <div className={`status-badge ${talent.status ? talent.status.toLowerCase() : ""}`}>
-                        {talent.status || "N/A"}
-                      </div>
-                    </td>
+  <div
+    className={`status-badge ${
+      talent.status ? talent.status.toLowerCase() : ""
+    }`}
+  >
+    {talent.status || "N/A"}
+  </div>
+</td>
+
                     {/* <td className="talents-date">{talent.date}</td> */}
                     <td className="action-button">
                       <button onClick={() => handleView(talent?.user?.id,talent.profile_photo)}>
