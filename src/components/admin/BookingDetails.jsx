@@ -103,18 +103,27 @@ function ClientDetails() {
         </div>
 
         {/* Booked Slots */}
+        {/* Booked Slots */}
         <div className="slots-section">
           <h3>Booked Slots</h3>
           {booking.bookedSlots?.length > 0 ? (
             <ul>
               {booking.bookedSlots.map((slot, index) => (
-                <li key={index}>{slot}</li>
+                <li key={index}>
+                  <strong>{slot.booking_date}</strong>
+                  <ul>
+                    {slot.booking_times.map((time, tIndex) => (
+                      <li key={tIndex}>{time}</li>
+                    ))}
+                  </ul>
+                </li>
               ))}
             </ul>
           ) : (
             <p>No booked slots available</p>
           )}
         </div>
+
       </div>
     </div>
   );
