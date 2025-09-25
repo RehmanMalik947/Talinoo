@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { CiSearch } from "react-icons/ci";
 import "../../assets/css/clients.css";
 import NavBar from "../Auth/common/NavBar";
-
+import Swal from "sweetalert2";
 import { useNavigate } from "react-router";
 import deleteIcon from "../../../public/delete.svg";
 import viewIcon from "../../../public/view.svg";
@@ -50,7 +50,7 @@ function Clients() {
       // Use the actual date property from your API response
       const dateA = new Date(a?.userInfo?.created_at || a?.date || 0);
       const dateB = new Date(b?.userInfo?.created_at || b?.date || 0);
-      
+
       if (sortDate === "desc") {
         return dateB - dateA; // Newest first
       } else {
@@ -70,8 +70,33 @@ function Clients() {
     navigate(`/clientdetails?id=${client_id}`, { state: { profile_photo } });
   };
 
-  const handleDelete = (id) => console.log("Deleted", id);
+  const handleDelete = async (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "This client will be deleted!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, delete it!"
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          const response = await ApiService.post("admin/softDeleteUser", { userId: id });
 
+          if (response?.data?.success) {
+            Swal.fire("Deleted!", "Client has been deleted.", "success");
+            // remove from UI without reload
+            setClients((prev) => prev.filter((c) => c.id !== id));
+          } else {
+            Swal.fire("Error!", response?.data?.message || "Something went wrong.", "error");
+          }
+        } catch (error) {
+          Swal.fire("Error!", error.message || "API request failed.", "error");
+        }
+      }
+    });
+  };
   return (
     <div className="clients-container">
       <NavBar />
@@ -117,70 +142,69 @@ function Clients() {
         </div>
 
         <div className="table-container">
-        {loading ? ( // ✅ optional: show loading state
+          {loading ? ( // ✅ optional: show loading state
             <p>Loading clients...</p>
           ) :
-          (<table className="clients-table">
-            <thead>
-              <tr>
-                <th>Client</th>
-                <th>Email</th>
-                <th>Status</th>
-                <th>Date</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {paginatedClients.map((client) => (
-                <tr key={client?.id || Math.random()}>
-                  <td>{client?.username || "N/A"}</td>
-                  <td>{client?.email || "N/A"}</td>
-                  <td>
-  <div
-    className={`status-badge ${
-      client.status ? client.status.toLowerCase() : ""
-    }`}
-  >
-    {client.status || "N/A"}
-  </div>
-</td>
-
-                  <td>
-                    {formatHumanDate(client?.userInfo?.created_at, "date") ||
-                      "N/A"}
-                  </td>
-                  <td className="action-button">
-                    <button onClick={() => handleDelete(client?.id)}>
-                      <img src={deleteIcon} alt="Delete" />
-                    </button>
-                    <button
-                      onClick={() =>
-                        handleView(client?.id, client?.userInfo?.profile_photo)
-                      }
-                    >
-                      <img src={viewIcon} alt="View" />
-                    </button>
-                  </td>
-                </tr>
-              ))}
-
-              {paginatedClients.length === 0 && !loading && (
+            (<table className="clients-table">
+              <thead>
                 <tr>
-                  <td colSpan="5" style={{ textAlign: "center" }}>
-                    No clients found
-                  </td>
+                  <th>Client</th>
+                  <th>Email</th>
+                  <th>Status</th>
+                  <th>Date</th>
+                  <th>Action</th>
                 </tr>
-              )}
+              </thead>
+              <tbody>
+                {paginatedClients.map((client) => (
+                  <tr key={client?.id || Math.random()}>
+                    <td>{client?.username || "N/A"}</td>
+                    <td>{client?.email || "N/A"}</td>
+                    <td>
+                      <div
+                        className={`status-badge ${client.status ? client.status.toLowerCase() : ""
+                          }`}
+                      >
+                        {client.status || "N/A"}
+                      </div>
+                    </td>
 
-              {loading && (
-                <tr>
-                  <td colSpan="5" style={{ textAlign: "center" }}>
-                    Loading...
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>)}
+                    <td>
+                      {formatHumanDate(client?.userInfo?.created_at, "date") ||
+                        "N/A"}
+                    </td>
+                    <td className="action-button">
+                      <button onClick={() => handleDelete(client?.id)}>
+                        <img src={deleteIcon} alt="Delete" />
+                      </button>
+                      <button
+                        onClick={() =>
+                          handleView(client?.id, client?.userInfo?.profile_photo)
+                        }
+                      >
+                        <img src={viewIcon} alt="View" />
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+
+                {paginatedClients.length === 0 && !loading && (
+                  <tr>
+                    <td colSpan="5" style={{ textAlign: "center" }}>
+                      No clients found
+                    </td>
+                  </tr>
+                )}
+
+                {loading && (
+                  <tr>
+                    <td colSpan="5" style={{ textAlign: "center" }}>
+                      Loading...
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>)}
         </div>
 
         <div className="pagination-container">
@@ -196,9 +220,8 @@ function Clients() {
             {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
               <button
                 key={page}
-                className={`pagination-number ${
-                  currentPage === page ? "active" : ""
-                }`}
+                className={`pagination-number ${currentPage === page ? "active" : ""
+                  }`}
                 onClick={() => setCurrentPage(page)}
               >
                 {page}

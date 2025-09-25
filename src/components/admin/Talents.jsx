@@ -1,19 +1,26 @@
-import React, { useState ,useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import NavBar from "../Auth/common/NavBar";
-import "../../../src/assets/css/talents.css"
+import "../../../src/assets/css/talents.css";
 import { CiSearch } from "react-icons/ci";
+import deleteIcon from "../../../public/delete.svg";
+import viewIcon from "../../../public/view.svg";
 import ApiService from "../../services/ApiService";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const Talents = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
   const [currentPage, setCurrentPage] = useState(1);
-
   const [talents, setTalents] = useState([]);
-  const [loading, setLoading] = useState(false); // ✅ added missing state
-const navigate=useNavigate();
-  const handleView=(talent_id,profile_photo)=>navigate(`/talentprofile?id=${talent_id}`,{state:{profile:profile_photo}})
+  const [loading, setLoading] = useState(false);
+
+  const navigate = useNavigate();
+
+  const handleView = (talent_id, profile_photo) =>
+    navigate(`/talentprofile?id=${talent_id}`, {
+      state: { profile: profile_photo },
+    });
 
   // 🔹 Fetch talents API
   useEffect(() => {
@@ -31,9 +38,40 @@ const navigate=useNavigate();
     fetchTalents();
   }, []);
 
+  // 🔹 Delete handler with SweetAlert
+  const handleDelete = async (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "This talent will be deleted!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, delete it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          const response = await ApiService.post("admin/softDeleteUser", { userId: id });
 
+          if (response?.data?.success) {
+            Swal.fire("Deleted!", "Talent has been deleted.", "success");
+            setTalents((prev) => prev.filter((t) => t.user?.id !== id));
+          } else {
+            Swal.fire(
+              "Error!",
+              response?.data?.message || "Something went wrong.",
+              "error"
+            );
+          }
+        } catch (error) {
+          Swal.fire("Error!", error.message || "API request failed.", "error");
+        }
+      }
+    });
+  };
+
+  // 🔹 Filters
   const handleSearch = (e) => setSearchTerm(e.target.value);
-  const handleStatusFilter = (e) => setStatusFilter(e.target.value);
 
   const filteredTalents = talents
     .filter((t) =>
@@ -46,7 +84,10 @@ const navigate=useNavigate();
   const itemsPerPage = 10;
   const totalPages = Math.ceil(filteredTalents.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const paginatedTalents = filteredTalents.slice(startIndex, startIndex + itemsPerPage);
+  const paginatedTalents = filteredTalents.slice(
+    startIndex,
+    startIndex + itemsPerPage
+  );
 
   return (
     <div className="talents-container">
@@ -77,13 +118,12 @@ const navigate=useNavigate();
               <option value="approved">Approved</option>
               <option value="rejected">Rejected</option>
               <option value="blocked">Blocked</option>
-
             </select>
           </div>
         </div>
 
         <div className="table-container">
-          {loading ? ( // ✅ optional: show loading state
+          {loading ? (
             <p>Loading talents...</p>
           ) : (
             <table className="talents-table">
@@ -95,7 +135,7 @@ const navigate=useNavigate();
                   <th>Email</th>
                   <th>Status</th>
                   <th>Posted Date</th>
-                  <th style={{color: "#6d028e"}}>Actions</th>
+                  <th style={{ color: "#6d028e" }}>Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -106,21 +146,25 @@ const navigate=useNavigate();
                     <td className="talents-name">{talent.country}</td>
                     <td className="talents-name">{talent?.user?.email}</td>
                     <td className="talents-name">{talent?.user?.status}</td>
-                    
                     <td>
-  <div
-    className={`status-badge ${
-      talent.status ? talent.status.toLowerCase() : ""
-    }`}
-  >
-    {talent.status || "N/A"}
-  </div>
-</td>
+                      <div
+                        className={`status-badge ${talent.status ? talent.status.toLowerCase() : ""
+                          }`}
+                      >
+                        {talent.status || "N/A"}
+                      </div>
+                    </td>
 
-                    {/* <td className="talents-date">{talent.date}</td> */}
                     <td className="action-button">
-                      <button onClick={() => handleView(talent?.user?.id,talent.profile_photo)}>
-                        View
+                      <button onClick={() => handleDelete(talent?.user?.id)}>
+                        <img src={deleteIcon} alt="Delete" />
+                      </button>
+                      <button
+                        onClick={() =>
+                          handleView(talent?.user?.id, talent.profile_photo)
+                        }
+                      >
+                        <img src={viewIcon} alt="View" />
                       </button>
                     </td>
                   </tr>
@@ -142,7 +186,8 @@ const navigate=useNavigate();
             {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
               <button
                 key={page}
-                className={`pagination-number ${currentPage === page ? "active" : ""}`}
+                className={`pagination-number ${currentPage === page ? "active" : ""
+                  }`}
                 onClick={() => setCurrentPage(page)}
               >
                 {page}
@@ -151,7 +196,9 @@ const navigate=useNavigate();
           </div>
           <button
             className="pagination-btn"
-            onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+            onClick={() =>
+              setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+            }
             disabled={currentPage === totalPages}
           >
             &#62;
