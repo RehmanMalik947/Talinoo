@@ -4,6 +4,7 @@ import "../../../src/assets/css/talents.css";
 import { CiSearch } from "react-icons/ci";
 import deleteIcon from "../../../public/delete.svg";
 import viewIcon from "../../../public/view.svg";
+import ReStore from "../../../public/reset-14415.svg";
 import ApiService from "../../services/ApiService";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
@@ -23,8 +24,7 @@ const Talents = () => {
     });
 
   // 🔹 Fetch talents API
-  useEffect(() => {
-    const fetchTalents = async () => {
+      const fetchTalents = async () => {
       try {
         setLoading(true);
         const response = await ApiService.post("admin/talent"); // ✅ API endpoint
@@ -35,6 +35,8 @@ const Talents = () => {
         setLoading(false);
       }
     };
+  useEffect(() => {
+
     fetchTalents();
   }, []);
 
@@ -54,9 +56,11 @@ const Talents = () => {
           const response = await ApiService.post("admin/softDeleteUser", { userId: id });
 
           if (response?.data?.success) {
+            fetchTalents();
             Swal.fire("Deleted!", "Talent has been deleted.", "success");
             setTalents((prev) => prev.filter((t) => t.user?.id !== id));
           } else {
+            fetchTalents();
             Swal.fire(
               "Error!",
               response?.data?.message || "Something went wrong.",
@@ -157,7 +161,13 @@ const Talents = () => {
 
                     <td className="action-button">
                       <button onClick={() => handleDelete(talent?.user?.id)}>
-                        <img src={deleteIcon} alt="Delete" />
+                        {!talent?.user?.deleted_at ? (
+                          <img src={deleteIcon} alt="Delete" />
+                        ) : (
+                          <img src={ReStore} width={20} alt="ReStore" />
+                        )}
+
+                        
                       </button>
                       <button
                         onClick={() =>

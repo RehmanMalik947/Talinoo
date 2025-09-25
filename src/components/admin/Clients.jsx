@@ -6,6 +6,7 @@ import Swal from "sweetalert2";
 import { useNavigate } from "react-router";
 import deleteIcon from "../../../public/delete.svg";
 import viewIcon from "../../../public/view.svg";
+import ReStore from "../../../public/reset-14415.svg";
 import { formatHumanDate } from "../../helpers/Helper";
 import ApiService from "../../services/ApiService"; // Make sure your ApiService is correctly imported
 
@@ -20,8 +21,7 @@ function Clients() {
   const navigate = useNavigate();
 
   // Fetch clients from API
-  useEffect(() => {
-    const fetchClients = async () => {
+      const fetchClients = async () => {
       try {
         setLoading(true);
         const response = await ApiService.post("admin/client"); // Replace with your API endpoint
@@ -32,6 +32,8 @@ function Clients() {
         setLoading(false);
       }
     };
+  useEffect(() => {
+
     fetchClients();
   }, []);
 
@@ -87,8 +89,11 @@ function Clients() {
           if (response?.data?.success) {
             Swal.fire("Deleted!", "Client has been deleted.", "success");
             // remove from UI without reload
+            fetchClients();
             setClients((prev) => prev.filter((c) => c.id !== id));
           } else {
+            fetchClients();
+
             Swal.fire("Error!", response?.data?.message || "Something went wrong.", "error");
           }
         } catch (error) {
@@ -175,7 +180,12 @@ function Clients() {
                     </td>
                     <td className="action-button">
                       <button onClick={() => handleDelete(client?.id)}>
-                        <img src={deleteIcon} alt="Delete" />
+                         {!client?.deleted_at ? (
+                            <img src={deleteIcon} alt="Delete" />
+                             ) : (
+                            <img src={ReStore} width={20} alt="ReStore" />
+                        )}
+
                       </button>
                       <button
                         onClick={() =>
