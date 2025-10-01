@@ -17,6 +17,7 @@ import ApiService from "../../services/ApiService";
 
 function TalentProfile() {
   const location = useLocation();
+  const [selectedMedia, setSelectedMedia] = useState(null);
   const queryParams = new URLSearchParams(location.search);
   const userId = queryParams.get("id"); // Get id from URL
   const [activeTab, setActiveTab] = useState("overview");
@@ -358,11 +359,11 @@ function TalentProfile() {
                           {detailsUser?.bookings?.length > 0 ? (
                             detailsUser.bookings.map((booking, index) => (
                               <tr key={index}>
-                                <td>{booking?.client?.username || "N/A"}</td>
-                                <td className="link">
+                                <td className="px-4 py-2">{booking?.client?.username || "N/A"}</td>
+                                <td className="link px-4 py-2">
                                   {booking?.talent?.username || "N/A"}
                                 </td>
-                                <td>
+                                <td className="px-4 py-2">
                                   {booking.slots?.length > 0 ? (
                                     <ul style={{ margin: 0, paddingLeft: "15px" }}>
                                       {booking.slots.map((slot) => (
@@ -375,10 +376,10 @@ function TalentProfile() {
                                     "No Slots"
                                   )}
                                 </td>
-                                <td>
+                                <td className="px-4 py-2">
                                   {booking.total_price} {booking.currency}
                                 </td>
-                                <td>{booking.status}</td>
+                                <td className="px-4 py-2">{booking.status}</td>
                               </tr>
                             ))
                           ) : (
@@ -394,100 +395,112 @@ function TalentProfile() {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                     <h2 className="text-lg font-semibold mb-3 pt-5">Media List</h2>
-                    <div className="overflow-x-auto">
-                      <table className="min-w-full border border-gray-200 rounded-lg">
-                        <thead className="bg-gray-100 text-gray-700 text-sm">
-                          <tr>
-                            <th className="px-4 py-2 text-left">Title</th>
-                            <th className="px-4 py-2 text-left">Description</th>
-                            <th className="px-4 py-2 text-left">Type</th>
-                            <th className="px-4 py-2 text-left">Preview</th>
-                            <th className="px-4 py-2 text-left">Likes</th>
-                            <th className="px-4 py-2 text-left">Shares</th>
-                            <th className="px-4 py-2 text-left">Action</th>
-                          </tr>
-                        </thead>
-                        <tbody className="text-sm">
-                          {detailsUser?.mediaItems?.length > 0 ? (
-                            detailsUser.mediaItems.map((media, index) => (
-                              <tr key={index} className="border-t hover:bg-gray-50 transition">
-                                {/* Title */}
-                                <td className="px-4 py-2">{media.title}</td>
-
-                                {/* Description */}
-                                <td className="px-4 py-2">{media.description}</td>
-
-                                {/* Type */}
-                                <td className="px-4 py-2 capitalize">{media.type}</td>
-
-                                {/* Preview: show thumbnail for image, small video player for video */}
-                                <td className="px-4 py-2">
-                                  {media.type === "image" ? (
-                                    <img
-                                      src={media.fileUrl}
-                                      alt={media.title}
-                                      className="w-16 h-16 object-cover rounded-md border"
-                                    />
-                                  ) : (
-                                    <video
-                                      src={media.fileUrl}
-                                      className="w-20 h-16 rounded-md border"
-                                      controls
-                                    />
-                                  )}
-                                </td>
-
-                                {/* Likes */}
-                                <td className="px-4 py-2">{media.likes}</td>
-
-                                {/* Shares */}
-                                <td className="px-4 py-2">{media.shares}</td>
-
-                                {/* Action */}
-                                <td className="px-4 py-2">
-                                  <button
-                                    onClick={() => navigate(`/media/${media.id}`)}
-                                    className="px-3 py-1 bg-blue-600 text-white text-xs rounded-md hover:bg-blue-700 transition"
-                                  >
-                                    View
-                                  </button>
+                    <div className="relative">
+                      {/* Table Section */}
+                      <div className="overflow-x-auto">
+                        <table className="min-w-full border border-gray-200 rounded-lg">
+                          <thead className="bg-gray-100 text-gray-700 text-sm">
+                            <tr>
+                              <th className="px-4 py-2 text-left">Title</th>
+                              <th className="px-4 py-2 text-left">Description</th>
+                              <th className="px-4 py-2 text-left">Type</th>
+                              <th className="px-4 py-2 text-left">Preview</th>
+                              <th className="px-4 py-2 text-left">Likes</th>
+                              <th className="px-4 py-2 text-left">Shares</th>
+                              <th className="px-4 py-2 text-left">Action</th>
+                            </tr>
+                          </thead>
+                          <tbody className="text-sm">
+                            {detailsUser?.mediaItems?.length > 0 ? (
+                              detailsUser.mediaItems.map((media, index) => (
+                                <tr
+                                  key={index}
+                                  className="border-t hover:bg-gray-50 transition"
+                                >
+                                  <td className="px-4 py-2">{media.title}</td>
+                                  <td className="px-4 py-2">{media.description}</td>
+                                  <td className="px-4 py-2 capitalize">{media.type}</td>
+                                  <td className="px-4 py-2">
+                                    {media.type === "image" ? (
+                                      <img
+                                        src={media.fileUrl}
+                                        alt={media.title}
+                                        className="w-16 h-16 object-cover rounded-md border"
+                                      />
+                                    ) : (
+                                      <video
+                                        src={media.fileUrl}
+                                        className="w-20 h-16 rounded-md border"
+                                        controls
+                                      />
+                                    )}
+                                  </td>
+                                  <td className="px-4 py-2">{media.likes}</td>
+                                  <td className="px-4 py-2">{media.shares}</td>
+                                  <td className="px-4 py-2">
+                                    <button
+                                      onClick={() => setSelectedMedia(media)}
+                                      className="px-3 py-1 bg-blue-600 text-white text-xs rounded-md hover:bg-blue-700 transition"
+                                    >
+                                      View
+                                    </button>
+                                  </td>
+                                </tr>
+                              ))
+                            ) : (
+                              <tr>
+                                <td
+                                  colSpan="7"
+                                  className="px-4 py-3 text-center text-gray-500 italic"
+                                >
+                                  No Media Found
                                 </td>
                               </tr>
-                            ))
-                          ) : (
-                            <tr>
-                              <td colSpan="7" className="px-4 py-3 text-center text-gray-500 italic">
-                                No Media Found
-                              </td>
-                            </tr>
-                          )}
-                        </tbody>
-                      </table>
+                            )}
+                          </tbody>
+                        </table>
+                      </div>
+
+                      {/* Fullscreen Modal Overlay */}
+                      {selectedMedia && (
+                        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
+                          <div className="relative w-11/12 md:w-3/4 lg:w-1/2 bg-white rounded-xl shadow-lg p-4">
+                            {/* Close Button */}
+                            <button
+                              onClick={() => setSelectedMedia(null)}
+                              className="absolute top-2 right-2 text-gray-600 hover:text-black text-xl"
+                            >
+                              ✕
+                            </button>
+
+                            {/* Media Content */}
+                            <h2 className="text-lg font-semibold mb-2">
+                              {selectedMedia.title}
+                            </h2>
+                            
+
+                            {selectedMedia.type === "image" ? (
+                              <img
+                                src={selectedMedia.fileUrl}
+                                alt={selectedMedia.title}
+                                className="w-full max-h-[70vh] object-contain rounded-md"
+                              />
+                            ) : (
+                              <video
+                                src={selectedMedia.fileUrl}
+                                controls
+                                autoPlay
+                                className="w-full max-h-[70vh] rounded-md"
+                              />
+                            )}
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
               </div>
-
-              
               <div className="reviews-section">
                 <h2>Reviews</h2>
 
