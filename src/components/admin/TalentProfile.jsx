@@ -156,25 +156,50 @@ function TalentProfile() {
   const handleReportUser = () => {
     console.log("HandleReportUser clicked");
   };
-const handleStatusUpdate = async (newStatus) => {
-  if (!detailsUser?.id) return;
+  const handleStatusUpdate = async (newStatus) => {
+    if (!detailsUser?.id) return;
 
-  // Show SweetAlert confirmation
-  const result = await Swal.fire({
-    title: `Are you sure you want to ${newStatus}?`,
-    text: "This action cannot be undone.",
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonColor: "#3085d6",
-    cancelButtonColor: "#d33",
-    confirmButtonText: "Yes, proceed!",
-  });
+    let reason = "";
 
-  if (result.isConfirmed) {
+    if (newStatus === "rejected") {
+      // Ask for reason if rejecting
+      const { value: rejectReason } = await Swal.fire({
+        title: "Reason for Rejection",
+        input: "textarea",
+        inputPlaceholder: "Enter reason...",
+        inputAttributes: {
+          "aria-label": "Enter reason for rejection",
+        },
+        showCancelButton: true,
+        confirmButtonText: "Submit",
+        cancelButtonText: "Cancel",
+      });
+
+      if (!rejectReason) {
+        Swal.fire("Cancelled", "You must provide a reason to reject.", "info");
+        return;
+      }
+      reason = rejectReason;
+    } else {
+      // Normal confirmation for approve/block
+      const result = await Swal.fire({
+        title: `Are you sure you want to ${newStatus}?`,
+        text: "This action cannot be undone.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, proceed!",
+      });
+
+      if (!result.isConfirmed) return;
+    }
+
     try {
       const response = await ApiService.post("admin/updateUserStatus", {
         userId: detailsUser.id,
         status: newStatus,
+        reason: reason, // send reason if rejected, else empty
       });
 
       if (response.data.status) {
@@ -184,7 +209,6 @@ const handleStatusUpdate = async (newStatus) => {
           text: response.data.message,
         });
 
-        // Update local state immediately
         setdetailsUser({ ...detailsUser, status: newStatus });
       }
     } catch (error) {
@@ -195,8 +219,7 @@ const handleStatusUpdate = async (newStatus) => {
         text: "Failed to update status",
       });
     }
-  }
-};
+  };
   return (
     <div className="talent-details-container">
       <NavBar />
@@ -223,7 +246,7 @@ const handleStatusUpdate = async (newStatus) => {
               <p className="talent-name">
                 {talentData?.name
                   ? talentData.name.charAt(0).toUpperCase() +
-                    talentData.name.slice(1)
+                  talentData.name.slice(1)
                   : ""}
               </p>
               <p className="talent-title">{talentData.talentTitle}</p>
@@ -241,27 +264,24 @@ const handleStatusUpdate = async (newStatus) => {
           <button className="report-button" onClick={handleReportUser}>
             Report Talent
           </button>
-           <div className="status-buttons" style={{ marginTop: "10px" }}>
+          <div className="status-buttons" style={{ marginTop: "10px" }}>
             <button
-              className={`status-btn approve ${
-                detailsUser?.status === "approved" ? "active" : ""
-              }`}
+              className={`status-btn approve ${detailsUser?.status === "approved" ? "active" : ""
+                }`}
               onClick={() => handleStatusUpdate("approved")}
             >
               Approve
             </button>
             <button
-              className={`status-btn reject ${
-                detailsUser?.status === "rejected" ? "active" : ""
-              }`}
+              className={`status-btn reject ${detailsUser?.status === "rejected" ? "active" : ""
+                }`}
               onClick={() => handleStatusUpdate("rejected")}
             >
               Reject
             </button>
             <button
-              className={`status-btn blocked ${
-                detailsUser?.status === "blocked" ? "active" : ""
-              }`}
+              className={`status-btn blocked ${detailsUser?.status === "blocked" ? "active" : ""
+                }`}
               onClick={() => handleStatusUpdate("blocked")}
             >
               Block
@@ -280,67 +300,194 @@ const handleStatusUpdate = async (newStatus) => {
               </div> */}
 
               {/* SKills */}
-              <div className="skills-section">
-                <h2 className="talent-skills">Skills</h2>
-                <div className="skills">
-                  {detailsUser?.userInfo?.skills?.length > 0 ? (
-                    detailsUser?.userInfo?.skills?.map((skill, index) => (
-                      <p key={index} className="skill">
-                        {skill.name}
+              <div className="talent-profile p-4 bg-white rounded-2xl shadow-md mb-6">
+                {/* <h2 className="text-xl font-semibold mb-4">Talent Profile</h2> */}
+
+                <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
+                  {/* Profile Details - 4 columns */}
+                  <div className="md:col-span-4">
+                    <div className="space-y-2">
+                      <p><span className="font-medium">Name:</span> {detailsUser?.userInfo?.dataValues?.full_name}</p>
+                      <p><span className="font-medium">Gender:</span> {detailsUser?.userInfo?.dataValues?.gender}</p>
+                      <p><span className="font-medium">Age:</span> {detailsUser?.userInfo?.dataValues?.age}</p>
+                      <p><span className="font-medium">Country:</span> {detailsUser?.userInfo?.dataValues?.country}</p>
+                      <p><span className="font-medium">Email:</span> {detailsUser?.email}</p>
+                      <p><span className="font-medium">Phone:</span> {detailsUser?.phone_number}</p>
+                      <p>
+                        <span className="font-medium">Hourly Rate:</span>{" "}
+                        {detailsUser?.userInfo?.dataValues?.hourly_rate}{" "}
+                        {detailsUser?.userInfo?.dataValues?.currency}
                       </p>
-                    ))
-                  ) : (
-                    <p className="skill">No skills</p>
-                  )}
+                      <p>
+                        <span className="font-medium">Rating:</span>{" "}
+                        ⭐ {detailsUser?.rating} ({detailsUser?.totalReviews} reviews)
+                      </p>
+                      <p><span className="font-medium">Skills:</span> <div className="flex flex-wrap gap-2">
+                        {detailsUser?.userInfo?.skills?.length > 0 ? (
+                          detailsUser?.userInfo?.skills?.map((skill, index) => (
+                            <span
+                              key={index}
+                              className="px-3 py-1 bg-blue-100 text-blue-600 rounded-full text-sm font-medium"
+                            >
+                              {skill.name}
+                            </span>
+                          ))
+                        ) : (
+                          <p className="text-gray-500 italic">No skills added</p>
+                        )}
+                      </div></p>
+
+                    </div>
+                  </div>
+
+                  {/* Booking History - 8 columns */}
+                  <div className="md:col-span-8">
+                    <h2 className="text-lg font-semibold mb-3">Booking History</h2>
+                    <div className="overflow-x-auto">
+                      <table className="min-w-full border border-gray-200 rounded-lg">
+                        <thead className="bg-gray-100 text-gray-700 text-sm">
+                          <tr>
+                            <th className="px-4 py-2 text-left">Client</th>
+                            <th className="px-4 py-2 text-left">Talent</th>
+                            <th className="px-4 py-2 text-left">Slots</th>
+                            <th className="px-4 py-2 text-left">Earning</th>
+                            <th className="px-4 py-2 text-left">Status</th>
+                          </tr>
+                        </thead>
+                        <tbody className="text-sm">
+                          {detailsUser?.bookings?.length > 0 ? (
+                            detailsUser.bookings.map((booking, index) => (
+                              <tr key={index}>
+                                <td>{booking?.client?.username || "N/A"}</td>
+                                <td className="link">
+                                  {booking?.talent?.username || "N/A"}
+                                </td>
+                                <td>
+                                  {booking.slots?.length > 0 ? (
+                                    <ul style={{ margin: 0, paddingLeft: "15px" }}>
+                                      {booking.slots.map((slot) => (
+                                        <li key={slot.id}>
+                                          {slot.slot_date} ({slot.slot})
+                                        </li>
+                                      ))}
+                                    </ul>
+                                  ) : (
+                                    "No Slots"
+                                  )}
+                                </td>
+                                <td>
+                                  {booking.total_price} {booking.currency}
+                                </td>
+                                <td>{booking.status}</td>
+                              </tr>
+                            ))
+                          ) : (
+                            <tr>
+                              <td colSpan="5" style={{ textAlign: "center" }}>
+                                No Bookings Found
+                              </td>
+                            </tr>
+                          )}
+                        </tbody>
+                      </table>
+                    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    <h2 className="text-lg font-semibold mb-3 pt-5">Media List</h2>
+                    <div className="overflow-x-auto">
+                      <table className="min-w-full border border-gray-200 rounded-lg">
+                        <thead className="bg-gray-100 text-gray-700 text-sm">
+                          <tr>
+                            <th className="px-4 py-2 text-left">Title</th>
+                            <th className="px-4 py-2 text-left">Description</th>
+                            <th className="px-4 py-2 text-left">Type</th>
+                            <th className="px-4 py-2 text-left">Preview</th>
+                            <th className="px-4 py-2 text-left">Likes</th>
+                            <th className="px-4 py-2 text-left">Shares</th>
+                            <th className="px-4 py-2 text-left">Action</th>
+                          </tr>
+                        </thead>
+                        <tbody className="text-sm">
+                          {detailsUser?.mediaItems?.length > 0 ? (
+                            detailsUser.mediaItems.map((media, index) => (
+                              <tr key={index} className="border-t hover:bg-gray-50 transition">
+                                {/* Title */}
+                                <td className="px-4 py-2">{media.title}</td>
+
+                                {/* Description */}
+                                <td className="px-4 py-2">{media.description}</td>
+
+                                {/* Type */}
+                                <td className="px-4 py-2 capitalize">{media.type}</td>
+
+                                {/* Preview: show thumbnail for image, small video player for video */}
+                                <td className="px-4 py-2">
+                                  {media.type === "image" ? (
+                                    <img
+                                      src={media.fileUrl}
+                                      alt={media.title}
+                                      className="w-16 h-16 object-cover rounded-md border"
+                                    />
+                                  ) : (
+                                    <video
+                                      src={media.fileUrl}
+                                      className="w-20 h-16 rounded-md border"
+                                      controls
+                                    />
+                                  )}
+                                </td>
+
+                                {/* Likes */}
+                                <td className="px-4 py-2">{media.likes}</td>
+
+                                {/* Shares */}
+                                <td className="px-4 py-2">{media.shares}</td>
+
+                                {/* Action */}
+                                <td className="px-4 py-2">
+                                  <button
+                                    onClick={() => navigate(`/media/${media.id}`)}
+                                    className="px-3 py-1 bg-blue-600 text-white text-xs rounded-md hover:bg-blue-700 transition"
+                                  >
+                                    View
+                                  </button>
+                                </td>
+                              </tr>
+                            ))
+                          ) : (
+                            <tr>
+                              <td colSpan="7" className="px-4 py-3 text-center text-gray-500 italic">
+                                No Media Found
+                              </td>
+                            </tr>
+                          )}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
                 </div>
               </div>
 
-              {/* Portfolio Section */}
-              <h2 className="portfolio-title">Portfolio</h2>
-              <div className="portfolio-section">
-                <div className="arrow">
-                  <HiOutlineArrowSmLeft />
-                </div>
-                <div className="Slider">
-                  <Slider {...settings}>
-                    {detailsUser?.mediaItems?.length > 0 ? (
-                      detailsUser.mediaItems.map((media, index) => {
-                        const fileUrl = media.fileUrl;
-                        const extension = fileUrl
-                          ?.split(".")
-                          .pop()
-                          ?.toLowerCase();
-
-                        const isVideo = ["mp4", "mov", "webm", "ogg"].includes(
-                          extension
-                        );
-
-                        return (
-                          <div>
-                            {isVideo ? (
-                              <video src={fileUrl} className="empinfo-img" />
-                            ) : (
-                              <img
-                                src={fileUrl}
-                                alt={`media-${index}`}
-                                className="empinfo-img"
-                              />
-                            )}
-                          </div>
-                        );
-                      })
-                    ) : (
-                      <div>
-                        <img src={PortfolioImage} />
-                      </div>
-                    )}
-                  </Slider>
-                </div>
-                <div className="arrow">
-                  <HiOutlineArrowSmRight />
-                </div>{" "}
-              </div>
-              {/* Reviews */}
+              
               <div className="reviews-section">
                 <h2>Reviews</h2>
 
@@ -400,9 +547,8 @@ const handleStatusUpdate = async (newStatus) => {
 
                         <div className="review-actions">
                           <button
-                            className={`like-button ${
-                              review.userLiked ? "active" : ""
-                            }`}
+                            className={`like-button ${review.userLiked ? "active" : ""
+                              }`}
                           >
                             <BiLike /> {review.likesCount}
                           </button>
@@ -424,56 +570,7 @@ const handleStatusUpdate = async (newStatus) => {
           )}
         </div>
 
-        {/* Booking History Section */}
-        <h2 className="section-heading">Booking History</h2>
-        <div className="booking-history">
-          <table className="booking-table">
-            <thead>
-              <tr>
-                <th>Client</th>
-                <th>Talent</th>
-                <th>Slots</th>
-                <th>Earning</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {detailsUser?.bookings?.length > 0 ? (
-                detailsUser.bookings.map((booking, index) => (
-                  <tr key={index}>
-                    <td>{booking?.client?.username || "N/A"}</td>
-                    <td className="link">
-                      {booking?.talent?.username || "N/A"}
-                    </td>
-                    <td>
-                      {booking.slots?.length > 0 ? (
-                        <ul style={{ margin: 0, paddingLeft: "15px" }}>
-                          {booking.slots.map((slot) => (
-                            <li key={slot.id}>
-                              {slot.slot_date} ({slot.slot})
-                            </li>
-                          ))}
-                        </ul>
-                      ) : (
-                        "No Slots"
-                      )}
-                    </td>
-                    <td>
-                      {booking.total_price} {booking.currency}
-                    </td>
-                    <td>{booking.status}</td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan="5" style={{ textAlign: "center" }}>
-                    No Bookings Found
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
+
 
         <div className="verification">
           <p className="block">Block User</p>
