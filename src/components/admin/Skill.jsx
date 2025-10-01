@@ -25,15 +25,15 @@ function Clients() {
 
   const navigate = useNavigate();
 
-  // Fetch clients
+  // Fetch clients/skills
   const fetchClients = async () => {
     try {
       setLoading(true);
-      const response = await ApiService.get("admin/skill-All"); // Fixed endpoint - was "admin/skill-All"
-      setClients(response?.data?.data?.skills || response?.data?.data || []); // Fixed data path
+      const response = await ApiService.get("admin/skill-All");
+      setClients(response?.data?.data?.skills || response?.data?.data || []);
     } catch (error) {
-      console.error("Error fetching clients:", error);
-      Swal.fire("Error!", "Failed to fetch clients", "error");
+      console.error("Error fetching skills:", error);
+      Swal.fire("Error!", "Failed to fetch skills", "error");
     } finally {
       setLoading(false);
     }
@@ -46,17 +46,13 @@ function Clients() {
   // Filter + sort
   const filteredClients = clients
     .filter((client) => {
-      const name = client?.name || client?.username || "";
-      const email = client?.email || "";
-      return (
-        name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        email.toLowerCase().includes(searchTerm.toLowerCase())
-      );
+      const name = client?.name || "";
+      return name.toLowerCase().includes(searchTerm.toLowerCase());
     })
     .filter((client) => statusFilter === "All" || client?.status === statusFilter)
     .sort((a, b) => {
-      const dateA = new Date(a?.createdAt || a?.userInfo?.created_at || a?.date || 0);
-      const dateB = new Date(b?.createdAt || b?.userInfo?.created_at || b?.date || 0);
+      const dateA = new Date(a?.createdAt || 0);
+      const dateB = new Date(b?.createdAt || 0);
       return sortDate === "desc" ? dateB - dateA : dateA - dateB;
     });
 
@@ -65,7 +61,6 @@ function Clients() {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const paginatedClients = filteredClients.slice(startIndex, startIndex + itemsPerPage);
 
-  // Reset current page when filters change
   useEffect(() => {
     setCurrentPage(1);
   }, [searchTerm, statusFilter]);
@@ -75,7 +70,7 @@ function Clients() {
     if (client) {
       setEditClient(client);
       setFormData({
-        name: client.name || client.username || "",
+        name: client.name || "",
         status: client.status || "pending"
       });
     } else {
@@ -91,31 +86,27 @@ function Clients() {
     try {
       let response;
       if (editClient) {
-        response = await ApiService.put(`admin/clients/${editClient.id}`, formData); // Fixed to use PUT for update
+        response = await ApiService.put(`admin/skill-update/${editClient.id}`, formData);
       } else {
-        response = await ApiService.post("admin/clients", formData);
+        response = await ApiService.post("admin/skill-create", formData);
       }
 
       if (response?.data?.success) {
-        Swal.fire("Success!", editClient ? "Client updated" : "Client created", "success");
+        Swal.fire("Success!", editClient ? "Skill updated" : "Skill created", "success");
         setShowModal(false);
         fetchClients();
       } else {
-        Swal.fire("Error!", response?.data?.message || "Something went wrong.", "error");
+        Swal.fire("Success!", response?.data?.message || "Something went wrong.", "success");
       }
     } catch (err) {
       Swal.fire("Error!", err.response?.data?.message || err.message || "Something went wrong", "error");
     }
   };
 
-  const handleView = (client_id, profile_photo) => {
-    navigate(`/clientdetails?id=${client_id}`, { state: { profile_photo } });
-  };
-
   const handleDelete = async (id) => {
     Swal.fire({
       title: "Are you sure?",
-      text: "This client will be deleted!",
+      text: "This skill will be deleted!",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#d33",
@@ -124,12 +115,12 @@ function Clients() {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          const response = await ApiService.delete(`admin/clients/${id}`); // Fixed to use DELETE method
+          const response = await ApiService.delete(`admin/skill-remove/${id}`);
           if (response?.data?.success) {
-            Swal.fire("Deleted!", "Client has been deleted.", "success");
+            Swal.fire("Deleted!", "Skill has been deleted.", "success");
             fetchClients();
           } else {
-            Swal.fire("Error!", response?.data?.message || "Something went wrong.", "error");
+            Swal.fire("Success!", response?.data?.message || "Something went wrong.", "success");
           }
         } catch (error) {
           Swal.fire("Error!", error.response?.data?.message || error.message || "API request failed.", "error");
@@ -143,10 +134,7 @@ function Clients() {
       <NavBar />
       <div className="main-content">
         <div className="clients-title d-flex justify-content-between align-items-center">
-          <span>Clients</span>
-          <button className="btn btn-primary" onClick={() => openModal()}>
-            + Add Client
-          </button>
+          <span>Skills</span>
         </div>
 
         {/* Search + Filters */}
@@ -155,48 +143,30 @@ function Clients() {
             <CiSearch className="search-icon" />
             <input
               type="text"
-              placeholder="Search clients"
+              placeholder="Search skills"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="search-input"
             />
           </div>
-          <div className="filter">
-            <select
-              value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value)}
-              className="filter-select"
-            >
-              <option value="All">All</option>
-              <option value="pending">Pending</option>
-              <option value="approved">Approved</option>
-              <option value="rejected">Rejected</option>
-              <option value="blocked">Blocked</option>
-            </select>
-            <select
-              value={sortDate}
-              onChange={(e) => setSortDate(e.target.value)}
-              className="filter-select"
-            >
-              <option value="asc">Ascending</option>
-              <option value="desc">Descending</option>
-            </select>
-          </div>
-        </div>
 
+        </div>
+        <button className="btn btn-success float-end p-2" onClick={() => openModal()}>
+          + Add Skill
+        </button>
         {/* Table */}
         <div className="table-container">
           {loading ? (
-            <p>Loading clients...</p>
+            <p>Loading skills...</p>
           ) : (
             <table className="clients-table table table-bordered">
               <thead>
                 <tr>
                   <th>Id</th>
-                  <th>Name</th>
-                  <th>Status</th>
-                  <th>CreatedAt</th>
-                  <th>UpdatedAt</th>
+                  <th>Skill Name</th>
+
+                  <th>Created At</th>
+                  <th>Updated At</th>
                   <th>Action</th>
                 </tr>
               </thead>
@@ -204,42 +174,31 @@ function Clients() {
                 {paginatedClients.map((client) => (
                   <tr key={client?.id}>
                     <td>#{client?.id}</td>
-                    <td>{client?.name || client?.username || "N/A"}</td>
-                    <td>
-                      <span className={`status-badge status-${client?.status || "unknown"}`}>
-                        {client?.status || "N/A"}
-                      </span>
-                    </td>
-                    <td>{formatHumanDate(client?.createdAt || client?.userInfo?.created_at, "date") || "N/A"}</td>
-                    <td>{formatHumanDate(client?.updatedAt || client?.userInfo?.updated_at, "date") || "N/A"}</td>
+                    <td>{client?.name || "N/A"}</td>
+
+                    <td>{formatHumanDate(client?.createdAt, "date") || "N/A"}</td>
+                    <td>{formatHumanDate(client?.updatedAt, "date") || "N/A"}</td>
                     <td className="action-button">
                       <button
-                        className="btn btn-sm btn-warning me-2"
+                        className=" me-2"
                         onClick={() => openModal(client)}
                         title="Edit"
                       >
                         <img src={editIcon} alt="Edit" width={20} />
                       </button>
                       <button
-                        className="btn btn-sm btn-danger me-2"
+                        className=" me-2"
                         onClick={() => handleDelete(client?.id)}
                         title="Delete"
                       >
                         <img src={deleteIcon} alt="Delete" width={20} />
-                      </button>
-                      <button
-                        className="btn btn-sm btn-info"
-                        onClick={() => handleView(client?.id, client?.profile_photo)}
-                        title="View"
-                      >
-                        View
                       </button>
                     </td>
                   </tr>
                 ))}
                 {paginatedClients.length === 0 && (
                   <tr>
-                    <td colSpan="6" className="text-center">No clients found</td>
+                    <td colSpan="6" className="text-center">No skills found</td>
                   </tr>
                 )}
               </tbody>
@@ -279,20 +238,22 @@ function Clients() {
         )}
       </div>
 
+      {/* Modal */}
       {showModal && (
         <div className="modal-overlay">
-          <div className="modal-content-custom">
+          <div className="modal-content-custom animate__animated animate__fadeInDown">
             <div className="modal-header">
-              <h5 className="modal-title">{editClient ? "Edit Client" : "Add Client"}</h5>
+              <h5 className="modal-title">{editClient ? "Edit Skill" : "Add Skill"}</h5>
               <button type="button" className="close-btn" onClick={() => setShowModal(false)}>×</button>
             </div>
             <form onSubmit={handleSubmit}>
               <div className="modal-body">
                 <div className="mb-3">
-                  <label className="form-label">Name</label>
+                  <label className="form-label">Skill Name</label>
                   <input
                     type="text"
                     className="form-control"
+                    placeholder="Enter skill name"
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     required
@@ -303,8 +264,8 @@ function Clients() {
                 <button type="button" className="btn btn-secondary" onClick={() => setShowModal(false)}>
                   Close
                 </button>
-                <button type="submit" className="btn btn-primary">
-                  {editClient ? "Update" : "Create"}
+                <button type="submit" className="btn btn-success">
+                  {editClient ? "Update Skill" : "Create Skill"}
                 </button>
               </div>
             </form>
