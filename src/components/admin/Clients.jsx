@@ -154,6 +154,7 @@ function Clients() {
               <thead>
                 <tr>
                   <th>Client</th>
+                  <th>Phone</th>
                   <th>Email</th>
                   <th>Status</th>
                   <th>Date</th>
@@ -164,6 +165,7 @@ function Clients() {
                 {paginatedClients.map((client) => (
                   <tr key={client?.id || Math.random()}>
                     <td>{client?.username || "N/A"}</td>
+                    <td>{client?.phone_number || "N/A"}</td>
                     <td>{client?.email || "N/A"}</td>
                     <td>
                       <div

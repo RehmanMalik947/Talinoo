@@ -7,6 +7,7 @@ import viewIcon from "../../../public/view.svg";
 import ReStore from "../../../public/reset-14415.svg";
 import ApiService from "../../services/ApiService";
 import { useNavigate } from "react-router-dom";
+import { formatHumanDate } from "../../helpers/Helper";
 import Swal from "sweetalert2";
 
 const Talents = () => {
@@ -135,6 +136,7 @@ const Talents = () => {
                 <tr>
                   <th>Talent Name</th>
                   <th>Gender</th>
+                  <th>Phone</th>
                   <th>Country</th>
                   <th>Email</th>
                   <th>Status</th>
@@ -147,9 +149,9 @@ const Talents = () => {
                   <tr key={talent.id}>
                     <td>{talent.full_name}</td>
                     <td className="talents-client">{talent.gender}</td>
+                    <td className="talents-client">{talent?.user?.phone_number}</td>
                     <td className="talents-name">{talent.country}</td>
                     <td className="talents-name">{talent?.user?.email}</td>
-                    <td className="talents-name">{talent?.user?.status}</td>
                     <td>
                       <div
                         className={`status-badge ${talent.status ? talent.status.toLowerCase() : ""
@@ -158,6 +160,7 @@ const Talents = () => {
                         {talent.status || "N/A"}
                       </div>
                     </td>
+                    <td className="talents-name">{formatHumanDate(talent?.created_at)}</td>
 
                     <td className="action-button">
                       <button onClick={() => handleDelete(talent?.user?.id)}>
