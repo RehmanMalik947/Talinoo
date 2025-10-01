@@ -55,6 +55,14 @@ function NavBar() {
               Tasks
             </Link>
 
+            <Link to="/skill" className="menu-link">
+              Skill
+            </Link>
+
+            <Link to="/contact-us" className="menu-link">
+              Contact Us
+            </Link>
+
             {/* <Link to="/plans" className="menu-link">
               Plans
             </Link> */}

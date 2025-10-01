@@ -15,7 +15,10 @@ import BookingDetails from "./components/admin/bookingdetails";
 import Talent1 from "./components/admin/Talent1";
 import TalentProfile from "./components/admin/TalentProfile";
 import Payments from "./components/admin/Payments";
+import ContactUs from "./components/admin/ContactUs";
+import Skill from "./components/admin/Skill";
 import Transactions from "./components/admin/Transactions";
+
 
 import ProtectedRoute from "./components/Auth/ProtectedRoute";
 import Feed from "./components/admin/Feed";
@@ -137,6 +140,22 @@ function App() {
       element: (
         <ProtectedRoute>
           <Tasks />
+        </ProtectedRoute>
+      ),
+    },
+    {
+      path: "/skill",
+      element: (
+        <ProtectedRoute>
+          <Skill />
+        </ProtectedRoute>
+      ),
+    },
+    {
+      path: "/contact-us",
+      element: (
+        <ProtectedRoute>
+          <ContactUs />
         </ProtectedRoute>
       ),
     },
