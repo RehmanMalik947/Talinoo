@@ -61,7 +61,7 @@ function Clients() {
 const handleDelete = async (id) => {
     Swal.fire({
       title: "Are you sure?",
-      text: "This skill will be deleted!",
+      text: "This Contact will be deleted!",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#d33",
@@ -73,7 +73,7 @@ const handleDelete = async (id) => {
           const response = await ApiService.delete(`admin/contact/${id}`);
           if (response?.data?.status == true) {
             fetchClients();
-            Swal.fire("Deleted!", "Skill has been deleted.", "success");
+            Swal.fire("Deleted!", "Contact has been deleted.", "success");
             
           } else {
             Swal.fire("Success!", response?.data?.message || "Something went wrong.", "success");

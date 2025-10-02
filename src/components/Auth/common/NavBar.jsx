@@ -59,6 +59,10 @@ function NavBar() {
               Skill
             </Link>
 
+            <Link to="/languages" className="menu-link">
+              Languages
+            </Link>
+
             <Link to="/contact-us" className="menu-link">
               Contact Us
             </Link>

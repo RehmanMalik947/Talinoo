@@ -17,6 +17,8 @@ import TalentProfile from "./components/admin/TalentProfile";
 import Payments from "./components/admin/Payments";
 import ContactUs from "./components/admin/ContactUs";
 import Skill from "./components/admin/Skill";
+import Language from "./components/admin/language";
+
 import Transactions from "./components/admin/Transactions";
 
 
@@ -148,6 +150,14 @@ function App() {
       element: (
         <ProtectedRoute>
           <Skill />
+        </ProtectedRoute>
+      ),
+    },
+     {
+      path: "/languages",
+      element: (
+        <ProtectedRoute>
+          <Language />
         </ProtectedRoute>
       ),
     },
