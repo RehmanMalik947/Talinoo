@@ -6,6 +6,7 @@ import NavBar from "../Auth/common/NavBar";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import deleteIcon from "../../../public/delete.svg";
+import viewIcon from "../../../public/view.svg";
 import editIcon from "../../../public/edit-file.svg";
 import { formatHumanDate } from "../../helpers/Helper";
 import ApiService from "../../services/ApiService";
@@ -26,18 +27,21 @@ function Clients() {
   const navigate = useNavigate();
 
   // Fetch clients/skills
-  const fetchClients = async () => {
-    try {
-      setLoading(true);
-      const response = await ApiService.get("admin/skill-All");
-      setClients(response?.data?.data?.skills || response?.data?.data || []);
-    } catch (error) {
-      console.error("Error fetching skills:", error);
-      Swal.fire("Error!", "Failed to fetch skills", "error");
-    } finally {
-      setLoading(false);
-    }
-  };
+const fetchClients = async () => {
+  try {
+    setLoading(true);
+    const response = await ApiService.get("admin/contactList");
+
+    // set only the array of contacts
+    setClients(response?.data?.data?.data ?? []);
+  } catch (error) {
+    console.error("Error fetching contacts:", error);
+    Swal.fire("Error!", "Failed to fetch contacts", "error");
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   useEffect(() => {
     fetchClients();
@@ -136,7 +140,7 @@ function Clients() {
       <NavBar />
       <div className="main-content">
         <div className="clients-title d-flex justify-content-between align-items-center">
-          <span>Skills</span>
+          <span>Contact Us</span>
         </div>
 
         {/* Search + Filters */}
@@ -145,7 +149,7 @@ function Clients() {
             <CiSearch className="search-icon" />
             <input
               type="text"
-              placeholder="Search skills"
+              placeholder="Search Contact Us"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="search-input"
@@ -153,9 +157,7 @@ function Clients() {
           </div>
 
         </div>
-        <button className="btn btn-success float-end p-2 my-2" onClick={() => openModal()}>
-          + Add Skill
-        </button>
+        
         {/* Table */}
         <div className="table-container">
           {loading ? (
@@ -165,8 +167,9 @@ function Clients() {
               <thead>
                 <tr>
                   <th>Id</th>
-                  <th>Skill Name</th>
-
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Submitted By</th>
                   <th>Created At</th>
                   <th>Updated At</th>
                   <th>Action</th>
@@ -176,7 +179,10 @@ function Clients() {
                 {paginatedClients.map((client) => (
                   <tr key={client?.id}>
                     <td>#{client?.id}</td>
-                    <td>{client?.name || "N/A"}</td>
+                    <td>{client?.contact_name || "N/A"}</td>
+                    <td>{client?.contact_email || "N/A"}</td>
+                    <td>{client?.username || "N/A"}</td>
+                    
 
                     <td>{formatHumanDate(client?.createdAt, "date") || "N/A"}</td>
                     <td>{formatHumanDate(client?.updatedAt, "date") || "N/A"}</td>
@@ -186,15 +192,9 @@ function Clients() {
                         onClick={() => openModal(client)}
                         title="Edit"
                       >
-                        <img src={editIcon} alt="Edit" width={20} />
+                        <img src={viewIcon} alt="Edit" width={20} />
                       </button>
-                      <button
-                        className=" me-2"
-                        onClick={() => handleDelete(client?.id)}
-                        title="Delete"
-                      >
-                        <img src={deleteIcon} alt="Delete" width={20} />
-                      </button>
+                      
                     </td>
                   </tr>
                 ))}
