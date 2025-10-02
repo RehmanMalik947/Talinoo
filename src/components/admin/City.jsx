@@ -96,7 +96,7 @@ function Clients() {
         Swal.fire("Success!", editClient ? "city updated" : "city created", "success");
         fetchClients();
         setShowModal(false);
-        
+
       } else {
         Swal.fire("Success!", response?.data?.message || "Something went wrong.", "success");
       }
@@ -121,7 +121,7 @@ function Clients() {
           if (response?.data?.status == true) {
             fetchClients();
             Swal.fire("Deleted!", "city has been deleted.", "success");
-            
+
           } else {
             Swal.fire("Success!", response?.data?.message || "Something went wrong.", "success");
           }
@@ -219,16 +219,63 @@ function Clients() {
               &#60;
             </button>
             <div className="pagination-numbers">
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                <button
-                  key={page}
-                  className={`pagination-number ${currentPage === page ? "active" : ""}`}
-                  onClick={() => setCurrentPage(page)}
-                >
-                  {page}
-                </button>
-              ))}
+              {(() => {
+                let pages = [];
+                const maxVisible = 5; // how many numbers to show at once
+                const start = Math.max(2, currentPage - 2);
+                const end = Math.min(totalPages - 1, currentPage + 2);
+
+                // Always show first page
+                pages.push(
+                  <button
+                    key={1}
+                    className={`pagination-number ${currentPage === 1 ? "active" : ""}`}
+                    onClick={() => setCurrentPage(1)}
+                  >
+                    1
+                  </button>
+                );
+
+                // Show "..." before middle pages if needed
+                if (start > 2) {
+                  pages.push(<span key="dots-start" className="pagination-dots">...</span>);
+                }
+
+                // Middle pages
+                for (let i = start; i <= end; i++) {
+                  pages.push(
+                    <button
+                      key={i}
+                      className={`pagination-number ${currentPage === i ? "active" : ""}`}
+                      onClick={() => setCurrentPage(i)}
+                    >
+                      {i}
+                    </button>
+                  );
+                }
+
+                // Show "..." after middle pages if needed
+                if (end < totalPages - 1) {
+                  pages.push(<span key="dots-end" className="pagination-dots">...</span>);
+                }
+
+                // Always show last page
+                if (totalPages > 1) {
+                  pages.push(
+                    <button
+                      key={totalPages}
+                      className={`pagination-number ${currentPage === totalPages ? "active" : ""}`}
+                      onClick={() => setCurrentPage(totalPages)}
+                    >
+                      {totalPages}
+                    </button>
+                  );
+                }
+
+                return pages;
+              })()}
             </div>
+
             <button
               className="pagination-btn next-btn"
               onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
