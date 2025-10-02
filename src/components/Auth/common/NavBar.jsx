@@ -62,6 +62,9 @@ function NavBar() {
             <Link to="/languages" className="menu-link">
               Languages
             </Link>
+             <Link to="/cities" className="menu-link">
+              Cities
+            </Link>
 
             <Link to="/contact-us" className="menu-link">
               Contact Us
