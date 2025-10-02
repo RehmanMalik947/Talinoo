@@ -71,11 +71,12 @@ function Clients() {
       setEditClient(client);
       setFormData({
         name: client.name || "",
-        status: client.status || "pending"
+        status: client.status || "pending",
+        country_id: 194
       });
     } else {
       setEditClient(null);
-      setFormData({ name: "", status: "pending" });
+      setFormData({ name: "", country_id: 194 });
     }
     setShowModal(true);
   };
