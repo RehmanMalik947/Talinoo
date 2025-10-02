@@ -91,10 +91,11 @@ function Clients() {
         response = await ApiService.post("admin/skill-create", formData);
       }
 
-      if (response?.data?.success) {
+      if (response?.data?.status == true) {
         Swal.fire("Success!", editClient ? "Skill updated" : "Skill created", "success");
-        setShowModal(false);
         fetchClients();
+        setShowModal(false);
+        
       } else {
         Swal.fire("Success!", response?.data?.message || "Something went wrong.", "success");
       }
@@ -116,9 +117,10 @@ function Clients() {
       if (result.isConfirmed) {
         try {
           const response = await ApiService.delete(`admin/skill-remove/${id}`);
-          if (response?.data?.success) {
-            Swal.fire("Deleted!", "Skill has been deleted.", "success");
+          if (response?.data?.status == true) {
             fetchClients();
+            Swal.fire("Deleted!", "Skill has been deleted.", "success");
+            
           } else {
             Swal.fire("Success!", response?.data?.message || "Something went wrong.", "success");
           }
@@ -151,7 +153,7 @@ function Clients() {
           </div>
 
         </div>
-        <button className="btn btn-success float-end p-2" onClick={() => openModal()}>
+        <button className="btn btn-success float-end p-2 my-2" onClick={() => openModal()}>
           + Add Skill
         </button>
         {/* Table */}
