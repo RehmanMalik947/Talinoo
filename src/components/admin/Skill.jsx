@@ -78,8 +78,14 @@ function Clients() {
   const openModal = (client = null) => {
     if (client) {
       setEditClient(client);
+      let SplitSkillname=client.name.split(" - ") ||""
+      setSkillName({
+        nameEng:SplitSkillname[1]||"",
+        nameArabic:SplitSkillname[0]||"", 
+      })
+      let skillname=`${skillName.nameArabic} - ${skillName.nameEng}`
       setFormData({
-        name: client.name || "",
+        name: skillname || "",
         status: client.status || "pending",
       });
     } else {
