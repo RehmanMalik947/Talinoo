@@ -179,7 +179,7 @@ function Clients() {
 
                     <td>{formatHumanDate(client?.createdAt, "date") || "N/A"}</td>
                     <td>{formatHumanDate(client?.updatedAt, "date") || "N/A"}</td>
-                    <td className="action-button flex justify-center">
+                    <td className="action-button">
                       <button
                         className=" me-2"
                         onClick={() => openModal(client)}
