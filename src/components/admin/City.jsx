@@ -186,14 +186,14 @@ function Clients() {
                         onClick={() => openModal(client)}
                         title="Edit"
                       >
-                        <img src={editIcon} alt="Edit" width={20} />
+                        <img src={editIcon} alt="Edit" width={28} />
                       </button>
                       <button
                         className=" me-2"
                         onClick={() => handleDelete(client?.id)}
                         title="Delete"
                       >
-                        <img src={deleteIcon} alt="Delete" width={20} />
+                        <img src={deleteIcon} alt="Delete" width={28} />
                       </button>
                     </td>
                   </tr>

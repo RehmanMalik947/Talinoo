@@ -21,7 +21,8 @@ function Clients() {
   // For Create/Update Modal
   const [showModal, setShowModal] = useState(false);
   const [editClient, setEditClient] = useState(null);
-  const [formData, setFormData] = useState({ name: "", status: "pending" });
+  const [formData, setFormData] = useState({ nameEng: "",nameArabic:"",name:"", status: "pending" });
+ 
 
   const navigate = useNavigate();
 
@@ -186,14 +187,14 @@ function Clients() {
                         onClick={() => openModal(client)}
                         title="Edit"
                       >
-                        <img src={editIcon} alt="Edit" width={20} />
+                        <img src={editIcon} alt="Edit" width={28} />
                       </button>
                       <button
                         className=" me-2"
                         onClick={() => handleDelete(client?.id)}
                         title="Delete"
                       >
-                        <img src={deleteIcon} alt="Delete" width={20} />
+                        <img src={deleteIcon} alt="Delete" width={28} />
                       </button>
                     </td>
                   </tr>
@@ -251,13 +252,25 @@ function Clients() {
             <form onSubmit={handleSubmit}>
               <div className="modal-body">
                 <div className="mb-3">
-                  <label className="form-label">Skill Name</label>
+                  <label className="form-label">Skill Name (In English)</label>
                   <input
                     type="text"
                     className="form-control"
-                    placeholder="Enter skill name"
-                    value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    placeholder="Enter skill name in english"
+                    value={formData.nameEng}
+                    onChange={(e) => setFormData({ ...formData, nameEng: e.target.value,name:`${formData.nameArabic} - ${formData.nameEng}` })}
+                    required
+                  />
+                  <br />
+                  <br />
+                  <label className="form-label">Skill Name (In Arabic)</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder="أدخل اسم المهارة باللغة العربية"
+                    dir="rtl"
+                    value={formData.nameArabic}
+                    onChange={(e) => setFormData({ ...formData, nameArabic: e.target.value,name:`${formData.nameArabic} - ${formData.nameEng}` })}
                     required
                   />
                 </div>
