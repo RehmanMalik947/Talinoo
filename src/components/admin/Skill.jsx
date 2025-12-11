@@ -82,23 +82,11 @@ function Clients() {
   const openModal = (client = null) => {
     if (client) {
       setEditClient(client);
-<<<<<<< HEAD
       // Parse existing name to extract English and Arabic parts
       const nameParts = client.name ? client.name.split(" - ") : ["", ""];
       setSkillName({
         nameArabic: nameParts[0] || "",
         nameEng: nameParts[1] || "",
-=======
-      let SplitSkillname=client.name.split(" - ") ||""
-      setSkillName({
-        nameEng:SplitSkillname[1]||"",
-        nameArabic:SplitSkillname[0]||"", 
-      })
-      let skillname=`${skillName.nameArabic} - ${skillName.nameEng}`
-      setFormData({
-        name: skillname || "",
-        status: client.status || "pending",
->>>>>>> cce0069bb7bab6b1ebc94ff9d682c6e23e672c5e
       });
     } else {
       setEditClient(null);
