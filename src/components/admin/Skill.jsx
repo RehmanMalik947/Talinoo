@@ -22,10 +22,6 @@ function Clients() {
   const [showModal, setShowModal] = useState(false);
   const [editClient, setEditClient] = useState(null);
   const [skillName, setSkillName] = useState({ nameEng: "", nameArabic: "" });
-  const [formData, setFormData] = useState({
-    name: `${skillName.nameArabic} - ${skillName.nameEng}`,
-    status: "pending",
-  });
 
   const navigate = useNavigate();
 
@@ -51,7 +47,15 @@ function Clients() {
   const filteredClients = clients
     .filter((client) => {
       const name = client?.name || "";
-      return name.toLowerCase().includes(searchTerm.toLowerCase());
+      const createdAt = formatHumanDate(client?.createdAt, "date") || "";
+      const updatedAt = formatHumanDate(client?.updatedAt, "date") || "";
+      
+      const searchLower = searchTerm.toLowerCase();
+      return (
+        name.toLowerCase().includes(searchLower) ||
+        createdAt.toLowerCase().includes(searchLower) ||
+        updatedAt.toLowerCase().includes(searchLower)
+      );
     })
     .filter(
       (client) => statusFilter === "All" || client?.status === statusFilter
@@ -78,13 +82,15 @@ function Clients() {
   const openModal = (client = null) => {
     if (client) {
       setEditClient(client);
-      setFormData({
-        name: client.name || "",
-        status: client.status || "pending",
+      // Parse existing name to extract English and Arabic parts
+      const nameParts = client.name ? client.name.split(" - ") : ["", ""];
+      setSkillName({
+        nameArabic: nameParts[0] || "",
+        nameEng: nameParts[1] || "",
       });
     } else {
       setEditClient(null);
-      setFormData({ name: "", status: "pending" });
+      setSkillName({ nameEng: "", nameArabic: "" });
     }
     setShowModal(true);
   };
@@ -92,6 +98,13 @@ function Clients() {
   // Form submit
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    // Construct the full name from English and Arabic inputs
+    const formData = {
+      name: `${skillName.nameArabic} - ${skillName.nameEng}`,
+      status: "pending",
+    };
+
     try {
       let response;
       if (editClient) {
@@ -103,7 +116,7 @@ function Clients() {
         response = await ApiService.post("admin/skill-create", formData);
       }
 
-      if (response?.data?.status == true) {
+      if (response?.data?.status === true) {
         Swal.fire(
           "Success!",
           editClient ? "Skill updated" : "Skill created",
@@ -111,11 +124,12 @@ function Clients() {
         );
         fetchClients();
         setShowModal(false);
+        setSkillName({ nameEng: "", nameArabic: "" });
       } else {
         Swal.fire(
-          "Success!",
+          "Warning!",
           response?.data?.message || "Something went wrong.",
-          "success"
+          "warning"
         );
       }
     } catch (err) {
@@ -140,14 +154,14 @@ function Clients() {
       if (result.isConfirmed) {
         try {
           const response = await ApiService.delete(`admin/skill-remove/${id}`);
-          if (response?.data?.status == true) {
+          if (response?.data?.status === true) {
             fetchClients();
             Swal.fire("Deleted!", "Skill has been deleted.", "success");
           } else {
             Swal.fire(
-              "Success!",
+              "Warning!",
               response?.data?.message || "Something went wrong.",
-              "success"
+              "warning"
             );
           }
         } catch (error) {
@@ -200,7 +214,6 @@ function Clients() {
                 <tr>
                   <th>Id</th>
                   <th>Skill Name</th>
-
                   <th>Created At</th>
                   <th>Updated At</th>
                   <th>Action</th>
@@ -211,7 +224,6 @@ function Clients() {
                   <tr key={client?.id}>
                     <td>#{client?.id}</td>
                     <td>{client?.name || "N/A"}</td>
-
                     <td>
                       {formatHumanDate(client?.createdAt, "date") || "N/A"}
                     </td>
@@ -220,14 +232,14 @@ function Clients() {
                     </td>
                     <td className="action-button">
                       <button
-                        className=" me-2"
+                        className="me-2"
                         onClick={() => openModal(client)}
                         title="Edit"
                       >
                         <img src={editIcon} alt="Edit" width={28} />
                       </button>
                       <button
-                        className=" me-2"
+                        className="me-2"
                         onClick={() => handleDelete(client?.id)}
                         title="Delete"
                       >
@@ -238,7 +250,7 @@ function Clients() {
                 ))}
                 {paginatedClients.length === 0 && (
                   <tr>
-                    <td colSpan="6" className="text-center">
+                    <td colSpan="5" className="text-center">
                       No skills found
                     </td>
                   </tr>

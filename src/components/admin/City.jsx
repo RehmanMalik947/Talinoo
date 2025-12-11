@@ -21,19 +21,19 @@ function Clients() {
   // For Create/Update Modal
   const [showModal, setShowModal] = useState(false);
   const [editClient, setEditClient] = useState(null);
-  const [formData, setFormData] = useState({ name: "", status: "pending" });
+  const [formData, setFormData] = useState({ name: "", country_id: 194 });
 
   const navigate = useNavigate();
 
-  // Fetch clients/skills
+  // Fetch clients/cities
   const fetchClients = async () => {
     try {
       setLoading(true);
       const response = await ApiService.get("admin/city");
       setClients(response?.data?.data?.cities || response?.data?.data || []);
     } catch (error) {
-      console.error("Error fetching skills:", error);
-      Swal.fire("Error!", "Failed to fetch skills", "error");
+      console.error("Error fetching cities:", error);
+      Swal.fire("Error!", "Failed to fetch cities", "error");
     } finally {
       setLoading(false);
     }
@@ -47,7 +47,15 @@ function Clients() {
   const filteredClients = clients
     .filter((client) => {
       const name = client?.name || "";
-      return name.toLowerCase().includes(searchTerm.toLowerCase());
+      const createdAt = formatHumanDate(client?.createdAt, "date") || "";
+      const updatedAt = formatHumanDate(client?.updatedAt, "date") || "";
+      const searchLower = searchTerm.toLowerCase();
+      
+      return (
+        name.toLowerCase().includes(searchLower) ||
+        createdAt.toLowerCase().includes(searchLower) ||
+        updatedAt.toLowerCase().includes(searchLower)
+      );
     })
     .filter((client) => statusFilter === "All" || client?.status === statusFilter)
     .sort((a, b) => {
@@ -61,6 +69,7 @@ function Clients() {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const paginatedClients = filteredClients.slice(startIndex, startIndex + itemsPerPage);
 
+  // Reset to page 1 when filters change
   useEffect(() => {
     setCurrentPage(1);
   }, [searchTerm, statusFilter]);
@@ -71,7 +80,6 @@ function Clients() {
       setEditClient(client);
       setFormData({
         name: client.name || "",
-        status: client.status || "pending",
         country_id: 194
       });
     } else {
@@ -84,6 +92,13 @@ function Clients() {
   // Form submit
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    // Validation
+    if (!formData.name.trim()) {
+      Swal.fire("Warning!", "City name is required", "warning");
+      return;
+    }
+
     try {
       let response;
       if (editClient) {
@@ -92,15 +107,17 @@ function Clients() {
         response = await ApiService.post("admin/city", formData);
       }
 
-      if (response?.data?.status == true) {
-        Swal.fire("Success!", editClient ? "city updated" : "city created", "success");
-        fetchClients();
+      if (response?.data?.status === true) {
+        Swal.fire("Success!", editClient ? "City updated successfully" : "City created successfully", "success");
+        await fetchClients(); // Wait for refresh
         setShowModal(false);
-
+        setEditClient(null);
+        setFormData({ name: "", country_id: 194 });
       } else {
-        Swal.fire("Success!", response?.data?.message || "Something went wrong.", "success");
+        Swal.fire("Info", response?.data?.message || "Something went wrong.", "info");
       }
     } catch (err) {
+      console.error("Submit error:", err);
       Swal.fire("Error!", err.response?.data?.message || err.message || "Something went wrong", "error");
     }
   };
@@ -118,14 +135,14 @@ function Clients() {
       if (result.isConfirmed) {
         try {
           const response = await ApiService.delete(`admin/city/${id}`);
-          if (response?.data?.status == true) {
-            fetchClients();
-            Swal.fire("Deleted!", "city has been deleted.", "success");
-
+          if (response?.data?.status === true) {
+            await fetchClients(); // Wait for refresh
+            Swal.fire("Deleted!", "City has been deleted.", "success");
           } else {
-            Swal.fire("Success!", response?.data?.message || "Something went wrong.", "success");
+            Swal.fire("Info", response?.data?.message || "Something went wrong.", "info");
           }
         } catch (error) {
+          console.error("Delete error:", error);
           Swal.fire("Error!", error.response?.data?.message || error.message || "API request failed.", "error");
         }
       }
@@ -152,11 +169,12 @@ function Clients() {
               className="search-input"
             />
           </div>
-
         </div>
+        
         <button className="btn btn-success float-end p-2 my-2" onClick={() => openModal()}>
           + Add City
         </button>
+
         {/* Table */}
         <div className="table-container">
           {loading ? (
@@ -177,19 +195,18 @@ function Clients() {
                   <tr key={client?.id}>
                     <td>#{client?.id}</td>
                     <td>{client?.name || "N/A"}</td>
-
                     <td>{formatHumanDate(client?.createdAt, "date") || "N/A"}</td>
                     <td>{formatHumanDate(client?.updatedAt, "date") || "N/A"}</td>
                     <td className="action-button">
                       <button
-                        className=" me-2"
+                        className="me-2"
                         onClick={() => openModal(client)}
                         title="Edit"
                       >
                         <img src={editIcon} alt="Edit" width={28} />
                       </button>
                       <button
-                        className=" me-2"
+                        className="me-2"
                         onClick={() => handleDelete(client?.id)}
                         title="Delete"
                       >
@@ -200,7 +217,9 @@ function Clients() {
                 ))}
                 {paginatedClients.length === 0 && (
                   <tr>
-                    <td colSpan="6" className="text-center">No City found</td>
+                    <td colSpan="5" className="text-center">
+                      No City found
+                    </td>
                   </tr>
                 )}
               </tbody>
@@ -209,7 +228,7 @@ function Clients() {
         </div>
 
         {/* Pagination */}
-        {totalPages > 1 && (
+        {!loading && totalPages > 1 && (
           <div className="pagination-container">
             <button
               className="pagination-btn prev-btn"
