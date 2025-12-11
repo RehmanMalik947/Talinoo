@@ -80,7 +80,7 @@ const Talents = () => {
 
   const filteredTalents = talents
     .filter((t) =>
-      `${t.title || ""} ${t.client || ""} ${t.name || ""}`
+      `${t.gender || ""} ${t.age || ""} ${t.full_name || ""} ${t.country || ""}`
         .toLowerCase()
         .includes(searchTerm?.toLowerCase())
     )
