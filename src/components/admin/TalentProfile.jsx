@@ -258,7 +258,7 @@ function TalentProfile() {
               <p className="client-status">
                 Status:{" "}
                 <span
-                  className={` ${detailsUser?.status || "pending"}`}
+                  className={`status-label ${detailsUser?.status || "pending"}`}
                 >
                   {detailsUser?.status
                     ? detailsUser.status.toUpperCase()
@@ -272,7 +272,7 @@ function TalentProfile() {
           </button> */}
           <div className="status-buttons" style={{ marginTop: "10px" }}>
             <button
-              className={`btn btn-success approve ${
+              className={`btn btn-primary approve ${
                 detailsUser?.status === "approved" ? "active" : ""
               }`}
               onClick={() => handleStatusUpdate("approved")}
