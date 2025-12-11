@@ -112,9 +112,9 @@ function ClientDetails() {
     );
   };
 
-  const handleReportUser = () => {
-    console.log("HandleReportUser clicked");
-  };
+  // const handleReportUser = () => {
+  //   console.log("HandleReportUser clicked");
+  // };
 const handleStatusUpdate = async (newStatus) => {
   if (!detailsUser?.id) return;
 
@@ -191,14 +191,14 @@ const handleStatusUpdate = async (newStatus) => {
             </div>
           </div>
 
-          <button className="report-button" onClick={handleReportUser}>
+          {/* <button className="report-button" onClick={handleReportUser}>
             Report User
-          </button>
+          </button> */}
 
           {/* ✅ Status buttons */}
           <div className="status-buttons" style={{ marginTop: "10px" }}>
             <button
-              className={`status-btn approve ${
+              className={`btn btn-success approve ${
                 detailsUser?.status === "approved" ? "active" : ""
               }`}
               onClick={() => handleStatusUpdate("approved")}
@@ -206,7 +206,7 @@ const handleStatusUpdate = async (newStatus) => {
               Approve
             </button>
             <button
-              className={`status-btn reject ${
+              className={`btn btn-danger reject ${
                 detailsUser?.status === "rejected" ? "active" : ""
               }`}
               onClick={() => handleStatusUpdate("rejected")}
@@ -214,7 +214,7 @@ const handleStatusUpdate = async (newStatus) => {
               Reject
             </button>
             <button
-              className={`status-btn blocked ${
+              className={`btn btn-secondary blocked ${
                 detailsUser?.status === "blocked" ? "active" : ""
               }`}
               onClick={() => handleStatusUpdate("blocked")}

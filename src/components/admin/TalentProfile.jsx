@@ -154,9 +154,9 @@ function TalentProfile() {
     );
   };
 
-  const handleReportUser = () => {
-    console.log("HandleReportUser clicked");
-  };
+  // const handleReportUser = () => {
+  //   console.log("HandleReportUser clicked");
+  // };
   const handleStatusUpdate = async (newStatus) => {
     if (!detailsUser?.id) return;
 
@@ -247,7 +247,7 @@ function TalentProfile() {
               <p className="talent-name">
                 {talentData?.name
                   ? talentData.name.charAt(0).toUpperCase() +
-                  talentData.name.slice(1)
+                    talentData.name.slice(1)
                   : ""}
               </p>
               <p className="talent-title">{talentData.talentTitle}</p>
@@ -256,33 +256,41 @@ function TalentProfile() {
               </p>
               {/* ✅ Current status display */}
               <p className="client-status">
-                Status: <span className={`status-label ${detailsUser?.status || "pending"}`}>
-                  {detailsUser?.status ? detailsUser.status.toUpperCase() : "PENDING"}
+                Status:{" "}
+                <span
+                  className={` ${detailsUser?.status || "pending"}`}
+                >
+                  {detailsUser?.status
+                    ? detailsUser.status.toUpperCase()
+                    : "PENDING"}
                 </span>
               </p>
             </div>
           </div>
-          <button className="report-button" onClick={handleReportUser}>
+          {/* <button className="report-button" onClick={handleReportUser}>
             Report Talent
-          </button>
+          </button> */}
           <div className="status-buttons" style={{ marginTop: "10px" }}>
             <button
-              className={`status-btn approve ${detailsUser?.status === "approved" ? "active" : ""
-                }`}
+              className={`btn btn-success approve ${
+                detailsUser?.status === "approved" ? "active" : ""
+              }`}
               onClick={() => handleStatusUpdate("approved")}
             >
               Approve
             </button>
             <button
-              className={`status-btn reject ${detailsUser?.status === "rejected" ? "active" : ""
-                }`}
+              className={`btn btn-danger reject ${
+                detailsUser?.status === "rejected" ? "active" : ""
+              }`}
               onClick={() => handleStatusUpdate("rejected")}
             >
               Reject
             </button>
             <button
-              className={`status-btn blocked ${detailsUser?.status === "blocked" ? "active" : ""
-                }`}
+              className={`btn btn-secondary blocked ${
+                detailsUser?.status === "blocked" ? "active" : ""
+              }`}
               onClick={() => handleStatusUpdate("blocked")}
             >
               Block
@@ -308,42 +316,69 @@ function TalentProfile() {
                   {/* Profile Details - 4 columns */}
                   <div className="md:col-span-4">
                     <div className="space-y-2">
-                      <p><span className="font-medium">Name:</span> {detailsUser?.userInfo?.dataValues?.full_name}</p>
-                      <p><span className="font-medium">Gender:</span> {detailsUser?.userInfo?.dataValues?.gender}</p>
-                      <p><span className="font-medium">Age:</span> {detailsUser?.userInfo?.dataValues?.age}</p>
-                      <p><span className="font-medium">Country:</span> {detailsUser?.userInfo?.dataValues?.country}</p>
-                      <p><span className="font-medium">Email:</span> {detailsUser?.email}</p>
-                      <p><span className="font-medium">Phone:</span> {detailsUser?.phone_number}</p>
+                      <p>
+                        <span className="font-medium">Name:</span>{" "}
+                        {detailsUser?.userInfo?.dataValues?.full_name}
+                      </p>
+                      <p>
+                        <span className="font-medium">Gender:</span>{" "}
+                        {detailsUser?.userInfo?.dataValues?.gender}
+                      </p>
+                      <p>
+                        <span className="font-medium">Age:</span>{" "}
+                        {detailsUser?.userInfo?.dataValues?.age}
+                      </p>
+                      <p>
+                        <span className="font-medium">Country:</span>{" "}
+                        {detailsUser?.userInfo?.dataValues?.country}
+                      </p>
+                      <p>
+                        <span className="font-medium">Email:</span>{" "}
+                        {detailsUser?.email}
+                      </p>
+                      <p>
+                        <span className="font-medium">Phone:</span>{" "}
+                        {detailsUser?.phone_number}
+                      </p>
                       <p>
                         <span className="font-medium">Hourly Rate:</span>{" "}
                         {detailsUser?.userInfo?.dataValues?.hourly_rate}{" "}
                         {detailsUser?.userInfo?.dataValues?.currency}
                       </p>
                       <p>
-                        <span className="font-medium">Rating:</span>{" "}
-                        ⭐ {detailsUser?.rating} ({detailsUser?.totalReviews} reviews)
+                        <span className="font-medium">Rating:</span> ⭐{" "}
+                        {detailsUser?.rating} ({detailsUser?.totalReviews}{" "}
+                        reviews)
                       </p>
-                      <p><span className="font-medium">Skills:</span> <div className="flex flex-wrap gap-2">
-                        {detailsUser?.userInfo?.skills?.length > 0 ? (
-                          detailsUser?.userInfo?.skills?.map((skill, index) => (
-                            <span
-                              key={index}
-                              className="px-3 py-1 bg-blue-100 text-blue-600 rounded-full text-sm font-medium"
-                            >
-                              {skill.name}
-                            </span>
-                          ))
-                        ) : (
-                          <p className="text-gray-500 italic">No skills added</p>
-                        )}
-                      </div></p>
-
+                      <p>
+                        <span className="font-medium">Skills:</span>{" "}
+                        <div className="flex flex-wrap gap-2">
+                          {detailsUser?.userInfo?.skills?.length > 0 ? (
+                            detailsUser?.userInfo?.skills?.map(
+                              (skill, index) => (
+                                <span
+                                  key={index}
+                                  className="px-3 py-1 bg-blue-100 text-blue-600 rounded-full text-sm font-medium"
+                                >
+                                  {skill.name}
+                                </span>
+                              )
+                            )
+                          ) : (
+                            <p className="text-gray-500 italic">
+                              No skills added
+                            </p>
+                          )}
+                        </div>
+                      </p>
                     </div>
                   </div>
 
                   {/* Booking History - 8 columns */}
                   <div className="md:col-span-8">
-                    <h2 className="text-lg font-semibold mb-3">Booking History</h2>
+                    <h2 className="text-lg font-semibold mb-3">
+                      Booking History
+                    </h2>
                     <div className="overflow-x-auto">
                       <table className="min-w-full border border-gray-200 rounded-lg">
                         <thead className="bg-gray-100 text-gray-700 text-sm">
@@ -359,13 +394,17 @@ function TalentProfile() {
                           {detailsUser?.bookings?.length > 0 ? (
                             detailsUser.bookings.map((booking, index) => (
                               <tr key={index}>
-                                <td className="px-4 py-2">{booking?.client?.username || "N/A"}</td>
+                                <td className="px-4 py-2">
+                                  {booking?.client?.username || "N/A"}
+                                </td>
                                 <td className="link px-4 py-2">
                                   {booking?.talent?.username || "N/A"}
                                 </td>
                                 <td className="px-4 py-2">
                                   {booking.slots?.length > 0 ? (
-                                    <ul style={{ margin: 0, paddingLeft: "15px" }}>
+                                    <ul
+                                      style={{ margin: 0, paddingLeft: "15px" }}
+                                    >
                                       {booking.slots.map((slot) => (
                                         <li key={slot.id}>
                                           {slot.slot_date} ({slot.slot})
@@ -393,9 +432,9 @@ function TalentProfile() {
                       </table>
                     </div>
 
-
-
-                    <h2 className="text-lg font-semibold mb-3 pt-5">Media List</h2>
+                    <h2 className="text-lg font-semibold mb-3 pt-5">
+                      Media List
+                    </h2>
                     <div className="relative">
                       {/* Table Section */}
                       <div className="overflow-x-auto">
@@ -403,7 +442,9 @@ function TalentProfile() {
                           <thead className="bg-gray-100 text-gray-700 text-sm">
                             <tr>
                               <th className="px-4 py-2 text-left">Title</th>
-                              <th className="px-4 py-2 text-left">Description</th>
+                              <th className="px-4 py-2 text-left">
+                                Description
+                              </th>
                               <th className="px-4 py-2 text-left">Type</th>
                               <th className="px-4 py-2 text-left">Preview</th>
                               <th className="px-4 py-2 text-left">Likes</th>
@@ -419,8 +460,12 @@ function TalentProfile() {
                                   className="border-t hover:bg-gray-50 transition"
                                 >
                                   <td className="px-4 py-2">{media.title}</td>
-                                  <td className="px-4 py-2">{media.description}</td>
-                                  <td className="px-4 py-2 capitalize">{media.type}</td>
+                                  <td className="px-4 py-2">
+                                    {media.description}
+                                  </td>
+                                  <td className="px-4 py-2 capitalize">
+                                    {media.type}
+                                  </td>
                                   <td className="px-4 py-2">
                                     {media.type === "image" ? (
                                       <img
@@ -478,7 +523,6 @@ function TalentProfile() {
                             <h2 className="text-lg font-semibold mb-2">
                               {selectedMedia.title}
                             </h2>
-                            
 
                             {selectedMedia.type === "image" ? (
                               <img
@@ -560,8 +604,9 @@ function TalentProfile() {
 
                         <div className="review-actions">
                           <button
-                            className={`like-button ${review.userLiked ? "active" : ""
-                              }`}
+                            className={`like-button ${
+                              review.userLiked ? "active" : ""
+                            }`}
                           >
                             <BiLike /> {review.likesCount}
                           </button>
@@ -583,12 +628,10 @@ function TalentProfile() {
           )}
         </div>
 
-
-
-        <div className="verification">
+        {/* <div className="verification">
           <p className="block">Block User</p>
           <p className="verify">Verify Profile</p>
-        </div>
+        </div> */}
       </div>
     </div>
   );
