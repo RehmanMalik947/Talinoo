@@ -57,7 +57,9 @@ function Clients() {
         updatedAt.toLowerCase().includes(searchLower)
       );
     })
-    .filter((client) => statusFilter === "All" || client?.status === statusFilter)
+    .filter(
+      (client) => statusFilter === "All" || client?.status === statusFilter
+    )
     .sort((a, b) => {
       const dateA = new Date(a?.createdAt || 0);
       const dateB = new Date(b?.createdAt || 0);
@@ -67,7 +69,10 @@ function Clients() {
   const itemsPerPage = 10;
   const totalPages = Math.ceil(filteredClients.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const paginatedClients = filteredClients.slice(startIndex, startIndex + itemsPerPage);
+  const paginatedClients = filteredClients.slice(
+    startIndex,
+    startIndex + itemsPerPage
+  );
 
   // Reset to page 1 when filters change
   useEffect(() => {
@@ -80,7 +85,7 @@ function Clients() {
       setEditClient(client);
       setFormData({
         name: client.name || "",
-        status: client.status || "pending"
+        status: client.status || "pending",
       });
     } else {
       setEditClient(null);
@@ -102,11 +107,15 @@ function Clients() {
     try {
       let response;
       if (editClient) {
-        response = await ApiService.put(`admin/language/${editClient.id}`, formData);
+        response = await ApiService.put(
+          `admin/language/${editClient.id}`,
+          formData
+        );
       } else {
         response = await ApiService.post("admin/language", formData);
       }
 
+<<<<<<< HEAD
       if (response?.data?.status === true) {
         Swal.fire("Success!", editClient ? "Language updated successfully" : "Language created successfully", "success");
         await fetchClients(); // Wait for refresh
@@ -119,6 +128,29 @@ function Clients() {
     } catch (err) {
       console.error("Submit error:", err);
       Swal.fire("Error!", err.response?.data?.message || err.message || "Something went wrong", "error");
+=======
+      if (response?.data?.status == true) {
+        Swal.fire(
+          "Success!",
+          editClient ? "Language updated" : "Language created",
+          "success"
+        );
+        fetchClients();
+        setShowModal(false);
+      } else {
+        Swal.fire(
+          "Success!",
+          response?.data?.message || "Something went wrong.",
+          "success"
+        );
+      }
+    } catch (err) {
+      Swal.fire(
+        "Error!",
+        err.response?.data?.message || err.message || "Something went wrong",
+        "error"
+      );
+>>>>>>> cce0069bb7bab6b1ebc94ff9d682c6e23e672c5e
     }
   };
 
@@ -139,11 +171,28 @@ function Clients() {
             await fetchClients(); // Wait for refresh
             Swal.fire("Deleted!", "Language has been deleted.", "success");
           } else {
+<<<<<<< HEAD
             Swal.fire("Info", response?.data?.message || "Something went wrong.", "info");
           }
         } catch (error) {
           console.error("Delete error:", error);
           Swal.fire("Error!", error.response?.data?.message || error.message || "API request failed.", "error");
+=======
+            Swal.fire(
+              "Success!",
+              response?.data?.message || "Something went wrong.",
+              "success"
+            );
+          }
+        } catch (error) {
+          Swal.fire(
+            "Error!",
+            error.response?.data?.message ||
+              error.message ||
+              "API request failed.",
+            "error"
+          );
+>>>>>>> cce0069bb7bab6b1ebc94ff9d682c6e23e672c5e
         }
       }
     });
@@ -170,8 +219,15 @@ function Clients() {
             />
           </div>
         </div>
+<<<<<<< HEAD
         
         <button className="btn btn-success float-end p-2 my-2" onClick={() => openModal()}>
+=======
+        <button
+          className="btn btn-success float-end p-2 my-2"
+          onClick={() => openModal()}
+        >
+>>>>>>> cce0069bb7bab6b1ebc94ff9d682c6e23e672c5e
           + Add Language
         </button>
 
@@ -195,8 +251,18 @@ function Clients() {
                   <tr key={client?.id}>
                     <td>#{client?.id}</td>
                     <td>{client?.name || "N/A"}</td>
+<<<<<<< HEAD
                     <td>{formatHumanDate(client?.createdAt, "date") || "N/A"}</td>
                     <td>{formatHumanDate(client?.updatedAt, "date") || "N/A"}</td>
+=======
+
+                    <td>
+                      {formatHumanDate(client?.createdAt, "date") || "N/A"}
+                    </td>
+                    <td>
+                      {formatHumanDate(client?.updatedAt, "date") || "N/A"}
+                    </td>
+>>>>>>> cce0069bb7bab6b1ebc94ff9d682c6e23e672c5e
                     <td className="action-button">
                       <button
                         className="me-2"
@@ -217,7 +283,11 @@ function Clients() {
                 ))}
                 {paginatedClients.length === 0 && (
                   <tr>
+<<<<<<< HEAD
                     <td colSpan="5" className="text-center">
+=======
+                    <td colSpan="6" className="text-center">
+>>>>>>> cce0069bb7bab6b1ebc94ff9d682c6e23e672c5e
                       No Language found
                     </td>
                   </tr>
@@ -238,19 +308,25 @@ function Clients() {
               &#60;
             </button>
             <div className="pagination-numbers">
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                <button
-                  key={page}
-                  className={`pagination-number ${currentPage === page ? "active" : ""}`}
-                  onClick={() => setCurrentPage(page)}
-                >
-                  {page}
-                </button>
-              ))}
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                (page) => (
+                  <button
+                    key={page}
+                    className={`pagination-number ${
+                      currentPage === page ? "active" : ""
+                    }`}
+                    onClick={() => setCurrentPage(page)}
+                  >
+                    {page}
+                  </button>
+                )
+              )}
             </div>
             <button
               className="pagination-btn next-btn"
-              onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+              onClick={() =>
+                setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+              }
               disabled={currentPage === totalPages}
             >
               &#62;
@@ -264,8 +340,16 @@ function Clients() {
         <div className="modal-overlay">
           <div className="modal-content-custom animate__animated animate__fadeInDown">
             <div className="modal-header">
-              <h5 className="modal-title">{editClient ? "Edit Language" : "Add Language"}</h5>
-              <button type="button" className="close-btn" onClick={() => setShowModal(false)}>×</button>
+              <h5 className="modal-title">
+                {editClient ? "Edit Language" : "Add Language"}
+              </h5>
+              <button
+                type="button"
+                className="close-btn"
+                onClick={() => setShowModal(false)}
+              >
+                ×
+              </button>
             </div>
             <form onSubmit={handleSubmit}>
               <div className="modal-body">
@@ -276,13 +360,19 @@ function Clients() {
                     className="form-control"
                     placeholder="Enter Language name"
                     value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, name: e.target.value })
+                    }
                     required
                   />
                 </div>
               </div>
               <div className="modal-footer">
-                <button type="button" className="btn btn-secondary" onClick={() => setShowModal(false)}>
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  onClick={() => setShowModal(false)}
+                >
                   Close
                 </button>
                 <button type="submit" className="btn btn-success">

@@ -44,7 +44,7 @@ function Clients() {
       const email = client?.email || "";
       return (
         name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        email.toLowerCase().includes(searchTerm.toLowerCase())
+        email.toLowerCase().includes(searchTerm.toLocaleLowerCase())
       );
     })
     .filter((client) => statusFilter === "All" || client?.status === statusFilter)
